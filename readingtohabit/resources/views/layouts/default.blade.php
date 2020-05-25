@@ -8,27 +8,6 @@
     </head>
     <body>
         <div id="wrapper">
-        @isset ($is_login)
-        <header class="header_after_login">
-            <div class="header_after_login_body">
-                <div class="header_after_login_logo">
-                    Readingtohabit
-                </div>
-                <div class="header_navi">
-                    <div class="header_navi_after_login_username">
-                        @isset ($login_username)
-                        {{ $login_username }}さん
-                        @else
-                        nonameさん
-                        @endif
-                    </div>
-                    <div class="header_navi_logout">
-                        <a href="logout">ログアウト</a>
-                    </div>
-                </div>
-            </div>
-        </header>
-        @else
         <header class="header_before_login">
             <div class="header_before_login_service">
                 <div class="service_area">
@@ -54,7 +33,6 @@
                 </div>
             </div>
         </header>
-        @endisset
 
         <div class="content_area">
         @yield('content')
@@ -76,10 +54,10 @@
         @else
         <footer class="footer_default">
             <div class="footer_body">
-                <div class="footer_content">
-                    <a href="rules" class="rules">利用規約</a>
-                    <a href="privacy_policy" class="privacy_policy">プライバシーポリシー</a>
-                    <a href="specfied_commercial_transaction_law" class="specified_commercial_transaction_law">特定商取引法表記</a>
+                <div class="footer_area">
+                    <a href="rules" class="footer_content">利用規約</a>
+                    <a href="privacy_policy" class="footer_content">プライバシーポリシー</a>
+                    <a href="specfied_commercial_transaction_law" class="footer_content">特定商取引法表記</a>
                 </div>
                 <div class="footer_copyright">
                     copyrights c 2020 KEITA YAMAUCHI ALL RIGHTS RESERVED.
