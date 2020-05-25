@@ -13,10 +13,10 @@
                 @endphp
             @endempty
             {{ csrf_field() }}
-            @include('components.register_user_form_input', ['input' => 'name', 'register_user_info' => $register_user_info, 'errors' => $errors])
-            @include('components.register_user_form_input', ['input' => 'email', 'register_user_info' => $register_user_info, 'errors' => $errors])
-            @include('components.register_user_form_input', ['input' => 'password', 'register_user_info' => $register_user_info, 'errors' => $errors])
-            @include('components.register_user_form_input', ['input' => 'password_to_check', 'register_user_info' => $register_user_info, 'errors' => $errors])
+            @include('components.register_user_form_input', ['input' => 'name', 'errors' => $errors])
+            @include('components.register_user_form_input', ['input' => 'email', 'errors' => $errors])
+            @include('components.register_user_form_input', ['input' => 'password', 'errors' => $errors])
+            @include('components.register_user_form_input', ['input' => 'password_to_check', 'errors' => $errors])
 
             <div class="caution">
                 登録することによって、<a href="rules" class="link_primary">利用規約</a>・<a href="plivacy_policy" class="link_primary">プライバシーポリシー</a>に同意しているものとみなします。
