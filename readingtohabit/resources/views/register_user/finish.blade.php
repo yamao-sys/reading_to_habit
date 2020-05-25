@@ -11,10 +11,10 @@
             ご登録いただいたメールアドレス宛てに「ユーザー登録完了」のメールを送信しました。
         </div>
         <div class="mb_3">
-            ログインは<a href="login">こちら</a>から
+            ログインは<a href="login" class="link_primary">こちら</a>から
         </div>
         <div class="mb_3">
-            ※もし、メールが届いていない場合は<a href="resend_mail_form">こちら</a>から
+            ※もし、メールが届いていない場合は<a href="resend_mail_form" class="link_primary">こちら</a>から
         </div>
     </div>
 </div>
