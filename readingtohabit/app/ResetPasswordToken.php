@@ -48,4 +48,29 @@ class ResetPasswordToken extends Model
 
         return $token;
     }
+
+    public static function check_validity_of_token ($key) {
+        if (empty($key)) {
+            return false;
+        }
+
+        $token = ResetPasswordToken::where('token', $key)->first();
+
+        if (empty($token)) {
+            return false;
+        }
+
+        if ($token['expires'] < Carbon::now()) {
+            ResetPasswordToken::soft_delete($token['id']);
+
+            return false;
+        }
+
+        $user = User::where('id', $token['user_id'])->first();
+        if (empty($user)) {
+            return false;
+        }
+
+        return true;
+    }
 }

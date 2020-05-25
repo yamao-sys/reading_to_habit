@@ -42,22 +42,11 @@ class ResetPasswordController extends Controller
             return view('common.invalid');
         }
 
+        if (ResetPasswordToken::check_validity_of_token($request->input('key')) === false) {
+            return view('common.invalid');
+        }
+        
         $token = ResetPasswordToken::where('token', $request->input('key'))->first();
-
-        if (empty($token)) {
-            return view('common.invalid');
-        }
-
-        if ($token['expires'] < Carbon::now()) {
-            ResetPasswordToken::soft_delete($token['id']);
-
-            return view('common.invalid');
-        }
-
-        $user = User::where('id', $token['user_id'])->first();
-        if (empty($user)) {
-            return view('common.invalid');
-        }
 
         return view('reset_password.form',['token' => $token['token']]);
     }
@@ -66,23 +55,13 @@ class ResetPasswordController extends Controller
         if (empty($request->input('key'))) {
             return view('common.invalid');
         }
+
+        if (ResetPasswordToken::check_validity_of_token($request->input('key')) === false) {
+            return view('common.invalid');
+        }
         
         $token = ResetPasswordToken::where('token', $request->input('key'))->first();
-
-        if (empty($token)) {
-            return view('common.invalid');
-        }
-        
-        if ($token['expires'] < Carbon::now()) {
-            ResetPasswordToken::soft_delete($token['id']);
-
-            return view('common.invalid');
-        }
-        
-        $user = User::where('id', $token['user_id'])->first();
-        if (empty($user)) {
-            return view('common.invalid');
-        }
+        $user  = User::where('id', $token['user_id'])->first();
 
         User::where('id', $user['id'])->update(['password' => Hash::make($request->password)]);
 
