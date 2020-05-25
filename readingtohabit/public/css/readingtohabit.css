@@ -3974,7 +3974,7 @@ input#auto_login[type="checkbox"]:checked+label::after {
 }
 
 .register_user_form,.register_user_check_area,.login_form {
-    padding: 2rem;
+    padding: 1rem;
     background-color: #ebebeb;
 }
 
