@@ -23,7 +23,6 @@ class ResetPasswordToken extends Model
     }
     
     public static function soft_delete($id) {
-        $delete_data = ['deleted' => 1, 'deleted_at' => date('Y-m-d H:i:s')];
         ResetPasswordToken::where('id', $id)
                           ->update(['deleted' => 1, 'deleted_at' => date('Y-m-d H:i:s')]);
     }
