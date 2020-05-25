@@ -35,7 +35,7 @@ Route::group(['middleware' => ['before_login']], function () {
     Route::post('login', 'AuthController@login_do');
 
     // パスワードリセット関連
-    Route::get('reset_password_mail_form', 'ResetPasswordController@reset_password_mail_form');
+    Route::get('reset_password_mail_form', function () {return view('reset_password_mail.form');});
 
     Route::get('reset_password_mail_do', function() {return view('common.invalid');});
     Route::post('reset_password_mail_do', 'ResetPasswordController@reset_password_mail_do');
