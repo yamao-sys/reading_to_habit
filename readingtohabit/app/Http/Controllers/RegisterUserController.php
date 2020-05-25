@@ -20,25 +20,14 @@ use App\Mail\ResendMail;
 class registerUserController extends Controller
 {
     public function register_user_form (Request $request) {
-
         // 登録情報確認画面から登録情報修正リンクがクリックされた時のため
         $request->session()->regenerate();
-        /*
-        if (empty($request->session()->get('register_user_info_name'))) {
-            return view('register_user.form', ['register_user_info' => []]);
-        }
-
-        $register_user_info = [
-            'name' => $request->session()->get('register_user_info_name'),
-            'email'=> $request->session()->get('register_user_info_email'),
-        ];
         
-        return view('register_user.form', ['register_user_info' => $register_user_info]);
-        */
         return view('register_user.form');
     }
 
     public function register_user_check (RegisterUserRequest $request) {
+        // 入力された情報をセッション変数に格納しておくことで、登録情報入力画面へ戻ったとき、情報を保持できる
         $request->session()->regenerate();
         $request->session()->put('register_user_info_name',     $request->name);
         $request->session()->put('register_user_info_email',    $request->email);
@@ -49,13 +38,13 @@ class registerUserController extends Controller
             $password_to_print .= '*';
         }
 
-        $register_user_info = [
-            'name' => $request->name,
-            'email' => $request->email,
+        $user_info = [
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => $password_to_print,
         ];
 
-        return view('register_user.check', ['register_user_info' => $register_user_info]);
+        return view('register_user.check', ['user_info' => $user_info]);
     }
 
     public function register_user_check_get (Request $request) {
