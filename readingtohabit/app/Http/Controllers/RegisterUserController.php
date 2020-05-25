@@ -92,12 +92,7 @@ class registerUserController extends Controller
         Mail::to($email)->send(new SuccessRegisterUser($name,$email));
 
         $request->session()->flush();
-
         return view('register_user.finish');
-    }
-
-    public function resend_mail_form () {
-        return view('resend_mail.form');
     }
 
     public function resend_mail_do (ResendMailRequest $request) {
