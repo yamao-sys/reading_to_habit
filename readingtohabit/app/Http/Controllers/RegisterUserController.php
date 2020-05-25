@@ -49,25 +49,23 @@ class registerUserController extends Controller
 
     public function register_user_check_get (Request $request) {
         $request->session()->regenerate();
+        
+        // 登録情報入力画面を経ずに登録情報確認画面へアクセスされるのを防ぐため
         if (empty($request->session()->get('register_user_info_name'))) {
             return view('common.invalid');
         }
         
-        $name     = $request->session()->get('register_user_info_name');
-        $email    = $request->session()->get('register_user_info_email');
-        $password = $request->session()->get('register_user_info_password');
-        
         $password_to_print = '';
-        for ($i = 0; $i < strlen($password); $i++) {
+        for ($i = 0; $i < strlen($request->session()->get('register_user_info_password')); $i++) {
             $password_to_print .= '*';
         }
-        $register_user_info = [
-            'name'     => $name,
-            'email'    => $email,
+        $user_info = [
+            'name'     => $request->session()->get('register_user_info_name'),
+            'email'    => $request->session()->get('register_user_info_email'),
             'password' => $password_to_print,
         ];
         
-        return view('register_user.check', ['register_user_info' => $register_user_info]);
+        return view('register_user.check', ['user_info' => $user_info]);
     }
 
     public function register_user_do (Request $request) {
