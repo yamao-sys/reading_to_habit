@@ -632,6 +632,13 @@ li {
     margin-bottom: 2rem;
 }
 
+.content_title {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    line-height: 1.5rem;
+    font-weight: bold;
+}
+
 @media screen and (max-width:390px) {
     .register_user_content,.login_content {
         width: calc(100% - 2rem);
@@ -4056,53 +4063,6 @@ input#auto_login[type="checkbox"]:checked+label::after {
     transform: rotate(-45deg) translateY(-50%);
 }
 */
-
-.register_user_form_top {
-    display: -ms-flexbox;
-    display: flex;
-    width: 100%;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    margin-bottom: 2rem;
-}
-
-.register_user_phase_area {
-    display: -ms-flexbox;
-    display: flex;
-    width: 100%;
-}
-
-.register_user_phase_content {
-    display: -ms-flexbox;
-    display: flex;
-    width: calc(100% / 3);
-    -ms-flex-direction: column;
-    flex-direction: column;
-}
-
-.phase {
-    font-weight: 700;
-    text-align: center;
-    margin-bottom: 0.5rem;
-}
-
-.register_user_in_phase {
-    width: 100%;
-    height: 0.5rem;
-    background-color: #00a0e9;
-}
-
-.register_user_default {
-    width: 100%;
-    height: 0.5rem;
-    background-color: #ebebeb;
-}
-
-.register_free,.register_finish {
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #000;
-    font-weight: 700;
-}
 
 .register_user_form,.register_user_check_area,.login_form {
     padding: 1rem;
