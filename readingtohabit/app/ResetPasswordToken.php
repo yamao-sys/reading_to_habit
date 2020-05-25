@@ -40,7 +40,7 @@ class ResetPasswordToken extends Model
         catch (IlluminateDatabaseQueryException $e) {
             $error_code = $e->errorInfo[1];
 
-            if ($error_code == \ErrorCodeConst::DUPLICATE_ENTRY) {
+            if ($error_code === \ErrorCodeConst::DUPLICATE_ENTRY) {
                 return 'duplicate_error';
             }
         }
