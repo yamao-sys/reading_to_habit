@@ -84,21 +84,10 @@ class registerUserController extends Controller
             'password' => Hash::make($password),
         ];
 
-        DB::beginTransaction();
-
-        try {
-            $user = new User($register_user_info);
-            $user->save();
-            $default_mail_timing = $user->default_mail_timing()->create();
-            $default_mail_timing->default_mail_timing_master()->create();
-            $default_mail_timing->default_mail_timing_select_master()->create();
+        if (User::create_user($register_user_info) === false) {
+            $request->session()->flush();
+            return view('common.fail');
         }
-        catch (Exception $e) {
-            DB::rollback();
-            return back()->withInput();
-        }
-
-        DB::commit();
 
         Mail::to($email)->send(new SuccessRegisterUser($name,$email));
 
