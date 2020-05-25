@@ -35,7 +35,7 @@
             @include('components.register_user_form_input', ['input' => 'password_to_check', 'register_user_info' => $register_user_info, 'errors' => $errors])
 
             <div class="caution">
-                登録することによって、<a href="rules">利用規約</a>・<a href="plivacy_policy">プライバシーポリシー</a>に同意しているものとみなします。
+                登録することによって、<a href="rules" class="link_primary">利用規約</a>・<a href="plivacy_policy" class="link_primary">プライバシーポリシー</a>に同意しているものとみなします。
             </div>
         
             <div class="submit_btn">
@@ -43,7 +43,7 @@
             </div>
 
             <div class="to_login">
-                ログインは<a href="login">こちら</a>から
+                ログインは<a href="login" class="link_primary">こちら</a>から
             </div>
         </form>
     </div>

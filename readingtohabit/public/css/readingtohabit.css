@@ -1480,13 +1480,11 @@ li {
         margin: 2rem auto;
     }
     .footer_content {
-        font-size: 0.75rem;
         text-decoration: none;
         color: #fff;
         margin-right: 1rem;
     }
     .footer_copyright {
-        font-size: 0.75rem;
         color: #fff;
     }
     .content {
@@ -4705,6 +4703,11 @@ input#auto_login[type="checkbox"]:checked+label::after {
 
 .link_white {
     color: #fff;
+    text-decoration: none;
+}
+
+.link_primary {
+    color: #00a0e9;
     text-decoration: none;
 }
 
