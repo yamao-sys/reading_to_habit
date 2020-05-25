@@ -1,0 +1,51 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
+
+class ResetPasswordToken extends Model
+{
+    protected $guarded = array('id');
+
+    protected static function boot() {
+        parent::boot();
+
+        static::addGlobalScope('deleted', function (Builder $builder) {
+            $builder->where('deleted', 0);
+        });
+    }
+
+    public function user () {
+        return $this->belongsTo('App\User');
+    }
+    
+    public static function soft_delete($id) {
+        $delete_data = ['deleted' => 1, 'deleted_at' => date('Y-m-d H:i:s')];
+        ResetPasswordToken::where('id', $id)
+                          ->update(['deleted' => 1, 'deleted_at' => date('Y-m-d H:i:s')]);
+    }
+
+    public static function create_token ($user_id) {
+        $token = str_random(50);
+
+        try {
+            $token_record = ResetPasswordToken::create([
+                                'user_id' => $user_id,
+                                'token'   => $token,
+                                'expires' => Carbon::now()->addHours(\ResetPasswordTokenConst::EXPIRES_HOURS),
+                            ]);
+        }
+        catch (IlluminateDatabaseQueryException $e) {
+            $error_code = $e->errorInfo[1];
+
+            if ($error_code == \ErrorCodeConst::DUPLICATE_ENTRY) {
+                return 'duplicate_error';
+            }
+        }
+
+        return $token;
+    }
+}

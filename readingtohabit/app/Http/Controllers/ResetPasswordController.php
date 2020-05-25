@@ -32,7 +32,7 @@ class ResetPasswordController extends Controller
         } while ($token == 'duplicate_error');
 
         // パスワードリセット用メールの送信
-        Mail::to($user['email'])->send(new ResetPassword($user['email'], $token));
+        Mail::to($user['email'])->send(new ResetPassword($token));
 
         return view('reset_password_mail.finish');
     }
