@@ -97,6 +97,10 @@ class registerUserController extends Controller
 
     public function resend_mail_do (ResendMailRequest $request) {
         $user = User::where('email', $request->email)->first();
+        // 入力されたメールアドレスのユーザーが存在しなくても、送信完了画面を表示する
+        if (empty($user)) {
+            return view('resend_mail.finish');
+        }
 
         Mail::to($user['email'])->send(new SuccessRegisterUser($user['name'], $user['email']));
 
