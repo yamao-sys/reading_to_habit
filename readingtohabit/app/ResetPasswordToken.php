@@ -31,11 +31,11 @@ class ResetPasswordToken extends Model
         $token = str_random(50);
 
         try {
-            $token_record = ResetPasswordToken::create([
-                                'user_id' => $user_id,
-                                'token'   => $token,
-                                'expires' => Carbon::now()->addHours(\ResetPasswordTokenConst::EXPIRES_HOURS),
-                            ]);
+            ResetPasswordToken::create([
+                'user_id' => $user_id,
+                'token'   => $token,
+                'expires' => Carbon::now()->addHours(\ResetPasswordTokenConst::EXPIRES_HOURS),
+            ]);
         }
         catch (IlluminateDatabaseQueryException $e) {
             $error_code = $e->errorInfo[1];
