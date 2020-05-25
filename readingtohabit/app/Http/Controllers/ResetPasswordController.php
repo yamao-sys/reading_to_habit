@@ -29,7 +29,7 @@ class ResetPasswordController extends Controller
         // パスワードリセット用トークンの生成
         do {
             $token = ResetPasswordToken::create_token($user['id']);
-        } while ($token == 'duplicate_error');
+        } while ($token === 'duplicate_error');
 
         // パスワードリセット用メールの送信
         Mail::to($user['email'])->send(new ResetPassword($token));
