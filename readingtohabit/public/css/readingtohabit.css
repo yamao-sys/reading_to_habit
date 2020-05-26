@@ -3250,6 +3250,17 @@ input#auto_login[type="checkbox"]:checked+label::after {
     border-radius: 5px;
 }
 
+input[type="checkbox"] {
+    box-sizing: border-box;
+    background-color: initial;
+    cursor: default;
+    -webkit-appearance: checkbox;
+    margin: 3px 3px 3px 4px;
+    padding: initial;
+    border: 1px solid #495057;
+    border-radius: 5px;
+}
+
 .form_input {
     display: block;
     width: 100%;
