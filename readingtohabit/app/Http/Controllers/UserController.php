@@ -112,15 +112,11 @@ class UserController extends Controller
     }
 
     public function delete_user_do (Request $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-        
-        if (empty($user)) {
+        if (User::check_existense_of_user_info($request) === 'not_exists') {
             return json_encode(['is_success' => false]);
         }
 
-        $is_success_delete = User::soft_delete_user() && User::soft_delete_articles();
-
-        if ($is_success_delete) {
+        if (User::soft_delete_user() && User::soft_delete_articles()) {
             $request->session()->flush();
 
             return json_encode(['is_success' => true]);

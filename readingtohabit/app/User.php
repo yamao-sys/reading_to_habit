@@ -274,25 +274,22 @@ class User extends Authenticatable
         if (empty($default_mail_timing)) {
             return false;
         }
-        $default_mail_timing_id = $default_mail_timing['id'];
 
         // 削除
         $delete_info = ['deleted' => 1, 'deleted_at' => Carbon::now()];
         DB::beginTransaction();
-        
         try {
             User::where('id', session()->get('user_id'))->update($delete_info);
             AutoLoginToken::where('user_id', session()->get('user_id'))->update($delete_info);
             ResetPasswordToken::where('user_id', session()->get('user_id'))->update($delete_info);
             DefaultMailTiming::where('user_id', session()->get('user_id'))->update($delete_info);
-            DefaultMailTimingMaster::where('default_mail_timing_id', $default_mail_timing_id)->update($delete_info);
-            DefaultMailTimingSelectMaster::where('default_mail_timing_id', $default_mail_timing_id)->update($delete_info);
+            DefaultMailTimingMaster::where('default_mail_timing_id', $default_mail_timing['id'])->update($delete_info);
+            DefaultMailTimingSelectMaster::where('default_mail_timing_id', $default_mail_timing['id'])->update($delete_info);
         }
         catch (Exception $e) {
             DB::rollback();
             return false;
         }
-        
         DB::commit();
 
         return true;
@@ -313,10 +310,9 @@ class User extends Authenticatable
         foreach ($article_mail_timings as $article_mail_timing) {
             $article_mail_timing_id[] = $article_mail_timing['id'];
         }
-            
+        
         $delete_info = ['deleted' => 1, 'deleted_at' => Carbon::now()];
         DB::beginTransaction();
-            
         try {
             Article::where('user_id', session()->get('user_id'))->update($delete_info);
             ArticleMailTiming::whereIn('article_id', $article_id)->update($delete_info);
