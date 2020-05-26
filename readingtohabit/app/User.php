@@ -18,6 +18,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
@@ -195,10 +196,23 @@ class User extends Authenticatable
 
         return User::where('id', $request->session()->get('user_id'))->first();
     }
-    
-    public function edit_password_form (Request $request) {
-        return view('edit_user.password');
-        
+
+    public static function edit_password (Request $request) {
+        DB::beginTransaction();
+        try {
+            $after_edit_user = User::where('id', $request->session()->get('user_id'))
+                                   ->update([
+                                             'password'   => Hash::make($request->new_password),
+                                             'updated_at' => Carbon::now(),
+                                     ]);
+        }
+        catch (Exception $e) {
+            DB::rollback();
+            return [];
+        }
+        DB::commit();
+
+        return $after_edit_user;
     }
     
     public static function soft_delete_user() {

@@ -83,7 +83,7 @@ Route::group(['middleware' => ['after_login']], function () {
     // ユーザー編集関連
     Route::get('edit_profile', 'UserController@edit_profile_form');
     Route::post('edit_profile', 'UserController@edit_profile_do');
-    Route::get('edit_password', 'UserController@edit_password_form');
+    Route::get('edit_password', function () {return view('edit_user.password');});
     Route::post('edit_password', 'UserController@edit_password_do');
     Route::get('edit_default_mail_timing', 'UserController@edit_default_mail_timing_form');
     Route::post('edit_default_mail_timing', 'UserController@edit_default_mail_timing_do');

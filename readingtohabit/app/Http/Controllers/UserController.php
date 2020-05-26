@@ -64,10 +64,6 @@ class UserController extends Controller
 
         return view('edit_user.profile', ['profile' => $profile_after_edit, 'dialog' => 'プロフィールを更新しました。']);
     }
-    
-    public function edit_password_form (Request $request) {
-        return view('edit_user.password');
-    }
 
     public function edit_password_do (EditPasswordRequest $request) {
         $user = User::where('id', $request->session()->get('user_id'))->first();
@@ -76,21 +72,9 @@ class UserController extends Controller
             return view('common.invalid');
         }
 
-        DB::beginTransaction();
-
-        try {
-            User::where('id', $request->session()->get('user_id'))
-                ->update(['password' => Hash::make($request->new_password)]);
-
-            AutoLoginToken::where('user_id', $request->session()->get('user_id'))
-                          ->update(['deleted' => 1, 'deleted_at' => Carbon::now()]);
+        if (empty(User::edit_password($request))) {
+            return view('common.fail');
         }
-        catch (Exception $e) {
-            DB::rollback();
-            return back()->withInput();
-        }
-        
-        DB::commit();
 
         return view('edit_user.password', ['dialog' => 'パスワードを更新しました。']);
     }
