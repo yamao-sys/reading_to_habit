@@ -61,11 +61,11 @@
         </div>
         <div class="show_element">
             <label>学んだこと</label>
-            <div class="show_article_textarea">{{$book_info['learning']}}</div>
+            <div class="form_textarea">{{$book_info['learning']}}</div>
         </div>
         <div class="show_element">
             <label>学びをどのように行動に活かすか</label>
-            <div class="show_article_textarea">{{$book_info['action']}}</div>
+            <div class="form_textarea">{{$book_info['action']}}</div>
         </div>
         <div class="show_element">
             <label>リマインドメールの配信</label>

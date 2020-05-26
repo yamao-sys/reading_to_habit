@@ -29,7 +29,7 @@
         </div>
         <div class="form_element">
             <label>学んだこと</label>
-            <textarea name="learning" class="add_article_textarea">{{old('learning')}}</textarea>
+            <textarea name="learning" class="form_textarea">{{old('learning')}}</textarea>
             @isset($errors)
                 @if ($errors->has('learning'))
                 <div class="error_msg">
@@ -40,7 +40,7 @@
         </div>
         <div class="form_element">
             <label>学びをどのように行動に活かすか</label>
-            <textarea name="action" class="add_article_textarea">{{old('action')}}</textarea>
+            <textarea name="action" class="form_textarea">{{old('action')}}</textarea>
             @isset($errors)
                 @if ($errors->has('action'))
                 <div class="error_msg">
