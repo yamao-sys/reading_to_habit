@@ -670,20 +670,6 @@ li {
         -ms-flex-direction: column;
         flex-direction: column;
     }
-    .add_article_textarea,.show_article_textarea,.edit_article_textarea {
-        display: block;
-        width: 100%;
-        height: calc(1.5rem * 7 + 0.75rem + 2px);
-        // padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 0.5px solid #495057;
-        border-radius: 5px;
-    }
     .btn_primary_more_than_4_chars {
         display: inline-block;
         width: 180px;
@@ -1091,20 +1077,6 @@ li {
         -ms-flex-direction: column;
         flex-direction: column;
     }
-    .add_article_textarea,.show_article_textarea,.edit_article_textarea {
-        display: block;
-        width: 100%;
-        height: calc(1.5rem * 7 + 0.75rem + 2px);
-        // padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 0.5px solid #495057;
-        border-radius: 5px;
-    }
     .btn_primary_more_than_4_chars {
         display: inline-block;
         width: 250px;
@@ -1510,20 +1482,6 @@ li {
         -ms-flex-direction: column;
         flex-direction: column;
     }
-    .add_article_textarea,.show_article_textarea,.edit_article_textarea {
-        display: block;
-        width: 100%;
-        height: calc(1.5rem * 7 + 0.75rem + 2px);
-        // padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 0.5px solid #495057;
-        border-radius: 5px;
-    }
     .btn_primary_more_than_4_chars {
         display: inline-block;
         width: 300px;
@@ -1920,20 +1878,6 @@ li {
         width: 540px;
         margin: 2rem auto;
         padding: 0 15px;
-    }
-    .add_article_textarea,.show_article_textarea,.edit_article_textarea {
-        display: block;
-        width: 540px;
-        height: calc(1.5rem * 7 + 0.75rem + 2px);
-        // padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #495057;
-        border-radius: 5px;
     }
     .resend_mail_email {
         display: -ms-flexbox;
@@ -2339,20 +2283,6 @@ li {
         width: 720px;
         margin: 2rem auto;
         padding: 0 15px;
-    }
-    .add_article_textarea,.show_article_textarea,.edit_article_textarea {
-        display: block;
-        width: 540px;
-        height: calc(1.5rem * 7 + 0.75rem + 2px);
-        // padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #495057;
-        border-radius: 5px;
     }
     .resend_mail_email {
         display: -ms-flexbox;
@@ -2760,20 +2690,6 @@ li {
         padding-right: 15px;
         padding-left: 15px;
     }
-    .add_article_textarea,.show_article_textarea,.edit_article_textarea {
-        display: block;
-        width: 960px;
-        height: calc(1.5rem * 7 + 0.75rem + 2px);
-        // padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #495057;
-        border-radius: 5px;
-    }
     .resend_mail_email {
         display: -ms-flexbox;
         display: flex;
@@ -3173,20 +3089,6 @@ li {
         margin: 2rem auto;
         padding-right: 15px;
         padding-left: 15px;
-    }
-    .add_article_textarea,.show_article_textarea,.edit_article_textarea {
-        display: block;
-        width: 1140px;
-        height: calc(1.5rem * 7 + 0.75rem + 2px);
-        // padding: 0.375rem 0.75rem;
-        font-size: 1rem;
-        font-weight: 400;
-        line-height: 1.5;
-        color: #495057;
-        background-color: #fff;
-        background-clip: padding-box;
-        border: 1px solid #495057;
-        border-radius: 5px;
     }
     .resend_mail_email {
         display: -ms-flexbox;
@@ -3937,6 +3839,20 @@ input#auto_login[type="checkbox"]:checked+label::after {
     background-color: #fff;
     background-clip: padding-box;
     border: 1px solid #495057;
+    border-radius: 5px;
+}
+
+.form_textarea {
+    display: block;
+    width: 100%;
+    height: calc(1.5rem * 7 + 0.75rem + 2px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 0.5px solid #495057;
     border-radius: 5px;
 }
 

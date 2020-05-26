@@ -221,6 +221,29 @@ class Article extends Model
         return true;
     }
 
+    public static function check_existense_of_article ($article_id) {
+        if (empty(Article::where('id', $article_id)->first())) {
+            return 'not_exists';
+        }
+
+        $mail_timing = ArticleMailTiming::where('article_id', $article_id)->first();
+        if (empty($mail_timing)) {
+            return 'not_exists';
+        }
+
+        $mail_timing_master = ArticleMailTimingMaster::where('article_mail_timing_id', $mail_timing['id'])->first();
+        if (empty($mail_timing_master)) {
+            return 'not_exists';
+        }
+
+        $mail_timing_select_master = ArticleMailTimingSelectMaster::where('article_mail_timing_id', $mail_timing['id'])->first();
+        if (empty($mail_timing_select_master)) {
+            return 'not_exists';
+        }
+        
+        return 'exists';
+    }
+
     public static function make_show_book_info ($article, $article_mail_timing) {
         if ($article['mail'] === 1) {
             $book_info = [
@@ -251,69 +274,86 @@ class Article extends Model
         return $book_info;
     }
 
-    public static function make_edit_article_form_info ($article) {
-        if (empty($article['id'])) {
-            return [];
-        }
-
+    public static function make_editforminfo_of_article ($article) {
         return [
-                'id' => $article['id'],
-                'bookimg' => $article['bookimg'],
+                'id'       => $article['id'],
+                'bookimg'  => $article['bookimg'],
                 'bookname' => $article['bookname'],
-                'author' => $article['author'],
+                'author'   => $article['author'],
                 'learning' => $article['learning'],
-                'action' => $article['action'],
-                'mail' => $article['mail'],
+                'action'   => $article['action'],
+                'mail'     => $article['mail'],
                ];
     }
 
-    public static function make_edit_article_mail_info ($article) {
-        $article_mail_timing = ArticleMailTiming::where('article_id', $article['id'])->first();
-        if (empty($article_mail_timing)) {
-            return [];
-        }
+    public static function make_editforminfo_of_mail ($article) {
+        $mail_timing = ArticleMailTiming::where('article_id', $article['id'])->first();
 
-        $article_mail_timing_master = ArticleMailTimingMaster::where('article_mail_timing_id', $article_mail_timing['id'])->first();
-        if (empty($article_mail_timing_master)) {
-            return [];
-        }
+        $mail_timing_master = ArticleMailTimingMaster::where('article_mail_timing_id', $mail_timing['id'])->first();
 
-        $article_mail_timing_select_master = ArticleMailTimingSelectMaster::where('article_mail_timing_id', $article_mail_timing['id'])->first();
-        if (empty($article_mail_timing_select_master)) {
-            return [];
-        }
+        $mail_timing_select_master = ArticleMailTimingSelectMaster::where('article_mail_timing_id', $mail_timing['id'])->first();
         
-        if ($article_mail_timing_select_master['by_day'] === 1) {
-            $article_mail_timing_select = 'by_day';
+        if ($mail_timing_select_master['by_day'] === 1) {
+            $mail_timing_select = 'by_day';
         }
-        elseif ($article_mail_timing_select_master['by_week'] === 1) {
-            $article_mail_timing_select = 'by_week';
+        elseif ($mail_timing_select_master['by_week'] === 1) {
+            $mail_timing_select = 'by_week';
         }
-        elseif ($article_mail_timing_select_master['by_month'] === 1) {
-            $article_mail_timing_select = 'by_month';
+        elseif ($mail_timing_select_master['by_month'] === 1) {
+            $mail_timing_select = 'by_month';
         }
         else {
-            $article_mail_timing_select = 'by_day';
+            $mail_timing_select = 'by_day';
         }
 
         return [
-                'by_day' => $article_mail_timing_master['by_day'],
-                'by_week' => $article_mail_timing_master['by_week'],
-                'by_month' => $article_mail_timing_master['by_month'],
-                'article_mail_timing_select' => $article_mail_timing_select,
+                'by_day'   => $mail_timing_master['by_day'],
+                'by_week'  => $mail_timing_master['by_week'],
+                'by_month' => $mail_timing_master['by_month'],
+                'mail_timing_select' => $mail_timing_select,
                ];
     }
+
+    public static function edit_article ($article_id, ArticleRequest $request) {
+        // 保存するデータの準備
+        $article = Article::make_edit_article($request);
+
+        $mail_timing = Article::make_mail_timing($request);
+        
+        $mail_timing_master = Article::make_mail_timing_master($request);
+        
+        $mail_timing_select_master = Article::make_mail_timing_select_master($request);
+
+        $mail_timing_id = ArticleMailTiming::where('article_id', $article_id)->first()['id'];
+
+        DB::beginTransaction();
+        try {
+            Article::where('id', $article_id)->update($article);
+
+            ArticleMailTiming::where('id', $mail_timing_id)->update($mail_timing);
+
+            ArticleMailTimingMaster::where('article_mail_timing_id', $mail_timing_id)->update($mail_timing_master);
+
+            ArticleMailTimingSelectMaster::where('article_mail_timing_id', $mail_timing_id)->update($mail_timing_select_master);
+        }
+        catch (Exception $e) {
+            DB::rollback();
+            return false;
+        }
+        DB::commit();
+        
+        return true;
+    }
     
-    public static function make_edit_article_info (ArticleRequest $request) {
+    public static function make_edit_article (ArticleRequest $request) {
         return [
-                'user_id'  => $request->session()->get('user_id'),
                 'learning' => $request->learning,
                 'action'   => $request->action,
                 'mail'     => intval($request->mail_flag),
                ];
     }
     
-    public static function make_edit_article_mail_timing_info (ArticleRequest $request) {
+    public static function make_mail_timing (ArticleRequest $request) {
         if ($request->mail_flag === '1') {
             if ($request->mail_timing_select === 'by_day') {
                 return [
@@ -343,15 +383,15 @@ class Article extends Model
         }
     }
     
-    public static function make_edit_article_mail_timing_master_info (ArticleRequest $request) {
+    public static function make_mail_timing_master (ArticleRequest $request) {
         return [
                 'by_day'   => $request->mail_timing_by_day,
                 'by_week'  => $request->mail_timing_by_week,
                 'by_month' => $request->mail_timing_by_month,
-               ];   
+               ];
     }
     
-    public static function make_edit_article_mail_timing_select_master_info (ArticleRequest $request) {
+    public static function make_mail_timing_select_master (ArticleRequest $request) {
         if ($request->mail_timing_select === 'by_day') {
             return  [
                      'by_day'   => 1,
