@@ -147,52 +147,13 @@ class ArticleController extends Controller
     }
 
     public function edit_article_do ($article_id, ArticleRequest $request) {
-        $article = Article::where('id', $article_id)
-                          ->where('user_id', $request->session()->get('user_id'))
-                          ->first();
-        if (empty($article)) {
+        if (Article::check_existense_of_article($article_id) === 'not_exists') {
             return view('common.invalid');
         }
 
-        $article_mail_timing = ArticleMailTiming::where('article_id', $article_id)->first();
-        if (empty($article_mail_timing)) {
-            return view('common.invalid');
+        if (Article::edit_article($article_id, $request) === false) {
+            return view('common.fail');
         }
-
-        $article_mail_timing_master = ArticleMailTimingMaster::where('article_mail_timing_id', $article_mail_timing['id'])->first();
-        if (empty($article_mail_timing_master)) {
-            return view('common.invalid');
-        }
-        
-        $article_mail_timing_select_master = ArticleMailTimingSelectMaster::where('article_mail_timing_id', $article_mail_timing['id'])->first();
-        if (empty($article_mail_timing_select_master)) {
-            return view('common.invalid');
-        }
-
-        // 保存するデータの準備
-        $edit_article_info = Article::make_edit_article_info($request);
-
-        $edit_article_mail_timing_info = Article::make_edit_article_mail_timing_info($request);
-        
-        $edit_article_mail_timing_master_info = Article::make_edit_article_mail_timing_master_info($request);
-        
-        $edit_article_mail_timing_select_master_info = Article::make_edit_article_mail_timing_select_master_info($request);
-
-        // 保存する
-        DB::beginTransaction();
-
-        try {
-            Article::where('id', $article_id)->update($edit_article_info);
-            ArticleMailTiming::where('id', $article_mail_timing['id'])->update($edit_article_mail_timing_info);
-            ArticleMailTimingMaster::where('article_mail_timing_id', $article_mail_timing['id'])->update($edit_article_mail_timing_master_info);
-            ArticleMailTimingSelectMaster::where('article_mail_timing_id', $article_mail_timing['id'])->update($edit_article_mail_timing_select_master_info);
-        }
-        catch (Exception $e) {
-            DB::rollback();
-            return back()->withInput();
-        }
-
-        DB::commit();
 
         return redirect('articles');
     }
