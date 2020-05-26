@@ -3656,7 +3656,7 @@ input#auto_login[type="checkbox"]:checked+label::after {
     margin-bottom: 2rem;
 }
 
-.form_element {
+.form_element,.show_element {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-direction: column;

@@ -79,15 +79,12 @@ class ArticleController extends Controller
     }
 
     public function show_article ($article_id, Request $request) {
-        $article = Article::where('id', $article_id)
-                          ->where('user_id', $request->session()->get('user_id'))
-                          ->first();
-
+        $article = Article::where('id', $article_id)->first();
         if (empty($article)) {
             return view('common.invalid');
         }
 
-        $article_mail_timing = $article->article_mail_timing()->where('article_id', $article['id'])->first();
+        $article_mail_timing = ArticleMailTiming::where('article_id', $article['id'])->first();
         if (empty($article_mail_timing)) {
             return view('common.invalid');
         }
