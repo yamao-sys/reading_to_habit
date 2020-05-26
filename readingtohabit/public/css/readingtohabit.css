@@ -761,6 +761,12 @@ li {
         width: calc(100% - 2rem);
         margin: 2rem auto;
     }
+    .error_page_body {
+        width: calc(100% - 2rem);
+        padding: 1rem;
+        background-color: #ffeed8;
+        color: #9b2e2e;
+    }
     .btn_primary_more_than_4_chars {
         display: inline-block;
         width: 180px;
@@ -1058,6 +1064,12 @@ li {
         width: calc(100% - 2rem);
         margin: 2rem auto;
     }
+    .error_page_body {
+        width: calc(100% - 2rem);
+        padding: 1rem;
+        background-color: #ffeed8;
+        color: #9b2e2e;
+    }
     .btn_primary_more_than_4_chars {
         display: inline-block;
         width: 250px;
@@ -1352,6 +1364,12 @@ li {
     .content {
         width: calc(100% - 2rem);
         margin: 2rem auto;
+    }
+    .error_page_body {
+        width: calc(100% - 2rem);
+        padding: 1rem;
+        background-color: #ffeed8;
+        color: #9b2e2e;
     }
     .btn_primary_more_than_4_chars {
         display: inline-block;
@@ -1652,6 +1670,12 @@ li {
         margin: 2rem auto;
         padding: 0 15px;
     }
+    .error_page_body {
+        width: calc(540px - 2rem);
+        padding: 1rem;
+        background-color: #ffeed8;
+        color: #9b2e2e;
+    }
     .btn_primary_more_than_4_chars {
         display: inline-block;
         width: 350px;
@@ -1950,6 +1974,12 @@ li {
         width: 720px;
         margin: 2rem auto;
         padding: 0 15px;
+    }
+    .error_page_body {
+        width: calc(720px - 2rem);
+        padding: 1rem;
+        background-color: #ffeed8;
+        color: #9b2e2e;
     }
     .btn_primary_more_than_4_chars {
         display: inline-block;
@@ -2250,6 +2280,12 @@ li {
         margin: 2rem auto;
         padding-right: 15px;
         padding-left: 15px;
+    }
+    .error_page_body {
+        width: calc(960px - 2rem);
+        padding: 1rem;
+        background-color: #ffeed8;
+        color: #9b2e2e;
     }
     .btn_primary_more_than_4_chars {
         display: inline-block;
@@ -2560,6 +2596,12 @@ li {
         margin: 2rem auto;
         padding-right: 15px;
         padding-left: 15px;
+    }
+    .error_page_body {
+        width: calc(1140px - 2rem);
+        padding: 1rem;
+        background-color: #ffeed8;
+        color: #9b2e2e;
     }
     .btn_primary_more_than_4_chars {
         display: inline-block;
@@ -3736,3 +3778,13 @@ footer {
     margin-right: 1rem;
 }
 
+
+.error_page_header {
+    font-weight: 700;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.error_content_title {
+    font-weight: 700;
+}
