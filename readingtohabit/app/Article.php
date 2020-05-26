@@ -89,18 +89,24 @@ class Article extends Model
 
     public static function create_article (ArticleRequest $request) {
         // 保存するデータの準備
-        $article_info     = Article::make_article_info($request);
-        $mail_timing_info = Article::make_article_mail_timing_info($request);
-        $mail_timing_master_info        = Article::make_article_mail_timing_master_info($request);
-        $mail_timing_select_master_info = Article::make_article_mail_timing_select_master_info($request);
+        $article     = Article::make_create_article($request);
+
+        $mail_timing = Article::make_mail_timing($request);
+
+        $mail_timing_master = Article::make_mail_timing_master($request);
+
+        $mail_timing_select_master = Article::make_mail_timing_select_master($request);
 
         // 保存する
         DB::beginTransaction();
         try {
-            $article = Article::create($article_info);
-            $article_mail_timing = $article->article_mail_timing()->create($mail_timing_info);
-            $article_mail_timing->article_mail_timing_master()->create($mail_timing_master_info);
-            $article_mail_timing->article_mail_timing_select_master()->create($mail_timing_select_master_info);
+            $created_article = Article::create($article);
+
+            $article_mail_timing = $created_article->article_mail_timing()->create($mail_timing);
+
+            $article_mail_timing->article_mail_timing_master()->create($mail_timing_master);
+
+            $article_mail_timing->article_mail_timing_select_master()->create($mail_timing_select_master);
         }
         catch (Exception $e) {
             DB::rollback();
@@ -108,10 +114,10 @@ class Article extends Model
         }
         DB::commit();
         
-        return $article;
+        return $created_article;
     }
 
-    public static function make_article_info (ArticleRequest $request) {
+    public static function make_create_article (ArticleRequest $request) {
         // bookimgはarticle_id.jpgの形式にするため、保存後に更新する
         return [
                 'user_id'  => $request->session()->get('user_id'),
@@ -121,80 +127,6 @@ class Article extends Model
                 'action'   => $request->action,
                 'mail'     => intval($request->mail_flag),
                ];
-    }
-
-    public static function make_article_mail_timing_info (ArticleRequest $request) {
-        if ($request->mail_flag === '1') {
-            if ($request->mail_timing_select === 'by_day') {
-                return [
-                        'last_send_date' => null,
-                        'next_send_date' => Carbon::today()->addDays(intval($request->mail_timing_by_day))->toDateString(),
-                       ];
-            }
-            elseif ($request->mail_timing_select === 'by_week') {
-                return [
-                        'last_send_date' => null,
-                        'next_send_date' => Carbon::today()->addWeeks(intval($request->mail_timing_by_week))->toDateString(),
-                       ];
-            }
-            elseif ($request->mail_timing_select === 'by_month') {
-                return [
-                        'last_send_date' => null,
-                        'next_send_date' => Carbon::today()->addMonths(intval($request->mail_timing_by_month))->toDateString(),
-                       ];
-            }
-            else {
-                return [
-                        'last_send_date' => null,
-                        'next_send_date' => null,
-                    ];
-            }
-        }
-        else {
-            return [
-                    'last_send_date' => null,
-                    'next_send_date' => null,
-                   ];
-        }
-    }
-
-    public static function make_article_mail_timing_master_info (ArticleRequest $request) {
-        return [
-                'by_day'   => $request->mail_timing_by_day,
-                'by_week'  => $request->mail_timing_by_week,
-                'by_month' => $request->mail_timing_by_month,
-               ];
-    }
-
-    public static function make_article_mail_timing_select_master_info (ArticleRequest $request) {
-        if ($request->mail_timing_select === 'by_day') {
-            return  [
-                     'by_day'   => 1,
-                     'by_week'  => 0,
-                     'by_month' => 0,
-                    ];
-        }
-        elseif ($request->mail_timing_select === 'by_week') {
-            return [
-                    'by_day'   => 0,
-                    'by_week'  => 1,
-                    'by_month' => 0,
-                   ];
-        }
-        elseif ($request->mail_timing_select === 'by_month') {
-            return [
-                    'by_day'   => 0,
-                    'by_week'  => 0,
-                    'by_month' => 1,
-                   ];
-        }
-        else {
-            return [
-                    'by_day'   => 1,
-                    'by_week'  => 0,
-                    'by_month' => 0,
-                   ];
-        }
     }
 
     public static function store_bookimg ($bookimg_url, $article_id) {
@@ -438,7 +370,6 @@ class Article extends Model
             $request->session()->put('is_search_for_mail', false);
             $request->session()->put('mail', '');
         }
-
     }
     
     public static function search_articles (Request $request) {
