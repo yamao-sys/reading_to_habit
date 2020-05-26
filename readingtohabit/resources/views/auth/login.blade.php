@@ -25,7 +25,7 @@
             
             <div class="form_element">
                 <label>パスワード</label>
-                <input type="password" class="form_input" name="password" value="{{old('password')}}">
+                <input type="password" class="form_input" name="password">
                 @if ($errors->has('password'))
                 <div class="error_msg">
                     <p>{{ $errors->first('password') }}</p>
