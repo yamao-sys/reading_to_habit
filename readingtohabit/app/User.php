@@ -152,8 +152,8 @@ class User extends Authenticatable
                ];
     }
     
-    public static function check_existense_of_user_info (Request $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
+    public static function check_existense_of_user_info ($user_id) {
+        $user = User::where('id', $user_id)->first();
         if (empty($user)) {
             return 'not_exists';
         }

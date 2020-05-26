@@ -44,6 +44,12 @@ class AfterLoginMiddleware
             $response->cookie('auto_login', $new_token_info['token'], $new_token_info['expires_seconds'], true);
         }
         else {
+            if (User::check_existense_of_user_info($request->session()->get('user_id')) === 'not_exists') {
+                $request->session()->flush();
+                
+                return redirect('top');
+            }
+
             $request->session()->regenerate();
 
             $response = $next($request);

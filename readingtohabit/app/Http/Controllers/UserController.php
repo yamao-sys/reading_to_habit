@@ -25,10 +25,6 @@ use Carbon\Carbon;
 class UserController extends Controller
 {
     public function edit_profile_form (Request $request) {
-        if (User::check_existense_of_user_info($request) === 'not_exists') {
-            return view('common.invalid');
-        }
-
         $user = User::where('id', $request->session()->get('user_id'))->first();
         
         $profile = [
@@ -41,10 +37,6 @@ class UserController extends Controller
     }
 
     public function edit_profile_do (EditProfileRequest $request) {
-        if (User::check_existense_of_user_info($request) === 'not_exists') {
-            return view('common.invalid');
-        }
-
         if (empty($request->profile_img)) {
             $profile_after_edit = User::edit_profile_excluding_img($request);
             if (empty($profile_after_edit)) {
@@ -64,10 +56,6 @@ class UserController extends Controller
     }
 
     public function edit_password_do (EditPasswordRequest $request) {
-        if (User::check_existense_of_user_info($request) === 'not_exists') {
-            return view('common.invalid');
-        }
-
         if (User::edit_password($request) === false) {
             return view('common.fail');
         }
@@ -76,10 +64,6 @@ class UserController extends Controller
     }
 
     public function edit_default_mail_timing_form (Request $request) {
-        if (User::check_existense_of_user_info($request) === 'not_exists') {
-            return view('common.invalid');
-        }
-        
         $def_timing = DefaultMailTiming::where('user_id', $request->session()->get('user_id'))->first();
         $def_timing_master = DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])->first();
         $def_timing_select = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])->first();
@@ -93,10 +77,6 @@ class UserController extends Controller
     }
 
     public function edit_default_mail_timing_do (Request $request) {
-        if (User::check_existense_of_user_info($request) === 'not_exists') {
-            return view('common.invalid');
-        }
-
         $def_timing_info_after_edit = User::edit_default_mail_timing($request);
         if (empty($def_timing_info_after_edit['default_mail_timing'])) {
             return view('common.fail');
@@ -112,10 +92,6 @@ class UserController extends Controller
     }
 
     public function delete_user_do (Request $request) {
-        if (User::check_existense_of_user_info($request) === 'not_exists') {
-            return json_encode(['is_success' => false]);
-        }
-
         if (User::soft_delete_user() && User::soft_delete_articles()) {
             $request->session()->flush();
 
