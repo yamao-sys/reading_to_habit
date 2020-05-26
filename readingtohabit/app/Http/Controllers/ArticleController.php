@@ -32,11 +32,8 @@ class ArticleController extends Controller
         if ($request->isMethod('post')) {
             Article::search_cond_into_session($request);
         }
-        
-        $num_of_articles = Article::count_search_articles($request);
-        $articles = Article::make_search_articles($request);
 
-        return view('article.search_article.results', ['num_of_articles'=> $num_of_articles, 'articles' => $articles]);
+        return view('article.search_article.results', Article::search_articles($request));
     }
 
     public function favorites () {

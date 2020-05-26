@@ -401,7 +401,7 @@ class Article extends Model
 
     }
     
-    public static function count_search_articles (Request $request) {
+    public static function search_articles (Request $request) {
         $is_search_for_bookinfo    = $request->session()->get('is_search_for_bookinfo');
         $is_search_for_last_update = $request->session()->get('is_search_for_last_update');
         $is_search_for_mail        = $request->session()->get('is_search_for_mail');
@@ -411,110 +411,93 @@ class Article extends Model
 
         // 拡張性に課題あり！：検索条件が1つ増えると、if文の数が2のべき乗だけ増加してしまう
         if ($is_search_for_bookinfo && $is_search_for_last_update && $is_search_for_mail) {
-            return Article::where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->orWhereIn('mail', $mail)
-                          ->count();
+            $num_of_articles =  Article::where('bookname', 'LIKE', "%$bookinfo%")
+                                       ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                       ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                       ->orWhereIn('mail', $mail)
+                                       ->count();
+            
+            $articles =  Article::with('article_mail_timing')
+                                ->where('bookname', 'LIKE', "%$bookinfo%")
+                                ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                ->orWhereIn('mail', $mail)
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
         elseif ($is_search_for_bookinfo && $is_search_for_last_update && !$is_search_for_mail) {
-            return Article::where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->count();
+            $num_of_articles =  Article::where('bookname', 'LIKE', "%$bookinfo%")
+                                       ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                       ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                       ->count();
+            
+            $articles =  Article::with('article_mail_timing')
+                                ->where('bookname', 'LIKE', "%$bookinfo%")
+                                ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
         elseif ($is_search_for_bookinfo && !$is_search_for_last_update && $is_search_for_mail) {
-            return Article::where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->orWhereIn('mail', $mail)
-                          ->count();
+            $num_of_articles =  Article::where('bookname', 'LIKE', "%$bookinfo%")
+                                       ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                       ->orWhereIn('mail', $mail)
+                                       ->count();
+            
+            $articles =  Article::with('article_mail_timing')
+                                ->where('bookname', 'LIKE', "%$bookinfo%")
+                                ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                ->orWhereIn('mail', $mail)
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
         elseif ($is_search_for_bookinfo && !$is_search_for_last_update && !$is_search_for_mail) {
-            return Article::where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->count();
+            $num_of_articles =  Article::where('bookname', 'LIKE', "%$bookinfo%")
+                                       ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                       ->count();
+            
+            $articles =  Article::with('article_mail_timing')
+                                ->where('bookname', 'LIKE', "%$bookinfo%")
+                                ->orWhere('author', 'LIKE', "%$bookinfo%")
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
         elseif (!$is_search_for_bookinfo && $is_search_for_last_update && $is_search_for_mail) {
-            return Article::whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->orWhereIn('mail', $mail)
-                          ->count();
+            $num_of_articles =  Article::whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                       ->orWhereIn('mail', $mail)
+                                       ->count();
+            
+            $articles =  Article::with('article_mail_timing')
+                                ->whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                ->orWhereIn('mail', $mail)
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
         elseif (!$is_search_for_bookinfo && $is_search_for_last_update && !$is_search_for_mail) {
-            return Article::whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->count();
+            $num_of_articles =  Article::whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                       ->count();
+
+            $articles =  Article::with('article_mail_timing')
+                                ->whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
         elseif (!$is_search_for_bookinfo && !$is_search_for_last_update && $is_search_for_mail) {
-            return Article::whereIn('mail', $mail)
-                          ->count();
+            $num_of_articles =  Article::whereIn('mail', $mail)->count();
+            
+            $articles =  Article::with('article_mail_timing')
+                                ->whereIn('mail', $mail)
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
         elseif (!$is_search_for_bookinfo && !$is_search_for_last_update && !$is_search_for_mail) {
-            return Article::count();
+            $num_of_articles =  Article::count();
+            
+            $articles =  Article::with('article_mail_timing')
+                                ->orderBy('updated_at', 'desc')
+                                ->paginate(5);
         }
-    }
 
-    public static function make_search_articles (Request $request) {
-        $is_search_for_bookinfo    = $request->session()->get('is_search_for_bookinfo');
-        $is_search_for_last_update = $request->session()->get('is_search_for_last_update');
-        $is_search_for_mail        = $request->session()->get('is_search_for_mail');
-        $bookinfo    = $request->session()->get('bookinfo');
-        $last_update = $request->session()->get('last_update');
-        $mail        = $request->session()->get('mail');
-
-        // 拡張性に課題あり！：検索条件が1つ増えると、if文の数が2のべき乗だけ増加してしまう
-        if ($is_search_for_bookinfo && $is_search_for_last_update && $is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->orWhereIn('mail', $mail)
-                          ->orderBy('updated_at', 'desc')
-                          ->paginate(5);
-        }
-        elseif ($is_search_for_bookinfo && $is_search_for_last_update && !$is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->orWhereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->orderBy('updated_at', 'desc')
-                          ->paginate(5);
-        }
-        elseif ($is_search_for_bookinfo && !$is_search_for_last_update && $is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->orWhereIn('mail', $mail)
-                          ->orderBy('updated_at', 'desc')
-                          ->paginate(5);
-        }
-        elseif ($is_search_for_bookinfo && !$is_search_for_last_update && !$is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->where('bookname', 'LIKE', "%$bookinfo%")
-                          ->orWhere('author', 'LIKE', "%$bookinfo%")
-                          ->paginate(5);
-        }
-        elseif (!$is_search_for_bookinfo && $is_search_for_last_update && $is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->orWhereIn('mail', $mail)
-                          ->orderBy('updated_at', 'desc')
-                          ->paginate(5);
-        }
-        elseif (!$is_search_for_bookinfo && $is_search_for_last_update && !$is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->whereBetween('updated_at', [Carbon::now()->subMonths($last_update), Carbon::now()])
-                          ->orderBy('updated_at', 'desc')
-                          ->paginate(5);
-        }
-        elseif (!$is_search_for_bookinfo && !$is_search_for_last_update && $is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->whereIn('mail', $mail)
-                          ->orderBy('updated_at', 'desc')
-                          ->paginate(5);
-        }
-        elseif (!$is_search_for_bookinfo && !$is_search_for_last_update && !$is_search_for_mail) {
-            return Article::with('article_mail_timing')
-                          ->orderBy('updated_at', 'desc')
-                          ->paginate(5);
-        }
+        return ['num_of_articles' => $num_of_articles, 'articles' => $articles];
     }
 }
