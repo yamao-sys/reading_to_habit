@@ -95,6 +95,7 @@ class ArticleController extends Controller
 
         $is_success = Article::where('id', $article_id)
                              ->where('favorite', 0)
+                             ->first()
                              ->update(['favorite' => 1]);
 
         if ($is_success === true) {
@@ -112,6 +113,7 @@ class ArticleController extends Controller
 
         $is_success = Article::where('id', $article_id)
                              ->where('favorite', 1)
+                             ->first()
                              ->update(['favorite' => 0]);
 
         if ($is_success === true) {
