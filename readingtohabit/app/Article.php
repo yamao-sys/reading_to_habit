@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use App\Http\Requests\ArticleRequest;
 
+use Illuminate\Support\Facades\DB;
+
 use Carbon\Carbon;
 
 class Article extends Model
@@ -53,7 +55,6 @@ class Article extends Model
 
     public static function make_default_mail_timing_info (Request $request) {
         $def_timing = DefaultMailTiming::where('user_id', $request->session()->get('user_id'))->first();
-
         if (empty($def_timing)) {
             return [
                     'by_day'   => '',
@@ -84,7 +85,30 @@ class Article extends Model
                 'by_month' => $def_timing_master['by_month'],
                 'default_mail_timing_select' => $def_timing_select,
                ];
+    }
+
+    public static function create_article (ArticleRequest $request) {
+        // 保存するデータの準備
+        $article_info     = Article::make_article_info($request);
+        $mail_timing_info = Article::make_article_mail_timing_info($request);
+        $mail_timing_master_info        = Article::make_article_mail_timing_master_info($request);
+        $mail_timing_select_master_info = Article::make_article_mail_timing_select_master_info($request);
+
+        // 保存する
+        DB::beginTransaction();
+        try {
+            $article = Article::create($article_info);
+            $article_mail_timing = $article->article_mail_timing()->create($mail_timing_info);
+            $article_mail_timing->article_mail_timing_master()->create($mail_timing_master_info);
+            $article_mail_timing->article_mail_timing_select_master()->create($mail_timing_select_master_info);
+        }
+        catch (Exception $e) {
+            DB::rollback();
+            return [];
+        }
+        DB::commit();
         
+        return $article;
     }
 
     public static function make_article_info (ArticleRequest $request) {
@@ -139,7 +163,7 @@ class Article extends Model
                 'by_day'   => $request->mail_timing_by_day,
                 'by_week'  => $request->mail_timing_by_week,
                 'by_month' => $request->mail_timing_by_month,
-               ];   
+               ];
     }
 
     public static function make_article_mail_timing_select_master_info (ArticleRequest $request) {
@@ -173,8 +197,31 @@ class Article extends Model
         }
     }
 
+    public static function store_bookimg ($bookimg_url, $article_id) {
+        if ($bookimg_url === \ImgPathConst::NOIMG_PATH) {
+            try {
+                Article::where('id', $article_id)->update(['bookimg' => \ImgPathConst::NOIMG_PATH]);
+            }
+            catch (Exception $e) {
+                return false;
+            }
+        }
+        else {
+            $img = file_get_contents($bookimg_url);
+            file_put_contents(\ImgPathConst::IMG_ABSOLUTE_PATH.$article_id.'.jpg', $img);
+
+            try {
+                Article::where('id', $article_id)->update(['bookimg' => \ImgPathConst::IMG_PATH.$article_id.'.jpg']);
+            }
+            catch (Exception $e) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public static function make_show_book_info ($article, $article_mail_timing) {
-        
         if ($article['mail'] === 1) {
             $book_info = [
                             'id' => $article['id'],

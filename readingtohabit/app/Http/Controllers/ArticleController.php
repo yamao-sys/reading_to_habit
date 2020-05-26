@@ -66,43 +66,13 @@ class ArticleController extends Controller
     }
 
     public function add_article_do (ArticleRequest $request) {
-        // 保存するデータの準備
-        $article_info = Article::make_article_info($request);
-
-        $article_mail_timing_info = Article::make_article_mail_timing_info($request);
-        
-        $article_mail_timing_master_info = Article::make_article_mail_timing_master_info($request);
-        
-        $article_mail_timing_select_master_info = Article::make_article_mail_timing_select_master_info($request);
-
-        // 保存する
-        DB::beginTransaction();
-
-        try {
-            $article = Article::create($article_info);
-            $article_mail_timing = $article->article_mail_timing()->create($article_mail_timing_info);
-            $article_mail_timing->article_mail_timing_master()->create($article_mail_timing_master_info);
-            $article_mail_timing->article_mail_timing_select_master()->create($article_mail_timing_select_master_info);
-        }
-        catch (Exception $e) {
-            DB::rollback();
-            return back()->withInput();
+        $created_article = Article::create_article($request);
+        if (empty($created_article)) {
+            return view('common.fail');
         }
 
-        DB::commit();
-
-        // DBに無事投稿データを保存できたら、画像を保存する
-        if ($request->bookimg === \ImgPathConst::NOIMG_PATH) {
-            Article::where('id', $article['id'])->update(['bookimg' => \ImgPathConst::NOIMG_PATH]);
-        }
-        else {
-            $img = file_get_contents($request->bookimg);
-        
-            $img_absolute_path = \ImgPathConst::IMG_ABSOLUTE_PATH.$article['id'].'.jpg';
-            file_put_contents($img_absolute_path, $img);
-        
-            $img_path = \ImgPathConst::IMG_PATH.$article['id'].'.jpg';
-            Article::where('id', $article['id'])->update(['bookimg' => $img_path]);
+        if (Article::store_bookimg($request->bookimg, $created_article['id']) === false) {
+            return view('common.fail');
         }
 
         return redirect('articles');
