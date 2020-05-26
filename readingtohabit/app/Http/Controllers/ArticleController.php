@@ -76,15 +76,12 @@ class ArticleController extends Controller
     }
 
     public function show_article ($article_id, Request $request) {
-        $article = Article::where('id', $article_id)->first();
-        if (empty($article)) {
+        if (Article::check_existense_of_article($article_id) === 'not_exists') {
             return view('common.invalid');
         }
 
-        $article_mail_timing = ArticleMailTiming::where('article_id', $article['id'])->first();
-        if (empty($article_mail_timing)) {
-            return view('common.invalid');
-        }
+        $article = Article::where('id', $article_id)->first();
+        $article_mail_timing = ArticleMailTiming::where('article_id', $article_id)->first();
 
         $book_info = Article::make_show_book_info($article, $article_mail_timing);
 
@@ -92,17 +89,14 @@ class ArticleController extends Controller
     }
 
     public function add_favorite($article_id) {
-        // 投稿IDに相当する投稿の存在確認をする
-        if (empty(Article::where('id', $article_id)->where('favorite', 0)->first())) {
+        if (Article::check_existense_of_article($article_id) === 'not_exists') {
             return json_encode(['is_success' => false]);
         }
 
-        // 投稿IDに相当する投稿のお気に入りフラグを0→1にする
         $is_success = Article::where('id', $article_id)
                              ->where('favorite', 0)
                              ->update(['favorite' => 1]);
 
-        // 成功したら、is_success: trueのjsonデータを返す
         if ($is_success === true) {
             return json_encode(['is_success' => true]);
         }
@@ -112,17 +106,14 @@ class ArticleController extends Controller
     }
     
     public function delete_favorite($article_id) {
-        // 投稿IDに相当する投稿の存在確認をする
-        if (empty(Article::where('id', $article_id)->where('favorite', 1)->first())) {
+        if (Article::check_existense_of_article($article_id) === 'not_exists') {
             return json_encode(['is_success' => false]);
         }
 
-        // 投稿IDに相当する投稿のお気に入りフラグを1→0にする
         $is_success = Article::where('id', $article_id)
                              ->where('favorite', 1)
                              ->update(['favorite' => 0]);
 
-        // 成功したら、is_success: trueのjsonデータを返す
         if ($is_success === true) {
             return json_encode(['is_success' => true]);
         }
