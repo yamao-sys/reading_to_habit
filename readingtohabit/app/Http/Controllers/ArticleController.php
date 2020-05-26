@@ -21,7 +21,7 @@ class ArticleController extends Controller
 {
     public function articles () {
         $num_of_articles = Article::count();
-        $articles = Article::with('article_mail_timing')->orderBy('updated_at', 'desc')->paginate(5);
+        $articles = Article::with('article_mail_timing')->orderBy('updated_at', 'desc')->paginate(\PaginationConst::ITEMS_PER_PAGE);
         return view('article.articles', ['num_of_articles' => $num_of_articles, 'articles' => $articles]);
     }
 
@@ -42,7 +42,7 @@ class ArticleController extends Controller
         $articles = Article::with('article_mail_timing')
                            ->where('favorite', 1)
                            ->orderBy('updated_at', 'desc')
-                           ->paginate(5);
+                           ->paginate(\PaginationConst::ITEMS_PER_PAGE);
 
         return view('article.favorites', ['num_of_articles' => $num_of_articles, 'articles' => $articles]);
     }
