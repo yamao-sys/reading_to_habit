@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('top', function () {return view('top');});
+
 Route::group(['middleware' => ['before_login']], function () {
     Route::get('/', 'AuthController@check_auto_login');
     
@@ -88,4 +90,7 @@ Route::group(['middleware' => ['after_login']], function () {
 
     // ユーザー削除関連
     Route::post('delete_user', 'UserController@delete_user_do');
+
+    // ログアウト関連
+    Route::get('logout', 'AuthController@logout');
 });

@@ -62,11 +62,9 @@ class AuthController extends Controller
         return redirect('articles');
     }
 
-    /*
-    public function logout() {
+    public function logout(Request $request) {
         $request->session()->flush();
 
-        return redirect('');
+        return redirect('top');
     }
-    */
 }
