@@ -21,7 +21,10 @@ class ArticleController extends Controller
 {
     public function articles () {
         $num_of_articles = Article::count();
-        $articles = Article::with('article_mail_timing')->orderBy('updated_at', 'desc')->paginate(\PaginationConst::ITEMS_PER_PAGE);
+        $articles = Article::with('article_mail_timing')
+                           ->orderBy('updated_at', 'desc')
+                           ->paginate(\PaginationConst::ITEMS_PER_PAGE);
+
         return view('article.articles', ['num_of_articles' => $num_of_articles, 'articles' => $articles]);
     }
 
@@ -31,6 +34,8 @@ class ArticleController extends Controller
         // そこで、検索条件をセッション変数に格納する
         if ($request->isMethod('post')) {
             Article::search_cond_into_session($request);
+            
+            return redirect('search_results');
         }
 
         return view('article.search_article.results', Article::search_articles($request));
