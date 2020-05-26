@@ -49,9 +49,15 @@ class UserController extends Controller
 
         if (empty($request->profile_img)) {
             $profile_after_edit = User::edit_profile_excluding_img($request);
+            if (empty($profile_after_edit)) {
+                return view('common.fail');
+            }
         }
         else {
             $profile_after_edit = User::edit_profile_including_img($request);
+            if (empty($profile_after_edit)) {
+                return view('common.fail');
+            }
 
             $request->session()->put('profile_img', $profile_after_edit['profile_img']);
         }

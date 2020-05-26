@@ -165,6 +165,7 @@ class User extends Authenticatable
                             'name'  => $request->name,
                             'email' => $request->email,
                             'profile_img' => $profile_img_path,
+                            'updated_at'  => Carbon::now(),
                          ]);
         }
         catch (Exception $e) {
@@ -183,6 +184,7 @@ class User extends Authenticatable
                 ->update([
                             'name'  => $request->name,
                             'email' => $request->email,
+                            'updated_at'  => Carbon::now(),
                          ]);
         }
         catch (Exception $e) {
