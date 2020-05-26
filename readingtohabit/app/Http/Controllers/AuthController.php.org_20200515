@@ -1,0 +1,90 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\User;
+use App\AutoLoginToken;
+
+use Illuminate\Http\Request;
+use App\Http\Requests\LoginRequest;
+use Illuminate\Http\Response;
+use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
+
+class AuthController extends Controller
+{
+    public function check_auto_login(Request $request) {
+        // 自動ログイン用トークン(クッキー)が存在しないどうかを判定する
+        if (empty($request->cookie('auto_login'))) {
+            return view('auth.login');
+        }
+
+        // 自動ログイン用トークン(クッキー)に相当するレコードの存在確認をする
+        $current_token = AutoLoginToken::where('token', $request->cookie('auto_login'))
+                                       ->where('deleted', 0)
+                                       ->first();
+        if (empty($current_token)) {
+            return view('auth.login');
+        }
+
+        // 自動ログイン用トークンの有効期限を確認する
+        if ($current_token['expires'] <= Carbon::now()) {
+            AutoLoginToken::soft_delete($current_token['id']);
+            
+            return view('auth.login');
+        }
+
+        // 現在の自動ログイン用トークンを削除論理削除し、新たなトークンを作成する
+        AutoLoginToken::soft_delete($current_token['id']);
+
+        $user = User::where('id', $current_token['user_id'])->first();
+        if (empty($user)) {
+            return view('auth.login');
+        }
+
+        $new_token_info = AutoLoginToken::create_new_token($user['id']);
+
+        // 認証(セッション発行)
+        $request->session()->put('id', $user['id']);
+        $request->session()->put('name', $user['name']);
+        $request->session()->put('email', $user['email']);
+
+        return redirect('articles')
+               ->withCookie('auto_login', $new_token_info['new_token'], $new_token_info['new_expires_seconds'], true);
+    }
+
+    public function login_do (LoginRequest $request) {
+        
+        // 入力値のメールアドレス・パスワードに相当するレコードの存在確認をする
+        $user = User::where('email', $request->email)->first();
+
+        if (empty($user) || !password_verify($request->password, $user['password'])) {
+            unset($request->_token);
+
+            return back()->withErrors(['is_not_exist' => '存在しないユーザーです。'])
+                         ->withInput($request->except('password'));
+        }
+
+        // 認証(セッション発行)
+        $request->session()->put('id', $user['id']);
+        $request->session()->put('name', $user['name']);
+        $request->session()->put('email', $user['email']);
+        
+        if (isset($request->auto_login)) {
+            $new_token_info = AutoLoginToken::create_new_token($user['id']);
+
+            return redirect('articles')
+                   ->withCookie('auto_login', $new_token_info['new_token'], $new_token_info['new_expires_seconds'], true);
+        }
+
+        return redirect('articles');
+    }
+
+    /*
+    public function logout() {
+        $request->session()->flush();
+
+        return redirect('');
+    }
+    */
+}

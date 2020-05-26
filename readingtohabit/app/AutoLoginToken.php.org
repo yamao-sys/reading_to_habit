@@ -1,0 +1,78 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
+use Carbon\Carbon;
+
+class AutoLoginToken extends Model
+{
+    protected $guarded = array('id');
+    
+    public function user () {
+        return $this->belongsTo('App\User');
+    }
+    // グローバルスコープ
+    /*
+    protected static function boot() {
+        parent::boot();
+        static::GlobalScopeExpires('expires', function (Builder $builder) {
+            $builder->where('expires', '<', Carbon::now());
+        });
+        
+        static::addGlobalScope('deleted', function (Builder $builder) {
+            $builder->where('deleted', 0);
+        });
+    }
+    */
+
+    public static function soft_delete($id) {
+        $delete_data = ['deleted' => 1, 'deleted_at' => date('Y-m-d H:i:s')];
+        AutoLoginToken::where('id', $id)->update($delete_data);
+    }
+
+    public static function create_new_token ($user_id) {
+        $new_token = str_random(255);
+        $already_token_records = AutoLoginToken::all();
+            
+        // 新規トークンが既存トークンと被らないことを確実にする
+        // これをしないと、IlluminateDatabaseQueryException(エラーコード1062)が発生する可能性あり
+        $is_duplicated = false;
+        foreach ($already_token_records as $already_token_record) {
+            if ($new_token === $already_token_record['token']) {
+                $is_duplicated = true;
+            }
+        }
+
+        while ($is_duplicated === true) {
+            $new_token = str_random(255);
+
+            $duplicated_count = 0;
+            foreach ($already_token_records as $already_token_record) {
+                 if ($new_token === $already_token_record['token']) {
+                    $duplicated_count++;
+                }
+            }
+
+            if ($duplicated_count === 0) {
+                 $is_duplicated = false;
+            }
+        }
+
+        $new_expires_seconds = time() + \AutoLoginTokenConst::EXPIRES_SECONDS;
+
+        $new_token_info = [
+                            'user_id' => $user_id,
+                            'token'   => $new_token,
+                            'expires' => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+                          ];
+        
+        $new_token_record = AutoLoginToken::create($new_token_info);
+        
+        return [
+                'new_token' => $new_token,
+                'new_expires_seconds' => $new_expires_seconds
+               ];
+    }
+}

@@ -1,0 +1,4 @@
+ユーザー名：{{ Session::get('name') }}
+メールアドレス：{{ Session::get('email') }}
+
+<img src = "{{asset($bookimg)}}">

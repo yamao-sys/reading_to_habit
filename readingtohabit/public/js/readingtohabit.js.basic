@@ -1,0 +1,206 @@
+if (document.getElementById('content') !== null) {
+    var content = new Vue({
+        delimiters: ['(%', '%)'],
+        el: '#content',
+        data: function () {
+            return {
+                word: '',
+                search_results: [],
+                };
+        },
+        methods: {
+            search_books: function (word) {
+                axios.get("https://www.googleapis.com/books/v1/volumes?q=" + word + "&maxResults=30&orderBy=relevance").then(response => {
+                    if ('items' in response.data) {
+                        this.search_results = response.data.items;
+                    }
+                    else {
+                        this.search_results = [];
+                    }
+                });
+            },
+            reset_word: function (word) {
+                this.word = '';
+            },
+            /*
+            to_add_article_form: function (form_name) {
+                // var form_name = event.target;
+                form_name.submit();
+                console.log(document.form_name);
+            }
+            */
+        }
+    });
+}
+
+function to_add_article_form (form_element) {
+    var form_name = form_element.name;
+    form_element.submit();
+    // console.log(document.form_name);
+}
+
+function check_none_sign(word) {
+    var reg = new RegExp(/[!"#$%&'()\*\+\-\.,\/:;<=>?@\[\\\]^_{|}~]/g);
+    if (reg.test(word)) {
+        return true;
+    }
+    
+    return false;
+}
+
+if (document.getElementById('add_article_form') !== null) {
+    var add_article_form = new Vue({
+        delimiters: ['(%', '%)'],
+        el: '#add_article_form',
+        data: function () {
+            return {
+                mail_flag: document.getElementById('default_mail_flag').textContent,
+                mail_timing_select: document.getElementById('default_mail_timing_select').textContent,
+            };
+        },
+        /*
+        methods: {
+            reverse_mail_flag: function (mail_flag) {
+                if (mail_flag === '1') {
+                    this.mail_on = true;
+                    this.mail_off = false;
+                }
+                else {
+                    this.mail_on = false;
+                    this.mail_off = true;
+                }
+            }
+        },
+        */
+        computed: {
+            mail_timing_not_by_day: function () {
+                if (this.mail_timing_select === 'by_day') {
+                    return false;
+                }
+
+                return true;
+            },
+            mail_timing_not_by_week: function () {
+                if (this.mail_timing_select === 'by_week') {
+                    return false;
+                }
+
+                return true;
+            },
+            mail_timing_not_by_month: function () {
+                if (this.mail_timing_select === 'by_month') {
+                    return false;
+                }
+
+                return true;
+            },
+            mail_on: function () {
+                if (this.mail_flag === '1') {
+                    return true;
+                }
+
+                return false;
+            },
+            mail_off: function () {
+                if (this.mail_flag === '1') {
+                    return false;
+                }
+
+                return true;
+            },
+        }
+    });
+}
+
+if (document.getElementById('show_article') !== null) {
+    var show_article = new Vue({
+        delimiters: ['(%', '%)'],
+        el: '#show_article',
+        data: function () {
+            return {
+                favorite_flag: document.getElementById('favorite_flag').textContent,
+                modal: false,
+                modal_not_favorite_flag: false,
+                modal_favorite_flag: false,
+            };
+        },
+        computed: {
+            favorite: function () {
+                if (this.favorite_flag === '1') {
+                    return true;
+                }
+
+                return false;
+            },
+            not_favorite: function () {
+                if (this.favorite_flag === '0') {
+                    return true;
+                }
+
+                return false;
+            },
+            modal_favorite: function () {
+                if (this.modal_not_favorite_flag === false) {
+                    if (this.modal === true) {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                return false;
+            },
+            modal_not_favorite: function () {
+                if (this.modal_favorite_flag === false) {
+                    if (this.modal === true) {
+                        return true;
+                    }
+
+                    return false;
+                }
+
+                return false;
+            },
+        },
+        methods: {
+            add_favorite: function () {
+                var article_id = document.getElementById('article_id').textContent;
+
+                axios.post('http://readingtohabit.develop.jp/add_favorite/' + article_id).then(response => {
+                    if (response.data.is_success === true) {
+                        this.favorite_flag = '1';
+
+                        this.modal = true;
+                        this.modal_favorite_flag = true;
+                        
+                        setTimeout(() => {
+                            if (this.modal_not_favorite_flag === false) {
+                                this.modal = false;
+                            }
+                            this.modal_favorite_flag = false;
+                        }, 2500);
+                    }
+                });
+            },
+            delete_favorite: function () {
+                var article_id = document.getElementById('article_id').textContent;
+
+                axios.post('http://readingtohabit.develop.jp/delete_favorite/' + article_id).then(response => {
+                    if (response.data.is_success === true) {
+                        this.favorite_flag = '0';
+                        
+                        this.modal = true;
+                        this.modal_not_favorite_flag = true;
+                        
+                        setTimeout(() => {
+                            if (this.modal_favorite_flag === false) {
+                                this.modal = false;
+                            }
+                            this.modal_not_favorite_flag = false;
+                        }, 2500);
+                    }
+                });
+            },
+        }
+    });
+}

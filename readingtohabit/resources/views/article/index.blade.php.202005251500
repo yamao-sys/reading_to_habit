@@ -1,0 +1,6 @@
+<div id="index_articles">
+    @foreach ($articles as $article)
+        {{$article->id}}
+        {{$article->article_mail_timing->next_send_date}}
+    @endforeach
+</div>
