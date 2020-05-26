@@ -25,15 +25,15 @@ use Carbon\Carbon;
 class UserController extends Controller
 {
     public function edit_profile_form (Request $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-
-        if (empty($user)) {
+        if (User::check_existense_of_user_info($request) === 'not_exists') {
             return view('common.invalid');
         }
 
+        $user = User::where('id', $request->session()->get('user_id'))->first();
+        
         $profile = [
                     'profile_img' => $user['profile_img'],
-                    'name' => $user['name'],
+                    'name'  => $user['name'],
                     'email' => $user['email'],
                    ];
 
@@ -41,9 +41,7 @@ class UserController extends Controller
     }
 
     public function edit_profile_do (EditProfileRequest $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-
-        if (empty($user)) {
+        if (User::check_existense_of_user_info($request) === 'not_exists') {
             return view('common.invalid');
         }
 
@@ -66,9 +64,7 @@ class UserController extends Controller
     }
 
     public function edit_password_do (EditPasswordRequest $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-        
-        if (empty($user)) {
+        if (User::check_existense_of_user_info($request) === 'not_exists') {
             return view('common.invalid');
         }
 
@@ -97,42 +93,19 @@ class UserController extends Controller
     }
 
     public function edit_default_mail_timing_do (Request $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-        
-        if (empty($user)) {
+        if (User::check_existense_of_user_info($request) === 'not_exists') {
             return view('common.invalid');
         }
 
-        $default_mail_timing = DefaultMailTiming::where('user_id', $user['id'])->first();
-
-        $default_mail_timing_select_info = User::make_default_mail_timing_select_info($request);
-        $default_mail_timing_info = User::make_default_mail_timing_info($request);
+        $def_timing_info_after_edit = User::edit_default_mail_timing($request);
+        if (empty($def_timing_info_after_edit['default_mail_timing'])) {
+            return view('common.fail');
+        }
         
-        DB::beginTransaction();
-
-        try {
-            DefaultMailTimingSelectMaster::where('default_mail_timing_id', $default_mail_timing['id'])
-                                         ->update($default_mail_timing_select_info);
-
-            DefaultMailTimingMaster::where('default_mail_timing_id', $default_mail_timing['id'])
-                                   ->update($default_mail_timing_info);
-        }
-        catch (Exception $e) {
-            DB::rollback();
-            return back()->withInput();
-        }
-
-        DB::commit();
-
-        $updated_default_mail_timing_select = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $default_mail_timing['id'])
-                                                                           ->first();
-        $updated_default_mail_timing = DefaultMailTimingMaster::where('default_mail_timing_id', $default_mail_timing['id'])
-                                                              ->first();
-
         $response_data = [
-                            'default_mail_timing_select' => $updated_default_mail_timing_select,
-                            'default_mail_timing' => $updated_default_mail_timing,
                             'dialog' => 'デフォルト配信タイミングを更新しました。',
+                            'default_mail_timing'        => $def_timing_info_after_edit['default_mail_timing'],
+                            'default_mail_timing_select' => $def_timing_info_after_edit['default_mail_timing_select'],
                          ];
 
         return view('edit_user.default_mail_timing', $response_data);

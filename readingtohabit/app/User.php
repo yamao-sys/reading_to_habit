@@ -151,6 +151,32 @@ class User extends Authenticatable
                 'by_month' => $request->mail_timing_by_month,
                ];
     }
+    
+    public static function check_existense_of_user_info (Request $request) {
+        $user = User::where('id', $request->session()->get('user_id'))->first();
+        if (empty($user)) {
+            return 'not_exists';
+        }
+
+        $def_timing = DefaultMailTiming::where('user_id', $user['id'])->first();
+        if (empty($def_timing)) {
+            return 'not_exists';
+        }
+        
+        $def_timing_select = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])
+                                                          ->first();
+        if (empty($def_timing_select)) {
+            return 'not_exists';
+        }
+        
+        $def_timing_master = DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])
+                                                    ->first();
+        if (empty($def_timing_master)) {
+            return 'not_exists';
+        }
+        
+        return 'exists';
+    }
 
     public static function edit_profile_including_img (Request $request) {
         $profile_img_name = 'profile_img_'.$request->session()->get('user_id').'.jpg';
@@ -215,32 +241,32 @@ class User extends Authenticatable
         return true;
     }
 
-    public static function check_existense_of_user_info (Request $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-        if (empty($user)) {
-            return 'not_exists';
-        }
 
-        $def_timing = DefaultMailTiming::where('user_id', $user['id'])->first();
-        if (empty($def_timing)) {
-            return 'not_exists';
-        }
+    public static function edit_default_mail_timing (Request $request) {
+        $def_timing = DefaultMailTiming::where('user_id', $request->session()->get('user_id'))->first();
+        $edit_def_timing_info        = User::make_default_mail_timing_info($request);
+        $edit_def_timing_select_info = User::make_default_mail_timing_select_info($request);
         
-        $def_timing_select = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])
-                                                          ->first();
-        if (empty($def_timing_select)) {
-            return 'not_exists';
+        DB::beginTransaction();
+        try {
+            DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])
+                                   ->update($edit_def_timing_info);
+            
+            DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])
+                                         ->update($edit_def_timing_select_info);
         }
-        
-        $def_timing_master = DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])
-                                                    ->first();
-        if (empty($def_timing_master)) {
-            return 'not_exists';
+        catch (Exception $e) {
+            DB::rollback();
+            return ['default_mail_timing' => '', 'defautl_mail_timing_select' => ''];
         }
-        
-        return 'exists';
+        DB::commit();
+
+        $info['default_mail_timing']        = DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])->first();
+        $info['default_mail_timing_select'] = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])->first();
+
+        return $info;
     }
-    
+
     public static function soft_delete_user() {
         // 同時に削除する情報(=対象ユーザーに関連する情報)を取得
         $default_mail_timing = DefaultMailTiming::where('user_id', session()->get('user_id'))
