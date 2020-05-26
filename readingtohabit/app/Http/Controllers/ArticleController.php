@@ -21,7 +21,7 @@ class ArticleController extends Controller
 {
     public function articles () {
         $num_of_articles = Article::count();
-        $articles = Article::with('article_mail_timing')->orderBy('updated_at', 'desc')->paginate(5);
+        $articles = Article::with('article_mail_timing')->orderBy('updated_at', 'desc')->paginate(\PaginationConst::ITEMS_PER_PAGE);
         return view('article.articles', ['num_of_articles' => $num_of_articles, 'articles' => $articles]);
     }
 
@@ -37,14 +37,14 @@ class ArticleController extends Controller
     }
 
     public function favorites () {
-        $num_of_articles = Article::where('favorite', 1)->count();
+        $num_of_favorites = Article::where('favorite', 1)->count();
 
-        $articles = Article::with('article_mail_timing')
+        $favorites = Article::with('article_mail_timing')
                            ->where('favorite', 1)
                            ->orderBy('updated_at', 'desc')
-                           ->paginate(5);
+                           ->paginate(\PaginationConst::ITEMS_PER_PAGE);
 
-        return view('article.favorites', ['num_of_articles' => $num_of_articles, 'articles' => $articles]);
+        return view('article.favorites', ['num_of_favorites' => $num_of_favorites, 'favorites' => $favorites]);
     }
 
     public function add_article_form (Request $request) {
