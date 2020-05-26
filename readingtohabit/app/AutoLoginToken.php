@@ -34,18 +34,21 @@ class AutoLoginToken extends Model
         $current_token = AutoLoginToken::where('token', $auto_login_token)
                                        ->first();
         if (empty($current_token)) {
+            \Log::info('empty_current_token');
             return false;
         }
 
         // 自動ログイン用トークンの有効期限を確認する
         if ($current_token['expires'] <= Carbon::now()) {
             AutoLoginToken::soft_delete($current_token['id']);
+            \Log::info('expires_current_token');
             
             return false;
         }
 
         $user = User::where('id', $current_token['user_id'])->first();
         if (empty($user)) {
+            \Log::info('none_user');
             AutoLoginToken::soft_delete($current_token['id']);
             
             return false;
