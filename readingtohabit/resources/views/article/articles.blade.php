@@ -51,7 +51,7 @@
                     </div>
                     <div class="list_article_detail">
                         <div class="list_article_bookname">{{$article->bookname}}</div>
-                        <div class="mb_3">{{$article->author}}</div>
+                        <div class="list_article_author">{{$article->author}}</div>
                         @if (!empty($article->article_mail_timing->next_send_date))
                         <div>
                             <span class="list_article_date"><i class="far fa-clock times_icon"></i>次回リマインド日：{{$article->article_mail_timing->next_send_date}}</span>
@@ -97,7 +97,7 @@
                             </div>
                             <div class="list_article_detail">
                                 <div class="list_article_bookname">{{$article->bookname}}</div>
-                                <div class="mb_3">{{$article->author}}</div>
+                                <div class="list_article_author">{{$article->author}}</div>
                                 @if (!empty($article->article_mail_timing->next_send_date))
                                 <div>
                                     <span class="list_article_date"><i class="far fa-clock times_icon"></i>次回リマインド日：{{$article->article_mail_timing->next_send_date}}</span>

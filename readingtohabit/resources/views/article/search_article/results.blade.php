@@ -1,23 +1,14 @@
 @extends('layouts.after_login')
 
-@section('title', 'Readingtohabit-読書記録お気に入り一覧')
+@section('title', 'Readingtohabit-読書記録一覧')
 
-<div id="favorites">
-    <div v-if="smaller" class="wrapper">
-        <div id="init_num_of_favorites">{{$num_of_favorites}}</div>
-        @if ($num_of_favorites === 0)
+<div id="articles">
+    <div v-if="smaller === true" class="wrapper">
         <div class="content">
-            <div>
-                気に入った記録は<i class="fas fa-star icon_color_yellow"></i>をクリックし、お気に入りに登録しましょう!
+            <div class="num_of_articles">
+                <span class="inline_font_bold">{{$num_of_articles}}</span>件の記録
             </div>
-        </div>
-        @else
-        <div class="content">
-            <div class="num_of_favorites">
-                <span class="inline_font_bold">{{$num_of_favorites}}</span>件の記録
-            </div>
-
-            @foreach ($favorites as $article)
+            @foreach ($articles as $article)
             <div class="list_article_area">
                 <a href="{{\DocumentRootConst::DOCUMENT_ROOT}}show_article/{{$article->id}}" class="list_article_link">
                     <div class="list_article_bookimg">
@@ -35,42 +26,35 @@
                 </a>
                 <div class="list_article_favorite" data="{{$article->id}}">
                     <div class="list_article_id" data="{{$article->id}}"></div>
-                    <div v-on:click="delete_favorite()" class="list_article_favorite_icon" data="{{$article->id}}">
+                    <div class="list_article_favorite_flag" data="{{$article->favorite}}"></div>
+                    <div v-if="not_favorite[{{$article->id}}] === true" v-on:click="add_favorite()" class="list_article_not_favorite_icon" data="{{$article->id}}">
+                        <i class="fas fa-star star_1point5x star_default" data="{{$article->id}}"></i>
+                    </div>
+                    <div v-if="favorite[{{$article->id}}] === true" v-on:click="delete_favorite()" class="list_article_favorite_icon" data="{{$article->id}}">
                         <i class="fas fa-star star_1point5x star_yellow" data="{{$article->id}}"></i>
                     </div>
                 </div>
             </div>
             @endforeach
-
             <div class="pagination_area">
-                {{$favorites->links()}}
+                {{$articles->links()}}
             </div>
         </div>
-        @endif
+        
+        @include('components.footer_nav', ['current_page' => 'search_articles'])
 
-        @include('components.footer_nav', ['current_page' => 'favorites'])
     </div>
-    
-    <div v-if="larger">
+    <div v-if="larger === true">
         <div id="larger_wrapper">
-            @include('components.side_menu_bar', ['current_page' => 'favorites'])
+            @include('components.side_menu_bar', ['current_page' => 'search_articles'])
 
             <div class="main_content_area">
-                @if ($num_of_favorites === 0)
                 <div class="main_content">
-                    <div class="message_about_favorite">
-                        <div class="text_with_icon">気に入った記録は</div>
-                        <i class="fas fa-star icon_color_yellow_with_text"></i>
-                        <div class="text_with_icon">をクリックし、お気に入りに登録しましょう!</div>
-                    </div>
-                </div>
-                @else
-                <div class="main_content">
-                    <div class="num_of_favorites">
-                        <span class="inline_font_bold">{{$num_of_favorites}}</span>件の記録
+                    <div class="num_of_articles">
+                        <span class="inline_font_bold">{{$num_of_articles}}</span>件の記録
                     </div>
 
-                    @foreach ($favorites as $article)
+                    @foreach ($articles as $article)
                     <div class="list_article_area">
                         <a href="{{\DocumentRootConst::DOCUMENT_ROOT}}show_article/{{$article->id}}" class="list_article_link">
                             <div class="list_article_bookimg">
@@ -88,7 +72,11 @@
                         </a>
                         <div class="list_article_favorite" data="{{$article->id}}">
                             <div class="list_article_id" data="{{$article->id}}"></div>
-                            <div v-on:click="delete_favorite()" class="list_article_favorite_icon" data="{{$article->id}}">
+                            <div class="list_article_favorite_flag" data="{{$article->favorite}}"></div>
+                            <div v-if="not_favorite[{{$article->id}}] === true" v-on:click="add_favorite()" class="list_article_not_favorite_icon" data="{{$article->id}}">
+                                <i class="fas fa-star star_1point5x star_default" data="{{$article->id}}"></i>
+                            </div>
+                            <div v-if="favorite[{{$article->id}}] === true" v-on:click="delete_favorite()" class="list_article_favorite_icon" data="{{$article->id}}">
                                 <i class="fas fa-star star_1point5x star_yellow" data="{{$article->id}}"></i>
                             </div>
                         </div>
@@ -96,10 +84,9 @@
                     @endforeach
 
                     <div class="pagination_area">
-                        {{$favorites->links()}}
+                        {{$articles->links()}}
                     </div>
                 </div>
-                @endif
             </div>
         </div>
     </div>

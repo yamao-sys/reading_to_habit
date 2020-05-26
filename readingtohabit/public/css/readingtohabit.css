@@ -87,6 +87,32 @@ body,#wrapper {
     align-items: center;
 }
 
+.list_article_bookname,.list_article_author{
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.5;
+    height: calc(1rem * 1.5 * 2);
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+/*
+.list_article_bookname:before,.list_article_bookname:after {
+    background-color: #fff;
+    position: absolute;
+}
+.list_article_bookname:before {
+    content: '...';
+    top: calc(1rem * 1.5 * (2 - 1));
+    right: 0;
+}
+.list_article_bookname:after {
+    content: '';
+    height: 100%;
+    width: 100%;
+}
+*/
+
 .num_of_articles {
     width: 100%;
     margin: 2rem 0;
@@ -870,31 +896,6 @@ li {
     .list_article_detail {
         width: calc(100% - 100px - 1rem);
     }
-    .list_article_bookname {
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.5;
-        height: calc(1rem * 1.5 * 2);
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    /*
-    .list_article_bookname:before,.list_article_bookname:after {
-        background-color: #fff;
-        position: absolute;
-    }
-    .list_article_bookname:before {
-        content: '...';
-        top: calc(1rem * 1.5 * (2 - 1));
-        right: 0;
-    }
-    .list_article_bookname:after {
-        content: '';
-        height: 100%;
-        width: 100%;
-    }
-    */
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
@@ -1277,31 +1278,6 @@ li {
     .list_article_detail {
         width: calc(100% - 100px - 1rem);
     }
-    .list_article_bookname {
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.5;
-        height: calc(1rem * 1.5 * 2);
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    /*
-    .list_article_bookname:before,.list_article_bookname:after {
-        background-color: #fff;
-        position: absolute;
-    }
-    .list_article_bookname:before {
-        content: '...';
-        top: calc(1rem * 1.5 * (2 - 1));
-        right: 0;
-    }
-    .list_article_bookname:after {
-        content: '';
-        height: 100%;
-        width: 100%;
-    }
-    */
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
@@ -1682,31 +1658,6 @@ li {
     .list_article_detail {
         width: calc(100% - 100px - 1rem);
     }
-    .list_article_bookname {
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.5;
-        height: calc(1rem * 1.5 * 2);
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    /*
-    .list_article_bookname:before,.list_article_bookname:after {
-        background-color: #fff;
-        position: absolute;
-    }
-    .list_article_bookname:before {
-        content: '...';
-        top: calc(1rem * 1.5 * (2 - 1));
-        right: 0;
-    }
-    .list_article_bookname:after {
-        content: '';
-        height: 100%;
-        width: 100%;
-    }
-    */
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
@@ -2087,31 +2038,6 @@ li {
     .list_article_detail {
         width: calc(100% - 100px - 2rem);
     }
-    .list_article_bookname {
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.5;
-        height: calc(1rem * 1.5 * 2);
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    /*
-    .list_article_bookname:before,.list_article_bookname:after {
-        background-color: #fff;
-        position: absolute;
-    }
-    .list_article_bookname:before {
-        content: '...';
-        top: calc(1rem * 1.5 * (2 - 1));
-        right: 0;
-    }
-    .list_article_bookname:after {
-        content: '';
-        height: 100%;
-        width: 100%;
-    }
-    */
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
@@ -2492,31 +2418,6 @@ li {
     .list_article_detail {
         width: calc(100% - 100px - 2rem);
     }
-    .list_article_bookname {
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.5;
-        height: calc(1rem * 1.5 * 2);
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    /*
-    .list_article_bookname:before,.list_article_bookname:after {
-        background-color: #fff;
-        position: absolute;
-    }
-    .list_article_bookname:before {
-        content: '...';
-        top: calc(1rem * 1.5 * (2 - 1));
-        right: 0;
-    }
-    .list_article_bookname:after {
-        content: '';
-        height: 100%;
-        width: 100%;
-    }
-    */
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
@@ -2882,31 +2783,6 @@ li {
     .list_article_detail {
         width: calc(100% - 100px - 2rem);
     }
-    .list_article_bookname {
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.5;
-        height: calc(1rem * 1.5 * 2);
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    /*
-    .list_article_bookname:before,.list_article_bookname:after {
-        background-color: #fff;
-        position: absolute;
-    }
-    .list_article_bookname:before {
-        content: '...';
-        top: calc(1rem * 1.5 * (2 - 1));
-        right: 0;
-    }
-    .list_article_bookname:after {
-        content: '';
-        height: 100%;
-        width: 100%;
-    }
-    */
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
@@ -3282,31 +3158,6 @@ li {
     .list_article_detail {
         width: calc(100% - 100px - 2rem);
     }
-    .list_article_bookname {
-        font-weight: 700;
-        font-size: 1rem;
-        line-height: 1.5;
-        height: calc(1rem * 1.5 * 2);
-        margin-bottom: 1rem;
-        position: relative;
-        overflow: hidden;
-    }
-    /*
-    .list_article_bookname:before,.list_article_bookname:after {
-        background-color: #fff;
-        position: absolute;
-    }
-    .list_article_bookname:before {
-        content: '...';
-        top: calc(1rem * 1.5 * (2 - 1));
-        right: 0;
-    }
-    .list_article_bookname:after {
-        content: '';
-        height: 100%;
-        width: 100%;
-    }
-    */
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
