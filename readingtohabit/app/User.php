@@ -152,10 +152,6 @@ class User extends Authenticatable
     }
 
     public static function edit_profile_including_img (Request $request) {
-        if (empty($request->profile_img)) {
-            return false;
-        }
-
         $profile_img_name = 'profile_img_'.$request->session()->get('user_id').'.jpg';
         
         $request->profile_img->storeAs('img', $profile_img_name, 'public_uploads');
@@ -170,8 +166,6 @@ class User extends Authenticatable
                             'email' => $request->email,
                             'profile_img' => $profile_img_path,
                          ]);
-
-            User::soft_delete_auto_login_token_by_edit_email($request);
         }
         catch (Exception $e) {
             DB::rollback();
@@ -183,10 +177,6 @@ class User extends Authenticatable
     }
 
     public static function edit_profile_excluding_img(Request $request) {
-        if (!empty($request->profile_img)) {
-            return false;
-        }
-
         DB::beginTransaction();
         try {
             User::where('id', $request->session()->get('user_id'))
@@ -194,8 +184,6 @@ class User extends Authenticatable
                             'name'  => $request->name,
                             'email' => $request->email,
                          ]);
-
-            User::soft_delete_auto_login_token_by_edit_email($request);
         }
         catch (Exception $e) {
             DB::rollback();
@@ -204,18 +192,6 @@ class User extends Authenticatable
         DB::commit();
 
         return User::where('id', $request->session()->get('user_id'))->first();
-    }
-
-    public static function soft_delete_auto_login_token_by_edit_email (Request $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-        if (empty($user)) {
-            return;
-        }
-
-        if ($user['email'] !== $request->email) {
-            AutoLoginToken::where('user_id', $user['id'])
-                          ->update(['deleted' => 1, 'deleted_at' => Carbon::now()]);
-        }
     }
     
     public function edit_password_form (Request $request) {
