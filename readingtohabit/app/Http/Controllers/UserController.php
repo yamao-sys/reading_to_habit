@@ -80,32 +80,17 @@ class UserController extends Controller
     }
 
     public function edit_default_mail_timing_form (Request $request) {
-        $user = User::where('id', $request->session()->get('user_id'))->first();
-        
-        if (empty($user)) {
-            return view('common.invalid');
-        }
-
-        $default_mail_timing = DefaultMailTiming::where('user_id', $user['id'])->first();
-        if (empty($default_mail_timing)) {
+        if (User::check_existense_of_user_info($request) === 'not_exists') {
             return view('common.invalid');
         }
         
-        $default_mail_timing_select_master = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $default_mail_timing['id'])
-                                                                          ->first();
-        if (empty($default_mail_timing_select_master)) {
-            return view('common.invalid');
-        }
-        
-        $default_mail_timing_master = DefaultMailTimingMaster::where('default_mail_timing_id', $default_mail_timing['id'])
-                                                                          ->first();
-        if (empty($default_mail_timing_master)) {
-            return view('common.invalid');
-        }
+        $def_timing = DefaultMailTiming::where('user_id', $request->session()->get('user_id'))->first();
+        $def_timing_master = DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])->first();
+        $def_timing_select = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])->first();
 
         $default_data = [
-                            'default_mail_timing_select' => $default_mail_timing_select_master,
-                            'default_mail_timing' => $default_mail_timing_master,
+                         'default_mail_timing'        => $def_timing_master,
+                         'default_mail_timing_select' => $def_timing_select,
                         ];
 
         return view('edit_user.default_mail_timing', $default_data);

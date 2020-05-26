@@ -214,6 +214,32 @@ class User extends Authenticatable
 
         return true;
     }
+
+    public static function check_existense_of_user_info (Request $request) {
+        $user = User::where('id', $request->session()->get('user_id'))->first();
+        if (empty($user)) {
+            return 'not_exists';
+        }
+
+        $def_timing = DefaultMailTiming::where('user_id', $user['id'])->first();
+        if (empty($def_timing)) {
+            return 'not_exists';
+        }
+        
+        $def_timing_select = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])
+                                                          ->first();
+        if (empty($def_timing_select)) {
+            return 'not_exists';
+        }
+        
+        $def_timing_master = DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])
+                                                    ->first();
+        if (empty($def_timing_master)) {
+            return 'not_exists';
+        }
+        
+        return 'exists';
+    }
     
     public static function soft_delete_user() {
         // 同時に削除する情報(=対象ユーザーに関連する情報)を取得
