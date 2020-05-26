@@ -3656,6 +3656,10 @@ input#auto_login[type="checkbox"]:checked+label::after {
     margin-bottom: 2rem;
 }
 
+.form_dropdown {
+    width: 200px;
+}
+
 .form_element,.show_element {
     display: -ms-flexbox;
     display: flex;
