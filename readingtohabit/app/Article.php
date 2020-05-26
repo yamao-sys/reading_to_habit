@@ -471,4 +471,36 @@ class Article extends Model
 
         return ['num_of_articles' => $num_of_articles, 'articles' => $articles];
     }
+
+    public static function delete_article ($article_id) {
+        $mail_timing_id = ArticleMailTiming::where('article_id', $article_id)->first()['id'];
+
+        $delete_info = ['deleted' => 1, 'deleted_at' => Carbon::now()];
+
+        DB::beginTransaction();
+        try {
+            Article::where('id', $article_id)
+                   ->first()
+                   ->update($delete_info);
+
+            ArticleMailTiming::where('id', $mail_timing_id)
+                             ->first()
+                             ->update($delete_info);
+
+            ArticleMailTimingMaster::where('article_mail_timing_id', $mail_timing_id)
+                                   ->first()
+                                   ->update($delete_info);
+
+            ArticleMailTimingSelectMaster::where('article_mail_timing_id', $mail_timing_id)
+                                         ->first()
+                                         ->update($delete_info);
+        }
+        catch (Exception $e) {
+            DB::rollback();
+            return false;
+        }
+        DB::commit();
+
+        return true;
+    }
 }

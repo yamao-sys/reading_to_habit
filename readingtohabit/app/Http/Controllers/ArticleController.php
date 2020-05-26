@@ -152,49 +152,14 @@ class ArticleController extends Controller
     }
 
     public function delete_article_do ($article_id, Request $request) {
-        $article = Article::where('id', $article_id)
-                          ->where('user_id', $request->session()->get('user_id'))
-                          ->first();
+        if (Article::check_existense_of_article($article_id) === 'not_exists') {
+            return json_encode(['is_success' => false]);
+        }
 
-        if (empty($article)) {
+        if (Article::delete_article($article_id) === false) {
             return json_encode(['is_success' => false]);
         }
         
-        // 投稿IDに相当する投稿関連の削除フラグを1→0にする
-        $is_success = Article::where('id', $article_id)
-                             ->first()
-                             ->update(['deleted' => 1, 'deleted_at' => Carbon::now()]);
-        if ($is_success === false) {
-            return json_encode(['is_success' => false]);
-        }
-
-        $article_mail_timing = ArticleMailTiming::where('article_id', $article_id)->first();
-        if (empty($article_mail_timing)) {
-            return json_encode(['is_success' => false]);
-        }
-
-        $is_success = ArticleMailTiming::where('id', $article_mail_timing['id'])
-                                       ->first()
-                                       ->update(['deleted' => 1, 'deleted_at' => Carbon::now()]);
-        if ($is_success === false) {
-            return json_encode(['is_success' => false]);
-        }
-        
-        $is_success = ArticleMailTimingMaster::where('article_mail_timing_id', $article_mail_timing['id'])
-                                       ->first()
-                                       ->update(['deleted' => 1, 'deleted_at' => Carbon::now()]);
-        if ($is_success === false) {
-            return json_encode(['is_success' => false]);
-        }
-        
-        $is_success = ArticleMailTimingSelectMaster::where('article_mail_timing_id', $article_mail_timing['id'])
-                                                   ->first()
-                                                   ->update(['deleted' => 1, 'deleted_at' => Carbon::now()]);
-        if ($is_success === false) {
-            return json_encode(['is_success' => false]);
-        }
-
-        // 成功したら、is_success: trueのjsonデータを返す
         return json_encode(['is_success' => true]);
     }
 }
