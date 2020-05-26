@@ -163,10 +163,10 @@ class User extends Authenticatable
         try {
             User::where('id', $request->session()->get('user_id'))
                 ->update([
-                            'name'  => $request->name,
-                            'email' => $request->email,
-                            'profile_img' => $profile_img_path,
-                            'updated_at'  => Carbon::now(),
+                          'name'  => $request->name,
+                          'email' => $request->email,
+                          'profile_img' => $profile_img_path,
+                          'updated_at'  => Carbon::now(),
                          ]);
         }
         catch (Exception $e) {
@@ -183,9 +183,9 @@ class User extends Authenticatable
         try {
             User::where('id', $request->session()->get('user_id'))
                 ->update([
-                            'name'  => $request->name,
-                            'email' => $request->email,
-                            'updated_at'  => Carbon::now(),
+                          'name'  => $request->name,
+                          'email' => $request->email,
+                          'updated_at'  => Carbon::now(),
                          ]);
         }
         catch (Exception $e) {
@@ -200,19 +200,19 @@ class User extends Authenticatable
     public static function edit_password (Request $request) {
         DB::beginTransaction();
         try {
-            $after_edit_user = User::where('id', $request->session()->get('user_id'))
-                                   ->update([
-                                             'password'   => Hash::make($request->new_password),
-                                             'updated_at' => Carbon::now(),
-                                     ]);
+            User::where('id', $request->session()->get('user_id'))
+                ->update([
+                          'password'   => Hash::make($request->new_password),
+                          'updated_at' => Carbon::now(),
+                         ]);
         }
         catch (Exception $e) {
             DB::rollback();
-            return [];
+            return false;
         }
         DB::commit();
 
-        return $after_edit_user;
+        return true;
     }
     
     public static function soft_delete_user() {

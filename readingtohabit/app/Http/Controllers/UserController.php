@@ -72,7 +72,7 @@ class UserController extends Controller
             return view('common.invalid');
         }
 
-        if (empty(User::edit_password($request))) {
+        if (User::edit_password($request) === false) {
             return view('common.fail');
         }
 
