@@ -27,7 +27,7 @@
                 <input type="hidden" name="author" value="{{$book_info['author']}}">
             </div>
         </div>
-        <div class="add_article_learning">
+        <div class="form_element">
             <label>学んだこと</label>
             <textarea name="learning" class="add_article_textarea">{{old('learning')}}</textarea>
             @isset($errors)
@@ -38,7 +38,7 @@
                 @endif
             @endisset
         </div>
-        <div class="add_article_action">
+        <div class="form_element">
             <label>学びをどのように行動に活かすか</label>
             <textarea name="action" class="add_article_textarea">{{old('action')}}</textarea>
             @isset($errors)
@@ -56,7 +56,7 @@
         @else
         <div id="default_mail_flag">1</div>
         @endif
-        <div class="add_article_mail_flag">
+        <div class="form_element">
             <label>リマインドメールの配信</label>
             <div class="radiobtn_align">
                 <input v-model="mail_flag" type="radio" name="mail_flag" value="1" >配信する
@@ -84,7 +84,7 @@
             <div id="default_mail_timing_select">by_day</div>
             @endif
         @endempty
-        <div v-bind:class="{add_article_mail_timing_select:mail_on, add_article_mail_timing_select_none:mail_off}">
+        <div v-bind:class="{form_element:mail_on, add_article_mail_timing_select_none:mail_off}">
             <label>リマインドメールの配信タイミング</label>
             <div class="mb_3">
                 <input v-model="mail_timing_select" type="radio" name="mail_timing_select" value="by_day">日毎
@@ -96,7 +96,7 @@
                 <input v-model="mail_timing_select" type="radio" name="mail_timing_select" value="by_month">ヶ月毎
             </div>
         </div>
-        <div v-bind:class="{add_article_mail_timing_select:mail_on, add_article_mail_timing_select_none: mail_off}">
+        <div v-bind:class="{form_element:mail_on, add_article_mail_timing_select_none: mail_off}">
             <div v-bind:class="{add_article_mail_timing_by_day_none:mail_timing_not_by_day}">
                 <select name="mail_timing_by_day">
                     @empty(old('mail_timing_by_day'))
@@ -187,7 +187,7 @@
         </div>
         <div class="btn_vertical_align">
             <input type="submit" class="btn_primary_more_than_4_chars mr_5" value="投稿する">
-            <button class="btn_default_more_than_4_chars" onclick="javascript:window.history.back(-1);return false;">キャンセルする</button>
+            <button class="btn_default_more_than_4_chars" onclick="javascript:location.href='articles';return false;">キャンセルする</button>
         </div>
     </form>
 </div>
