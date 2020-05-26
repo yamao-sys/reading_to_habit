@@ -100,7 +100,6 @@ class ArticleController extends Controller
         // 投稿IDに相当する投稿のお気に入りフラグを0→1にする
         $is_success = Article::where('id', $article_id)
                              ->where('favorite', 0)
-                             ->first()
                              ->update(['favorite' => 1]);
 
         // 成功したら、is_success: trueのjsonデータを返す
@@ -121,7 +120,6 @@ class ArticleController extends Controller
         // 投稿IDに相当する投稿のお気に入りフラグを1→0にする
         $is_success = Article::where('id', $article_id)
                              ->where('favorite', 1)
-                             ->first()
                              ->update(['favorite' => 0]);
 
         // 成功したら、is_success: trueのjsonデータを返す
@@ -133,28 +131,16 @@ class ArticleController extends Controller
         }
     }
     
-    public function edit_article_form ($article_id, Request $request) {
-        $article = Article::where('id', $article_id)
-                          ->where('user_id', $request->session()->get('user_id'))
-                          ->first();
-
-        if (empty($article)) {
+    public function edit_article_form ($article_id) {
+        if (Article::check_existense_of_article($article_id) === 'not_exists') {
             return view('common.invalid');
         }
         
-        $edit_article_info = Article::make_edit_article_form_info($article);
-        if (empty($edit_article_info['bookname'])) {
-            return view('common.invalid');
-        }
-
-        $edit_article_mail_info = Article::make_edit_article_mail_info($article);
-        if (empty($edit_article_mail_info)) {
-            return view('common.invalid');
-        }
+        $article = Article::where('id', $article_id)->first();
 
         $edit_info = [
-                        'edit_article_info' => $edit_article_info,
-                        'edit_article_mail_info' => $edit_article_mail_info,
+                        'article_info' => Article::make_editforminfo_of_article($article),
+                        'mail_info'    => Article::make_editforminfo_of_mail($article),
                      ];
 
         return view('article.edit_article.form', $edit_info);
