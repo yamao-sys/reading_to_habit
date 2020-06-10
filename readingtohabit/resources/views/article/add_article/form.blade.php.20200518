@@ -1,0 +1,150 @@
+@extends('layouts.default')
+
+@section('title', '読書記録の投稿情報入力')
+
+@section('content')
+<div class="content">
+    <form action="add_article_do" method="post">
+        {{ csrf_field() }}
+        <div class="add_article_bookimg_area">
+            <div class="add_article_bookimg_content">
+                <img class="add_article_bookimg">
+                <input type="hidden" name="bookimg" value="{{old('bookimg')}}">
+            </div>
+        </div>
+        <div class="mb_2rem">
+            著書名を一部入力すると、候補となる著書名の一覧が表示されます。<br>
+            候補から著書名を選択すると、その書籍の著書名、著者名、ジャンルが自動で入力されます。
+        </div>
+        <div class="add_article_bookname">
+            <label>著書名</label>
+            <input type="text" name="bookname" class="add_article_input" value="{{old('bookname')}}">
+            @isset($errors)
+                @if ($errors->has('bookname'))
+                <div class="error_msg">
+                    <p>{{ $errors->first('bookname')}}</p>
+                </div>
+                @endif
+            @endisset
+        </div>
+        <div class="add_article_author">
+            <label>著者名</label>
+            <input type="text" name="author" class="add_article_input" value="{{old('author')}}">
+            @isset($errors)
+                @if ($errors->has('author'))
+                <div class="error_msg">
+                    <p>{{ $errors->first('author')}}</p>
+                </div>
+                @endif
+            @endisset
+        </div>
+        <div class="add_article_genre">
+            <label>ジャンル</label>
+            <input type="text" name="genre" class="add_article_input" value="{{old('genre')}}">
+            @isset($errors)
+                @if ($errors->has('genre'))
+                <div class="error_msg">
+                    <p>{{ $errors->first('genre')}}</p>
+                </div>
+                @endif
+            @endisset
+        </div>
+        <div class="add_article_learning">
+            <label>学んだこと</label>
+            <textarea name="learning" class="add_article_textarea">{{old('learning')}}</textarea>
+            @isset($errors)
+                @if ($errors->has('learning'))
+                <div class="error_msg">
+                    <p>{{ $errors->first('learning')}}</p>
+                </div>
+                @endif
+            @endisset
+        </div>
+        <div class="add_article_action">
+            <label>学びをどのように行動に活かすか</label>
+            <textarea name="action" class="add_article_textarea">{{old('action')}}</textarea>
+            @isset($errors)
+                @if ($errors->has('action'))
+                <div class="error_msg">
+                    <p>{{ $errors->first('action')}}</p>
+                </div>
+                @endif
+            @endisset
+        </div>
+        <div class="add_article_mail_flag">
+            <label>リマインドメールの配信</label>
+            <div class="radiobtn_align">
+                <input type="radio" name="mail_flag" value="1">配信する
+                <input type="radio" name="mail_flag" value="0" {{ old('mail_flag') === '0' ? 'checked="checked"' : ''}}>配信しない
+            </div>
+        </div>
+        <div class="add_article_mail_timing">
+            <label>リマインドメールの配信タイミング</label>
+            <div class="mb_3">
+                @if ($default_mail_timing_select === 'by_day' && old('mail_timing_select') !== 'by_day')
+                <input type="radio" name="mail_timing_select" value="by_day" checked="checked">
+                @else
+                <input type="radio" name="mail_timing_select" value="by_day" {{ old('mail_timing_select') === 'by_day' ? 'checked="checked"': ''}}>
+                @endif
+                <select name="mail_timing_by_day">
+                @php
+                for($i=1; $i<=99; $i++) 
+                {
+                    if ($i === $by_day) {
+                        echo '<option value="'.$i.'" selected>'.$i.'</option>';
+                    }
+                    else {
+                        echo '<option value="'.$i.'">'.$i.'</option>';
+                    }
+                }
+                @endphp
+                </select>日毎
+            </div>
+            <div class="mb_3">
+                @if ($default_mail_timing_select === 'by_week' && old('mail_timing_select') !== 'by_week')
+                <input type="radio" name="mail_timing_select" value="by_week" checked="checked">
+                @else
+                <input type="radio" name="mail_timing_select" value="by_week" {{ old('mail_timing_select') === 'by_week' ? 'checked="checked"': ''}}>
+                @endif
+                <select name="mail_timing_by_week">
+                @php
+                for($i=1; $i<=99; $i++) 
+                {
+                    if ($i === $by_week) {
+                        echo '<option value="'.$i.'" selected>'.$i.'</option>';
+                    }
+                    else {
+                        echo '<option value="'.$i.'">'.$i.'</option>';
+                    }
+                }
+                @endphp
+                </select>週間毎
+            </div>
+            <div class="mb_3">
+                @if ($default_mail_timing_select === 'by_month' && old('mail_timing_select') !== 'by_month')
+                <input type="radio" name="mail_timing_select" value="by_month" checked="checked">
+                @else
+                <input type="radio" name="mail_timing_select" value="by_month" {{ old('mail_timing_select') === 'by_month' ? 'checked="checked"': ''}}>
+                @endif
+                <select name="mail_timing_by_month">
+                @php
+                for($i=1; $i<=99; $i++) 
+                {
+                    if ($i === $by_month) {
+                        echo '<option value="'.$i.'" selected>'.$i.'</option>';
+                    }
+                    else {
+                        echo '<option value="'.$i.'">'.$i.'</option>';
+                    }
+                }
+                @endphp
+                </select>ヶ月毎
+            </div>
+        </div>
+        <div class="btn_vertical_align">
+            <input type="submit" class="btn_primary_more_than_4_chars mr_5" value="投稿する">
+            <button class="btn_default_more_than_4_chars" onclick="javascript:window.history.back(-1);return false;">キャンセルする</button>
+        </div>
+    </form>
+</div>
+@endsection

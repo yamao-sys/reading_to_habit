@@ -1,0 +1,311 @@
+<?php
+
+namespace Tests\Feature;
+
+// use Illuminate\Foundation\Testing\RefreshDatabase;
+// use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Tests\TestCase;
+use App\User;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\RegisterUserRequest;
+use Illuminate\Http\Response;
+use Illuminate\Support\Collection;
+
+class RegisterUserFormTest extends TestCase
+{
+    /**
+     * A basic feature test example.
+     *
+     * @return void
+     */
+
+    use DatabaseMigrations;
+
+    /**
+     * RegisterUserRequestのバリデーションテスト
+     *
+     * @param array 項目名 => 値
+     * @param array 項目名 => 値
+     * @dataProvider dataproviderExample
+     */
+
+    public function testRegisterUserValidation($data, $error_msg)
+    {
+        // assert数：32 * 4 = 128
+        
+        factory(User::class)->create(['email' => 'AAA@BBB.CCC']);
+        $request = new RegisterUserRequest();
+        $rules = $request->rules();
+        $messages = $request->messages();
+        $validator = Validator::make($data, $rules, $messages);
+        $errors = $validator->errors();
+        
+        $this->assertEquals($error_msg['name'], $errors->first('name'));
+        $this->assertEquals($error_msg['email'], $errors->first('email'));
+        $this->assertEquals($error_msg['password'], $errors->first('password'));
+        $this->assertEquals($error_msg['password_to_check'], $errors->first('password_to_check'));
+    }
+
+    /**
+     * RegisterUserRequestのバリデーションチェック結果のレスポンスのテスト
+     *
+     * @param array 項目名 => 値
+     * @param array 項目名 => 値
+     * @dataProvider dataproviderExample
+     */
+
+    public function testRegisterUserView($data, $error_msg)
+    {
+        // assert数：24 + 8 * 2 = 40
+        
+        $response = $this->post('register_user_check', $data);
+
+        $is_existing_error = false;
+        foreach ($error_msg as $msg) {
+            if (!empty($msg)) {
+                $is_existing_error = true;
+            }
+        }
+
+        if ($is_existing_error == true) {
+            $response->assertStatus(302);
+        }
+        else {
+            $response->assertStatus(200)
+                     ->assertViewIs('register_user.register_user_check');
+        }
+    }
+
+    public function dataproviderExample()
+    {
+        /*
+        $name1 = str_random(rand(6,255));
+        $name2 = str_random(rand(6,255));
+        */
+        // メールアドレスはtestRegisterUserCheck()にてテスト用にレコードを追加する
+        // そのレコードのメールアドレスと同一かどうかを確認するため、ここではランダム文字列ではなく、固定的な文字列とする
+        $email_unique = 'AAA@BBB.CCC';
+        $email1 = 'aaa@bbb.ccc';
+        $email2 = 'BBB@CCC.DDD';
+        
+        $error_msg = [
+            'name_required' => 'ユーザー名は必須項目です。',
+            'name_regex' => 'ユーザー名は半角英数字20文字以内でご登録ください。',
+            'email_required' => 'メールアドレスは必須項目です。',
+            'email_unique' => '既に登録済みのメールアドレスです。他のメールアドレスでご登録ください。',
+            'password_required' => 'パスワードは必須項目です。',
+            'password_regex' => 'パスワードは半角英数字6文字以上12文字以内でご登録ください。',
+            'password_to_check_required' => 'パスワード確認用は必須項目です。',
+            'password_to_check_same' => 'パスワードで入力したものと同じものをご入力ください。',
+        
+        ];
+
+        // テストケース1：name未入力, password未入力
+        $name['case1'] = '';
+
+        $password['case1'] = '';
+        $password_to_check_same['case1'] = str_random(rand(6,12));
+
+        // テストケース2：name半角英数字21文字以上255文字以下, password5文字
+        $name['case2'] = str_random(rand(21, 255));
+
+        $password['case2'] = str_random(rand(4, 5));
+        $password_to_check_same['case2'] = str_shuffle($password['case2']);
+        while ($password['case2'] == $password_to_check_same['case2']) {
+            $password_to_check_same['case2'] = str_shuffle($password['case2']);
+        }
+
+        // テストケース3：name半角英数字20文字以下かつ記号あり, password6文字以上12文字以下かつ記号あり
+        $alpha_num = rand(0,19);
+        $alpha = str_random($alpha_num);
+
+        $sign_num = 20 - $alpha_num;
+        $collection_sybl = array_merge(range('!','/'), range(':', '@'), range('{', '~'));
+        $sybl = substr(implode($collection_sybl), 0, $sign_num);
+
+        $name['case3'] = str_shuffle($alpha.$sybl);
+        
+        $alpha_num = rand(6,11);
+        $alpha = str_random($alpha_num);
+
+        $sign_num = 12 - $alpha_num;
+        $collection_sybl = array_merge(range('!','/'), range(':', '@'), range('{', '~'));
+        $sybl = substr(implode($collection_sybl), 0, $sign_num);
+
+        $password['case3'] = str_shuffle($alpha.$sybl);
+        $password_to_check_same['case3'] = str_shuffle($password['case3']);
+        while ($password['case3'] == $password_to_check_same['case3']) {
+            $password_to_check_same['case3'] = str_shuffle($password['case3']);
+        }
+
+        // テストケース4：name半角英数字+全角文字で20文字以下, password13文字以上255文字以下
+        $alpha_num = rand(0,19);
+        $alpha = str_random($alpha_num);
+
+        $kana_num = 20 - $alpha_num;
+        $str_to_kana = str_random($kana_num);
+        $kana = mb_convert_kana($str_to_kana, "A");
+
+        $name['case4'] = str_shuffle($alpha.$kana);
+
+        $password['case4'] = str_random(rand(13, 255));
+        $password_to_check_same['case4'] = str_shuffle($password['case4']);
+        while ($password['case4'] == $password_to_check_same['case4']) {
+            $password_to_check_same['case4'] = str_shuffle($password['case4']);
+        }
+
+        // テストケース5：name半角英数字20文字以下, password6文字以上12文字以下かつ記号なし
+        $name['case5'] = str_random(rand(1,20));
+
+        $password['case5'] = str_random(rand(6, 12));
+        $password_to_check_same['case5'] = str_shuffle($password['case5']);
+        while ($password['case5'] == $password_to_check_same['case5']) {
+            $password_to_check_same['case5'] = str_shuffle($password['case5']);
+        }
+        
+        // テストケース6：name半角英数字20文字以下, password6文字以上12文字以下かつ記号なし
+        $name['case6'] = str_random(rand(1,20));
+
+        $password['case6'] = str_random(rand(6, 12));
+        $password_to_check_same['case6'] = str_shuffle($password['case6']);
+        while ($password['case6'] == $password_to_check_same['case6']) {
+            $password_to_check_same['case6'] = str_shuffle($password['case6']);
+        }
+
+        // テストケース7：name半角英数字20文字以下, password6文字以上12文字以下かつ記号なし
+        $name['case7'] = str_random(rand(1,20));
+
+        $password['case7'] = str_random(rand(6, 12));
+        $password_to_check_same['case7'] = str_shuffle($password['case7']);
+        while ($password['case7'] == $password_to_check_same['case7']) {
+            $password_to_check_same['case7'] = str_shuffle($password['case7']);
+        }
+
+        // テストケース8：name半角英数字20文字以下, password6文字以上12文字以下かつ記号なし
+        $name['case8'] = str_random(rand(1,20));
+
+        $password['case8'] = str_random(rand(6, 12));
+        $password_to_check_same['case8'] = str_shuffle($password['case8']);
+        while ($password['case8'] == $password_to_check_same['case8']) {
+            $password_to_check_same['case8'] = str_shuffle($password['case8']);
+        }
+        
+        foreach ($name as $case => $nm) {
+            $testcase[$case]['data'][0] = [
+                                                'name' => $nm,
+                                                'email' => '',
+                                                'password' => $password[$case],
+                                                'password_to_check' => '',
+                                               ];
+            $testcase[$case]['data'][1] = [
+                                                'name' => $nm,
+                                                'email' => $email_unique,
+                                                'password' => $password[$case],
+                                                'password_to_check' => $password_to_check_same[$case],
+                                               ];
+            $testcase[$case]['data'][2] = [
+                                                'name' => $nm,
+                                                'email' => $email1,
+                                                'password' => $password[$case],
+                                                'password_to_check' => $password[$case],
+                                               ];
+            $testcase[$case]['data'][3] = [
+                                                'name' => $nm,
+                                                'email' => $email2,
+                                                'password' => $password[$case],
+                                                'password_to_check' => $password[$case],
+                                               ];
+            if ($case == 'case1') {
+                $testcase[$case]['error_msg'][0] = [
+                                                'name' => $error_msg['name_required'],
+                                                'email' => $error_msg['email_required'],
+                                                'password' => $error_msg['password_required'],
+                                                'password_to_check' => $error_msg['password_to_check_required'],
+                                               ];
+                $testcase[$case]['error_msg'][1] = [
+                                                'name' => $error_msg['name_required'],
+                                                'email' => $error_msg['email_unique'],
+                                                'password' => $error_msg['password_required'],
+                                                'password_to_check' => $error_msg['password_to_check_same'],
+                                               ];
+                $testcase[$case]['error_msg'][2] = [
+                                                'name' => $error_msg['name_required'],
+                                                'email' => '',
+                                                'password' => $error_msg['password_required'],
+                                                'password_to_check' => $error_msg['password_to_check_required'],
+                                               ];
+                $testcase[$case]['error_msg'][3] = [
+                                                'name' => $error_msg['name_required'],
+                                                'email' => '',
+                                                'password' => $error_msg['password_required'],
+                                                'password_to_check' => $error_msg['password_to_check_required'],
+                                               ];
+            }
+            elseif ($case == 'case2' || $case == 'case3' || $case == 'case4') {
+                $testcase[$case]['error_msg'][0] = [
+                                                'name' => $error_msg['name_regex'],
+                                                'email' => $error_msg['email_required'],
+                                                'password' => $error_msg['password_regex'],
+                                                'password_to_check' => $error_msg['password_to_check_required'],
+                                               ];
+                $testcase[$case]['error_msg'][1] = [
+                                                'name' => $error_msg['name_regex'],
+                                                'email' => $error_msg['email_unique'],
+                                                'password' => $error_msg['password_regex'],
+                                                'password_to_check' => $error_msg['password_to_check_same'],
+                                               ];
+                $testcase[$case]['error_msg'][2] = [
+                                                'name' => $error_msg['name_regex'],
+                                                'email' => '',
+                                                'password' => $error_msg['password_regex'],
+                                                'password_to_check' => '',
+                                               ];
+                $testcase[$case]['error_msg'][3] = [
+                                                'name' => $error_msg['name_regex'],
+                                                'email' => '',
+                                                'password' => $error_msg['password_regex'],
+                                                'password_to_check' => '',
+                                               ];
+            }
+            else {
+                $testcase[$case]['error_msg'][0] = [
+                                                'name' => '',
+                                                'email' => $error_msg['email_required'],
+                                                'password' => '',
+                                                'password_to_check' => $error_msg['password_to_check_required'],
+                                               ];
+                $testcase[$case]['error_msg'][1] = [
+                                                'name' => '',
+                                                'email' => $error_msg['email_unique'],
+                                                'password' => '',
+                                                'password_to_check' => $error_msg['password_to_check_same'],
+                                               ];
+                $testcase[$case]['error_msg'][2] = [
+                                                'name' => '',
+                                                'email' => '',
+                                                'password' => '',
+                                                'password_to_check' => '',
+                                               ];
+                $testcase[$case]['error_msg'][3] = [
+                                                'name' => '',
+                                                'email' => '',
+                                                'password' => '',
+                                                'password_to_check' => '',
+                                               ];
+                
+            }
+
+            for ($i = 0; $i < 4; $i++) {
+                $testcase_all[] = [
+                                    $testcase[$case]['data'][$i],
+                                    $testcase[$case]['error_msg'][$i]
+                                ];
+            }
+        }
+        
+        return $testcase_all;
+    }
+}

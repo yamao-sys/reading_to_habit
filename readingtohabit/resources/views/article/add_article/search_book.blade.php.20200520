@@ -1,0 +1,47 @@
+<html>
+    <head>
+        <title>@yield('title')</title>
+        <!-- todo .jsを追加-->
+        <!-- todo .cssを追加-->
+        <link rel="stylesheet" type="text/css" href="css/readingtohabit.css">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css">
+    </head>
+    <body>
+<div id="content">
+    <div class="add_article_search_book_header">
+        <h3>記録を書く対象の本を探す</h3>
+    </div>
+    <div class="add_article_search_book_search_area">
+        <div class="search_area">
+            <input v-model="word" type="text" class="search_book" placeholder="タイトルや著者から検索">
+            <button v-on:click="search_books(word)" class="btn_primary_search_btn">検索する</button>
+        </div>
+    </div>
+
+    <div v-if="search_results.length > 0" class="search_results">
+        <div v-for="book in search_results" class="search_result_area">
+            <a v-bind:href="'add_article?bookname=' + book.volumeInfo.title + '&bookimg=' + book.volumeInfo.imageLinks.smallThumbnail + '&author=' + book.volumeInfo.authors + '&publisher=' + book.volumeInfo.publisher + '&published_date=' + book.volumeInfo.publishedDate" class="link_dark">
+                <div class="search_result_content">
+                    <div v-if="'imageLinks' in book.volumeInfo" class="thumbnail">
+                        <img v-bind:src="book.volumeInfo.imageLinks.smallThumbnail" class="thumbnail_size">
+                    </div>
+                    <div class="book_info">
+                        <div class="bookname">(%book.volumeInfo.title%)</div>
+                        <div>
+                            <span v-if="'authors' in book.volumeInfo" class="mr_3_inline">(%book.volumeInfo.authors[0]%)</span>
+                            <span v-if="'publisher' in book.volumeInfo" class="mr_3_inline">(%book.volumeInfo.publisher%)</span>
+                            <span v-if="'publishedDate' in book.volumeInfo" class="mr_3_inline">(%book.volumeInfo.publishedDate%)</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+        <script type="text/javascript" src="js/jquery.min.js" defer></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js" defer></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js" defer></script>
+        <script type="text/javascript" src="js/readingtohabit.js" defer></script>
+    </body>
+</html>
