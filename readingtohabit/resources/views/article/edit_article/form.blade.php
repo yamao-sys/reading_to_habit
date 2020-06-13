@@ -4,11 +4,11 @@
 
 @section('content')
 <div class="content" id="edit_article_form">
-    <form action="edit_article_do/{{$article_info['id']}}" method="post">
+    <form action="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_article_do/{{$article_info['id']}}" method="post">
         {{ csrf_field() }}
         <div class="edit_article_bookimg_area">
             <div class="edit_article_bookimg_content">
-                <img class="edit_article_bookimg" src="{{$article_info['bookimg']}}">
+                <img class="edit_article_bookimg" src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article_info['bookimg']}}">
             </div>
         </div>
         <div class="edit_article_book_detail">
@@ -179,7 +179,7 @@
         </div>
         <div class="btn_vertical_align">
             <input type="submit" class="btn_primary_more_than_4_chars mr_5" value="更新する">
-            <button class="btn_default_more_than_4_chars" onclick="javascript:location.href='articles';return false;">キャンセルする</button>
+            <button class="btn_default_more_than_4_chars" onclick="javascript:location.href='https://test.readingtohabit-staging.net/articles';return false;">キャンセルする</button>
         </div>
     </form>
 </div>

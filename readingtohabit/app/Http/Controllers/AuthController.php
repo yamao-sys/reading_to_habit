@@ -33,7 +33,8 @@ class AuthController extends Controller
         $request->session()->put('user_id', $auth_user['id']);
         $request->session()->put('profile_img', $auth_user['profile_img']);
 
-        return redirect('articles')
+        return redirect('')
+               ->secure('articles')
                ->withCookie('auto_login', $new_token_info['token'], $new_token_info['expires_seconds'], true);
     }
 
@@ -55,16 +56,17 @@ class AuthController extends Controller
         if (isset($request->auto_login)) {
             $new_token_info = AutoLoginToken::create_new_token($auth_user['id']);
 
-            return redirect('articles')
+            return redirect('')
+                   ->secure('articles')
                    ->withCookie('auto_login', $new_token_info['token'], $new_token_info['expires_seconds'], true);
         }
 
-        return redirect('articles');
+        return redirect()->secure('articles');
     }
 
     public function logout(Request $request) {
         $request->session()->flush();
 
-        return redirect('top');
+        return redirect()->secure('top');
     }
 }

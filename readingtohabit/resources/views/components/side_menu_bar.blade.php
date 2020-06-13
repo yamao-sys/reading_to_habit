@@ -2,7 +2,7 @@
     <div class="menu_head">
         <div class="menu_profile_img_area">
             <div class="menu_profile_img_content">
-                <img src="{{asset(session()->get('profile_img'))}}" class="menu_profile_img">
+                <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{session()->get('profile_img')}}" class="menu_profile_img">
             </div>
         </div>
         <div class="menu_add_article_area">

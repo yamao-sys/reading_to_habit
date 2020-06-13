@@ -1,4 +1,4 @@
-const app_url = 'https://test.readingtohabit-staging/';
+const app_url = 'https://test.readingtohabit-staging.net/';
 
 if (document.getElementById('content') !== null) {
     var content = new Vue({

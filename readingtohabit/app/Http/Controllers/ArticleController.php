@@ -24,6 +24,7 @@ class ArticleController extends Controller
         $articles = Article::with('article_mail_timing')
                            ->orderBy('updated_at', 'desc')
                            ->paginate(\PaginationConst::ITEMS_PER_PAGE);
+        $articles->setPath(\DocumentRootConst::DOCUMENT_ROOT.'articles');
 
         return view('article.articles', ['num_of_articles' => $num_of_articles, 'articles' => $articles]);
     }
@@ -35,7 +36,7 @@ class ArticleController extends Controller
         if ($request->isMethod('post')) {
             Article::search_cond_into_session($request);
             
-            return redirect('search_results');
+            return redirect()->secure('search_results');
         }
 
         return view('article.search_article.results', Article::search_articles($request));
@@ -48,6 +49,8 @@ class ArticleController extends Controller
                            ->where('favorite', 1)
                            ->orderBy('updated_at', 'desc')
                            ->paginate(\PaginationConst::ITEMS_PER_PAGE);
+        
+        $favorites->setPath(\DocumentRootConst::DOCUMENT_ROOT.'favorites');
 
         return view('article.favorites', ['num_of_favorites' => $num_of_favorites, 'favorites' => $favorites]);
     }
@@ -77,7 +80,7 @@ class ArticleController extends Controller
             return view('common.fail');
         }
 
-        return redirect('articles');
+        return redirect()->secure('articles');
     }
 
     public function show_article ($article_id, Request $request) {
@@ -153,7 +156,7 @@ class ArticleController extends Controller
             return view('common.fail');
         }
 
-        return redirect('articles');
+        return redirect()->secure('articles');
     }
 
     public function delete_article_do ($article_id, Request $request) {

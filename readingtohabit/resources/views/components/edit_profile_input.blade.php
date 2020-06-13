@@ -8,7 +8,7 @@
 
         <div class="edit_profile_img_content">
             @empty(old('profile_img'))
-                <img v-if="data.image === ''" src="{{asset(session()->get('profile_img'))}}" class="edit_profile_img object-fit-img" id="profile_img">
+                <img v-if="data.image === ''" src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{session()->get('profile_img')}}" class="edit_profile_img object-fit-img" id="profile_img">
                 <img v-else v-bind:src="data.image" class="edit_profile_img object-fit-img" id="profile_img">
             @else
             <img v-if="data.image === ''" src="{{old('profile_img')}}" class="edit_profile_img object-fit-img" id="profile_img">

@@ -469,6 +469,8 @@ class Article extends Model
                                 ->orderBy('updated_at', 'desc')
                                 ->paginate(\PaginationConst::ITEMS_PER_PAGE);
         }
+        
+        $articles->setPath(\DocumentRootConst::DOCUMENT_ROOT.'search_results');
 
         return ['num_of_articles' => $num_of_articles, 'articles' => $articles];
     }

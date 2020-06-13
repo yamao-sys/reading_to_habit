@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('profile_img', '255')->default('/img/noimage.png');
+            $table->string('profile_img', '255')->default(\ImgPathConst::NOIMG_PATH);
             $table->rememberToken();
             $table->timestamps();
             $table->unsignedTinyInteger('deleted')->length(1)->default(0);

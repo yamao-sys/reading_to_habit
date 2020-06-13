@@ -16,7 +16,7 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id')->length(20);
-            $table->string('bookimg', '255')->default('/img/no_image.jpg');
+            $table->string('bookimg', '255')->default(\ImgPathConst::NOIMG_PATH);
             $table->string('bookname', '255');
             $table->string('author', '255');
             $table->text('learning');

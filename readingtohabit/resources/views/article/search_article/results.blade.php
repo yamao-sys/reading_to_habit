@@ -12,7 +12,7 @@
             <div class="list_article_area">
                 <a href="show_article/{{$article->id}}" class="list_article_link">
                     <div class="list_article_bookimg">
-                        <img src="{{asset($article->bookimg)}}" class="list_article_thumbnail">
+                        <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article->bookimg}}" class="list_article_thumbnail">
                     </div>
                     <div class="list_article_detail">
                         <div class="list_article_bookname">{{$article->bookname}}</div>
@@ -58,7 +58,7 @@
                     <div class="list_article_area">
                         <a href="show_article/{{$article->id}}" class="list_article_link">
                             <div class="list_article_bookimg">
-                                <img src="{{asset($article->bookimg)}}" class="list_article_thumbnail">
+                                <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article->bookimg}}" class="list_article_thumbnail">
                             </div>
                             <div class="list_article_detail">
                                 <div class="list_article_bookname">{{$article->bookname}}</div>

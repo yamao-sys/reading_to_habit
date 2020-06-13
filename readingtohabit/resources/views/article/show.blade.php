@@ -40,7 +40,7 @@
     <div class="content">
         <div class="show_article_bookimg_area">
             <div class="show_article_bookimg_content">
-                <img class="show_article_bookimg" src="{{$book_info['bookimg']}}">
+                <img class="show_article_bookimg" src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$book_info['bookimg']}}">
             </div>
         </div>
         <div class="show_article_book_detail">
@@ -78,7 +78,7 @@
         </div>
         @endisset
         <div class="btn_vertical_align">
-            <button class="btn_primary_less_than_4_chars mr_3"><a href="edit_article_form/{{$book_info['id']}}" class="link_white">編集する</a></button>
+            <button class="btn_primary_less_than_4_chars mr_3"><a href="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_article_form/{{$book_info['id']}}" class="link_white">編集する</a></button>
             <button class="btn_danger_less_than_4_chars" v-on:click="open_delete_modal()">削除する</button>
         </div>
     </div>

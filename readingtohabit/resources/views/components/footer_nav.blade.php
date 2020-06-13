@@ -6,7 +6,7 @@
             <div class="char_color_primary">記録一覧</div>
         </a>
         @else
-        <a class="footer_nav_content not_selected" href="DOCUMENT_ROOT}}articles">
+        <a class="footer_nav_content not_selected" href="articles">
             <div class="mb_2"><i class="fas fa-list color_default"></i></div>
             <div class="char_color_default">記録一覧</div>
         </a>

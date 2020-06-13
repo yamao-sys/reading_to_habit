@@ -3,7 +3,7 @@
         <title>@yield('title')</title>
         <!-- todo .jsを追加-->
         <!-- todo .cssを追加-->
-        <link rel="stylesheet" type="text/css" href="css/readingtohabit.css">
+        <link rel="stylesheet" type="text/css" href="{{DocumentRootConst::DOCUMENT_ROOT}}css/readingtohabit.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     </head>
     <body>
@@ -66,7 +66,7 @@
         </footer>
         @endif
 
-        <script type="text/javascript" src="{{asset('/js/readingtohabit.js')}}" defer></script>
+        <script type="text/javascript" src="{{\DocumentRootConst::DOCUMENT_ROOT}}js/readingtohabit.js" defer></script>
         </div>
     </body>
 </html>
