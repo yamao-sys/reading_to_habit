@@ -4,5 +4,5 @@ namespace App\Consts;
 
 class DocumentRootConst
 {
-    const DOCUMENT_ROOT = 'http://readingtohabit.develop.jp/';
+    const DOCUMENT_ROOT = 'http://test.readingtohabit-staging.net/';
 }

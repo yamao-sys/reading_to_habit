@@ -36,7 +36,7 @@
         <div class="content">
             @include('components.edit_user_head', ['edit_target' => 'profile'])
 
-            <form action="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_profile" method="post" enctype="multipart/form-data">
+            <form action="edit_profile" method="post" enctype="multipart/form-data">
                 {{ csrf_field() }}
                 @include('components.edit_profile_input', ['input' => 'profile_img', 'profile' => $profile, 'errors' => $errors])
                 @include('components.edit_profile_input', ['input' => 'name', 'profile' => $profile, 'errors' => $errors])
@@ -60,7 +60,7 @@
             <div class="main_content_area">
                 <div class="main_content">
                     <div class="edit_user_form_area">
-                        <form action="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_profile" method="post" enctype="multipart/form-data">
+                        <form action="edit_profile" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             @include('components.edit_profile_input', ['input' => 'profile_img', 'profile' => $profile, 'errors' => $errors])
                             @include('components.edit_profile_input', ['input' => 'name', 'profile' => $profile, 'errors' => $errors])
