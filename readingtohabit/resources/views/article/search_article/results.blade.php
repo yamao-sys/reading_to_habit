@@ -10,7 +10,7 @@
             </div>
             @foreach ($articles as $article)
             <div class="list_article_area">
-                <a href="{{\DocumentRootConst::DOCUMENT_ROOT}}show_article/{{$article->id}}" class="list_article_link">
+                <a href="show_article/{{$article->id}}" class="list_article_link">
                     <div class="list_article_bookimg">
                         <img src="{{asset($article->bookimg)}}" class="list_article_thumbnail">
                     </div>
@@ -56,7 +56,7 @@
 
                     @foreach ($articles as $article)
                     <div class="list_article_area">
-                        <a href="{{\DocumentRootConst::DOCUMENT_ROOT}}show_article/{{$article->id}}" class="list_article_link">
+                        <a href="show_article/{{$article->id}}" class="list_article_link">
                             <div class="list_article_bookimg">
                                 <img src="{{asset($article->bookimg)}}" class="list_article_thumbnail">
                             </div>

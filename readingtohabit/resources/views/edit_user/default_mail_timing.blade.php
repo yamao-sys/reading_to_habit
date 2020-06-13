@@ -11,7 +11,7 @@
         <div class="content">
             @include('components.edit_user_head', ['edit_target' => 'default_mail_timing'])
 
-            <form action="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_default_mail_timing" method="post">
+            <form action="edit_default_mail_timing" method="post">
                 {{ csrf_field() }}
                 <div class="mb_2rem">
                     リマインドメールのデフォルト配信タイミングの設定です。<br>
@@ -40,7 +40,7 @@
             <div class="main_content_area">
                 <div class="main_content">
                     <div class="edit_user_form_area">
-                        <form action="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_default_mail_timing" method="post">
+                        <form action="edit_default_mail_timing" method="post">
                             {{ csrf_field() }}
                             <div class="mb_2rem">
                                 リマインドメールのデフォルト配信タイミングの設定です。<br>

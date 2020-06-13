@@ -20,7 +20,7 @@ class ResetPassword extends Mailable
      */
     public function __construct($token)
     {
-        $this->url   = 'http://readingtohabit.develop.jp/reset_password_form?key='.$token;
+        $this->url   = \DocumentRootConst::DOCUMENT_ROOT.'reset_password_form?key='.$token;
     }
 
     /**

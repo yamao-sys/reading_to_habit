@@ -17,7 +17,7 @@
         <div class="content">
             @include('components.edit_user_head', ['edit_target' => 'password'])
 
-            <form action="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_password" method="post">
+            <form action="edit_password" method="post">
                 {{ csrf_field() }}
                 @include('components.edit_password_input', ['input' => 'current_password', 'errors' => $errors])
                 @include('components.edit_password_input', ['input' => 'new_password', 'errors' => $errors])
@@ -37,7 +37,7 @@
             <div class="main_content_area">
                 <div class="main_content">
                     <div class="edit_user_form_area">
-                        <form action="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_password" method="post">
+                        <form action="edit_password" method="post">
                             {{ csrf_field() }}
                             @include('components.edit_password_input', ['input' => 'current_password', 'errors' => $errors])
                             @include('components.edit_password_input', ['input' => 'new_password', 'errors' => $errors])

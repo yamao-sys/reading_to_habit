@@ -66,7 +66,7 @@
         </footer>
         @endif
 
-        <script type="text/javascript" src="js/readingtohabit.js" defer></script>
+        <script type="text/javascript" src="{{asset('/js/readingtohabit.js')}}" defer></script>
         </div>
     </body>
 </html>

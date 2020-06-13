@@ -23,8 +23,8 @@ class ResetPasswordFinish extends Mailable
     public function __construct($name)
     {
         $this->name = $name;
-        $this->url_login = 'http://readingtohabit.develop.jp/login';
-        $this->url_contact = 'http://readingtohabit.develop.jp/contact_form';
+        $this->url_login   = \DocumentRootConst::DOCUMENT_ROOT.'login';
+        $this->url_contact = \DocumentRootConst::DOCUMENT_ROOT.'contact_form';
     }
 
     /**
