@@ -6,22 +6,22 @@
     <div v-on:click="close_menu()" v-bind:class="{menu_area:open_menu_flag, menu_area_hidden:close_menu_flag}">
         <div v-bind:class="{menu_content:menu_content_flag, menu_content_hidden:menu_content_hidden_flag}">
             <div class="mt_2rem mb_2rem">
-                <a class="menu_list" href="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_profile">プロフィール編集</a>
+                <a class="menu_list" href="edit_profile">プロフィール編集</a>
             </div>
             <div class="mb_2rem">
-                <a class="menu_list" href="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_password">パスワード編集</a>
+                <a class="menu_list" href="edit_password">パスワード編集</a>
             </div>
             <div class="mb_2rem">
-                <a class="menu_list" href="{{\DocumentRootConst::DOCUMENT_ROOT}}edit_default_mail_timing">メールタイミング編集</a>
+                <a class="menu_list" href="edit_default_mail_timing">メールタイミング編集</a>
             </div>
             <div class="mb_2rem">
-                <a class="menu_list" href="{{\DocumentRootConst::DOCUMENT_ROOT}}rules">利用規約</a>
+                <a class="menu_list" href="rules">利用規約</a>
             </div>
             <div class="mb_2rem">
-                <a class="menu_list" href="{{\DocumentRootConst::DOCUMENT_ROOT}}privacy_policy">プライバシーポリシー</a>
+                <a class="menu_list" href="privacy_policy">プライバシーポリシー</a>
             </div>
             <div class="mb_2rem">
-                <a class="menu_list" href="{{\DocumentRootConst::DOCUMENT_ROOT}}logout">ログアウト</a>
+                <a class="menu_list" href="logout">ログアウト</a>
             </div>
         </div>
     </div>
@@ -35,7 +35,7 @@
 
                 <div class="top_bar_content">
                     <div v-on:click="open_menu()" class="open_menu"><i class="fas fa-ellipsis-h"></i></div>
-                    <a class="to_add_article" href="{{\DocumentRootConst::DOCUMENT_ROOT}}add_article_search_book">
+                    <a class="to_add_article" href="add_article_search_book">
                         <i class="fas fa-pen-square mr_2_inline"></i>記録を書く
                     </a>
                 </div>
@@ -45,7 +45,7 @@
             </div>
             @foreach ($articles as $article)
             <div class="list_article_area">
-                <a href="{{\DocumentRootConst::DOCUMENT_ROOT}}show_article/{{$article->id}}" class="list_article_link">
+                <a href="show_article/{{$article->id}}" class="list_article_link">
                     <div class="list_article_bookimg">
                         <img src="{{asset($article->bookimg)}}" class="list_article_thumbnail">
                     </div>
@@ -91,7 +91,7 @@
 
                     @foreach ($articles as $article)
                     <div class="list_article_area">
-                        <a href="{{\DocumentRootConst::DOCUMENT_ROOT}}show_article/{{$article->id}}" class="list_article_link">
+                        <a href="show_article/{{$article->id}}" class="list_article_link">
                             <div class="list_article_bookimg">
                                 <img src="{{asset($article->bookimg)}}" class="list_article_thumbnail">
                             </div>

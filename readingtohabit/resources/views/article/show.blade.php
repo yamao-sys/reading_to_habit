@@ -78,10 +78,9 @@
         </div>
         @endisset
         <div class="btn_vertical_align">
-            <button class="btn_primary_less_than_4_chars mr_3"><a href="http://readingtohabit.develop.jp/edit_article_form/{{$book_info['id']}}" class="link_white">編集する</a></button>
+            <button class="btn_primary_less_than_4_chars mr_3"><a href="edit_article_form/{{$book_info['id']}}" class="link_white">編集する</a></button>
             <button class="btn_danger_less_than_4_chars" v-on:click="open_delete_modal()">削除する</button>
         </div>
     </div>
-
 </div>
 @endsection

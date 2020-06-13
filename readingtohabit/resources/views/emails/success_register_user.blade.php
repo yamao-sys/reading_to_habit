@@ -22,7 +22,7 @@
 <br>
 <div>
 ログインは下記のURLから<br>
-<a href="readingtohabit.develop.jp/login">http://readingtohabit.develop.jp/login</a>
+<a href="{{\DocumentRootConst::DOCUMENT_ROOT}}login">{{\DocumentRootConst::DOCUMENT_ROOT}}login</a>
 </div>
 </body>
 </html>
