@@ -66,6 +66,7 @@ class Article extends Model
 
         $def_timing_master = DefaultMailTimingMaster::where('default_mail_timing_id', $def_timing['id'])->first();
         $def_timing_select_master = DefaultMailTimingSelectMaster::where('default_mail_timing_id', $def_timing['id'])->first();
+
         if ($def_timing_select_master['by_day'] === 1) {
             $def_timing_select = 'by_day';
         }
@@ -179,14 +180,14 @@ class Article extends Model
     public static function make_show_book_info ($article, $article_mail_timing) {
         if ($article['mail'] === 1) {
             $book_info = [
-                            'id' => $article['id'],
-                            'bookimg' => $article['bookimg'],
-                            'bookname' => $article['bookname'],
-                            'author' => $article['author'],
-                            'favorite' => $article['favorite'],
-                            'learning' => $article['learning'],
-                            'action' => $article['action'],
-                            'mail_flag' => '有り',
+                            'id'             => $article['id'],
+                            'bookimg'        => $article['bookimg'],
+                            'bookname'       => $article['bookname'],
+                            'author'         => $article['author'],
+                            'favorite'       => $article['favorite'],
+                            'learning'       => $article['learning'],
+                            'action'         => $article['action'],
+                            'mail_flag'      => '有り',
                             'next_mail_date' => $article_mail_timing['next_send_date'],
                         ];
         }

@@ -1,3 +1,5 @@
+const app_url = 'https://test.readingtohabit-staging/';
+
 if (document.getElementById('content') !== null) {
     var content = new Vue({
         delimiters: ['(%', '%)'],
@@ -125,7 +127,7 @@ if (document.getElementById('show_article') !== null) {
             add_favorite: function () {
                 var article_id = document.getElementById('article_id').textContent;
 
-                axios.post('http://readingtohabit.develop.jp/add_favorite/' + article_id).then(response => {
+                axios.post(app_url + 'add_favorite/' + article_id).then(response => {
                     if (response.data.is_success === true) {
                         this.favorite_flag = '1';
                     }
@@ -134,7 +136,7 @@ if (document.getElementById('show_article') !== null) {
             delete_favorite: function () {
                 var article_id = document.getElementById('article_id').textContent;
 
-                axios.post('http://readingtohabit.develop.jp/delete_favorite/' + article_id).then(response => {
+                axios.post(app_url + 'delete_favorite/' + article_id).then(response => {
                     if (response.data.is_success === true) {
                         this.favorite_flag = '0';
                     }
@@ -147,7 +149,7 @@ if (document.getElementById('show_article') !== null) {
             delete_article_do: function () {
                 var article_id = document.getElementById('article_id').textContent;
                 
-                axios.post('http://readingtohabit.develop.jp/delete_article_do/' + article_id).then(response => {
+                axios.post(app_url + 'delete_article_do/' + article_id).then(response => {
                     if (response.data.is_success === true) {
                         this.delete_modal_form = false;
                         this.delete_modal_finish = true;
@@ -163,7 +165,7 @@ if (document.getElementById('show_article') !== null) {
                 this.delete_modal = false;
             },
             redirect_to_index: function () {
-                location.href = 'http://readingtohabit.develop.jp/articles';
+                location.href = app_url + 'articles';
             },
         }
     });
@@ -218,26 +220,6 @@ if (document.getElementById('edit_article_form') !== null) {
         }
     });
 }
-
-/*
-if (document.getElementById('top_bar') !== null) {
-    var top_bar = new Vue({
-        delimiters: ['(%', '%)'],
-        el: '#top_bar',
-        data: function () {
-            return {
-                open_menu: false,
-            };
-        },
-        methods: {
-            reverse_open_menu_flag: function () {
-                console.log('test');
-                this.open_menu = !this.open_menu;
-            },
-        }
-    });
-}
-*/
 
 if (document.getElementById('articles') !== null) {
     var show_article = new Vue({
@@ -297,7 +279,7 @@ if (document.getElementById('articles') !== null) {
             add_favorite: function () {
                 var article_id = event.target.getAttribute('data');
 
-                axios.post('http://readingtohabit.develop.jp/add_favorite/' + article_id).then(response => {
+                axios.post(app_url + 'add_favorite/' + article_id).then(response => {
                     if (response.data.is_success === true) {
                         Vue.set(this.favorite, article_id, true);
                         Vue.set(this.not_favorite, article_id, false);
@@ -307,7 +289,7 @@ if (document.getElementById('articles') !== null) {
             delete_favorite: function () {
                 var article_id = event.target.getAttribute('data');
 
-                axios.post('http://readingtohabit.develop.jp/delete_favorite/' + article_id).then(response => {
+                axios.post(app_url + 'delete_favorite/' + article_id).then(response => {
                     if (response.data.is_success === true) {
                         Vue.set(this.not_favorite, article_id, true);
                         Vue.set(this.favorite, article_id, false);
@@ -385,7 +367,7 @@ if (document.getElementById('favorites') !== null) {
             delete_favorite: function () {
                 var article_id = event.target.getAttribute('data');
 
-                axios.post('http://readingtohabit.develop.jp/delete_favorite/' + article_id).then(response => {
+                axios.post(app_url + 'delete_favorite/' + article_id).then(response => {
                     if (response.data.is_success === true) {
                         location.href = 'favorites';
                     }
@@ -451,12 +433,12 @@ if (document.getElementById('edit_profile') !== null) {
                 this.delete_modal_form = true;
             },
             delete_user_do: function () {
-                axios.post('http://readingtohabit.develop.jp/delete_user').then(response => {
+                axios.post(app_url + 'delete_user').then(response => {
                     if (response.data.is_success === true) {
                         this.delete_modal_form = false;
                         this.delete_modal = false;
 
-                        location.href = 'http://readingtohabit.develop.jp/delete_user_finish';
+                        location.href = app_url + 'delete_user_finish';
                     }
                     else {
                         alert('削除に失敗しました。恐れ入りますが、一定時間を置いて再度お試しくださいませ。');
