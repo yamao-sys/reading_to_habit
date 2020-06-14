@@ -33,7 +33,7 @@ class AuthController extends Controller
         $request->session()->put('user_id', $auth_user['id']);
         $request->session()->put('profile_img', $auth_user['profile_img']);
 
-        return redirect('')
+        return redirect()
                ->secure('articles')
                ->withCookie('auto_login', $new_token_info['token'], $new_token_info['expires_seconds'], true);
     }
