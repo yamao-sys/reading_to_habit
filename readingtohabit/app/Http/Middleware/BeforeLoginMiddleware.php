@@ -19,6 +19,6 @@ class BeforeLoginMiddleware
             return $next($request);
         }
         
-        return redirect('articles');
+        return redirect()->secure('articles');
     }
 }
