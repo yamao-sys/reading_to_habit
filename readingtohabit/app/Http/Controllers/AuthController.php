@@ -56,7 +56,7 @@ class AuthController extends Controller
         if (isset($request->auto_login)) {
             $new_token_info = AutoLoginToken::create_new_token($auth_user['id']);
 
-            return redirect('')
+            return redirect()
                    ->secure('articles')
                    ->withCookie('auto_login', $new_token_info['token'], $new_token_info['expires_seconds'], true);
         }
