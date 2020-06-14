@@ -30,7 +30,7 @@
         <div class="content">
             <div id="top_bar">
                 <div class="menu_profile_img_content">
-                    <img class="menu_profile_img" src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{session()->get('profile_img')}}">
+                    <img class="menu_profile_img object-fit-img" src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{session()->get('profile_img')}}?{{session()->get('current_date')}}" />
                 </div>
 
                 <div class="top_bar_content">
@@ -47,7 +47,7 @@
             <div class="list_article_area">
                 <a href="show_article/{{$article->id}}" class="list_article_link">
                     <div class="list_article_bookimg">
-                        <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article->bookimg}}" class="list_article_thumbnail">
+                        <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article->bookimg}}" class="list_article_thumbnail object-fit-img">
                     </div>
                     <div class="list_article_detail">
                         <div class="list_article_bookname">{{$article->bookname}}</div>
@@ -93,7 +93,7 @@
                     <div class="list_article_area">
                         <a href="show_article/{{$article->id}}" class="list_article_link">
                             <div class="list_article_bookimg">
-                                <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article->bookimg}}" class="list_article_thumbnail">
+                                <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article->bookimg}}" class="list_article_thumbnail object-fit-img">
                             </div>
                             <div class="list_article_detail">
                                 <div class="list_article_bookname">{{$article->bookname}}</div>

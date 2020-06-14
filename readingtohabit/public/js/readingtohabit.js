@@ -1,4 +1,5 @@
 const app_url = 'https://test.readingtohabit-staging.net/';
+objectFitImages();
 
 if (document.getElementById('content') !== null) {
     var content = new Vue({
@@ -378,7 +379,7 @@ if (document.getElementById('favorites') !== null) {
 }
 
 if (document.getElementById('edit_profile') !== null) {
-    objectFitImages();
+    // objectFitImages();
 
     var edit_profile = new Vue({
         delimiters: ['(%', '%)'],

@@ -32,6 +32,7 @@ class AuthController extends Controller
         // 認証(セッション発行)
         $request->session()->put('user_id', $auth_user['id']);
         $request->session()->put('profile_img', $auth_user['profile_img']);
+        $request->session()->put('current_date', date("YmdHis"));
 
         return redirect()
                ->secure('articles')
@@ -52,6 +53,7 @@ class AuthController extends Controller
         // 認証(セッション発行)
         $request->session()->put('user_id', $auth_user['id']);
         $request->session()->put('profile_img', $auth_user['profile_img']);
+        $request->session()->put('current_date', date("YmdHis"));
         
         if (isset($request->auto_login)) {
             $new_token_info = AutoLoginToken::create_new_token($auth_user['id']);

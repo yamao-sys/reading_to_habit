@@ -38,6 +38,7 @@ class AfterLoginMiddleware
             // 認証(セッション発行)
             $request->session()->put('user_id', $auth_user['id']);
             $request->session()->put('profile_img', $auth_user['profile_img']);
+            $request->session()->put('current_date', date("YmdHis"));
 
             $response = $next($request);
 

@@ -137,7 +137,7 @@ body,#wrapper {
 
 .object-fit-img {
     object-fit: cover;
-    font-family: 'object-fit: cover';
+    font-family: 'object-fit: contain';
 }
 
 @media screen {
@@ -742,6 +742,39 @@ li {
     font-weight: bold;
 }
 
+@media screen and (max-width: 320px) {
+    .list_article_date {
+        display: -ms-flexbox;
+        display: flex;
+        font-size: 0.45rem;
+        color: #6c757d;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+}
+
+@media screen and (min-width: 321px) and (max-width: 360px){
+    .list_article_date {
+        display: -ms-flexbox;
+        display: flex;
+        font-size: 0.635rem;
+        color: #6c757d;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+}
+
+@media screen and (min-width: 361px) and (max-width: 390px){
+    .list_article_date {
+        display: -ms-flexbox;
+        display: flex;
+        font-size: 0.7rem;
+        color: #6c757d;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+}
+
 @media screen and (max-width:390px) {
     .register_user_content,.login_content {
         width: calc(100% - 2rem);
@@ -914,14 +947,6 @@ li {
     }
     .list_article_detail {
         width: calc(100% - 100px - 1rem);
-    }
-    .list_article_date {
-        display: -ms-flexbox;
-        display: flex;
-        font-size: 0.5rem;
-        color: #6c757d;
-        -ms-flex-align: center;
-        align-items: center;
     }
     .times_icon {
         font-size: 0.4rem;
@@ -1221,7 +1246,7 @@ li {
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
-        font-size: 0.5rem;
+        font-size: 0.8rem;
         color: #6c757d;
         -ms-flex-align: center;
         align-items: center;
@@ -1522,7 +1547,7 @@ li {
     .list_article_date {
         display: -ms-flexbox;
         display: flex;
-        font-size: 0.5rem;
+        font-size: 1rem;
         color: #6c757d;
         -ms-flex-align: center;
         align-items: center;
