@@ -21,11 +21,11 @@ class AfterLoginMiddleware
         if (empty($request->session()->get('user_id'))) {
             // 自動ログイン用トークン(クッキー)が存在しないどうかを判定する
             if (empty($request->cookie('auto_login'))) {
-                return redirect('login');
+                return redirect()->secure('login');
             }
             
             if (AutoLoginToken::check_validity_of_token($request->cookie('auto_login')) === false) {
-                return redirect('login');
+                return redirect()->secure('login');
             }
 
             $current_token = AutoLoginToken::where('token', $request->cookie('auto_login'))->first();
@@ -47,7 +47,7 @@ class AfterLoginMiddleware
             if (User::check_existense_of_user_info($request->session()->get('user_id')) === 'not_exists') {
                 $request->session()->flush();
                 
-                return redirect('top');
+                return redirect()->secure('top');
             }
 
             $request->session()->regenerate();
