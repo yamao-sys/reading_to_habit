@@ -5,6 +5,8 @@
         <!-- todo .cssを追加-->
         <link rel="stylesheet" type="text/css" href="{{DocumentRootConst::DOCUMENT_ROOT}}css/readingtohabit.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        <meta http-equiv="Pragma" content="no-cache">
+        <meta http-equiv="Cache-Control" content="no-cache">
     </head>
     <body>
         <div id="wrapper">
