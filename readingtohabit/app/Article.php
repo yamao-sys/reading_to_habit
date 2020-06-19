@@ -536,22 +536,18 @@ class Article extends Model
     }
 
     public static function judge_send_remind_mail ($article) {
-        // その記録のユーザーの存在確認
         if (User::check_existense_of_user_info ($article->user_id) === 'not_exists') {
             return 'not_send';
         }
 
-        // その記録の存在確認
         if (Article::check_existense_of_article_info($article->id) === 'not_exists') {
             return 'not_send';
         }
             
-        // その記録のメールフラグが「0」かどうかの確認
         if ($article->mail === 0) {
             return 'not_send';
         }
             
-        // その記録の次回リマインド日が本日かどうかの確認
         if ($article->article_mail_timing->next_send_date !== Carbon::today()->toDateString()) {
             return 'not_send';
         }
@@ -560,7 +556,6 @@ class Article extends Model
     }
 
     public static function update_send_date ($article) {
-        // その記録の存在確認
         if (Article::check_existense_of_article_info($article->id) === 'not_exists') {
             return;
         }
