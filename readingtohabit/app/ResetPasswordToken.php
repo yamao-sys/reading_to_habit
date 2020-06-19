@@ -72,4 +72,16 @@ class ResetPasswordToken extends Model
 
         return true;
     }
+    
+    public static function delete_expired_tokens () {
+        $tokens = ResetPasswordToken::get();
+
+        foreach ($tokens as $token) {
+            if ($token->expires < Carbon::now()) {
+                ResetPasswordToken::soft_delete($token->id);
+            }
+        }
+
+        return;
+    }
 }

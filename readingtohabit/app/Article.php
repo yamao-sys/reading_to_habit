@@ -506,4 +506,96 @@ class Article extends Model
 
         return true;
     }
+
+    public static function check_existense_of_article_info ($article_id) {
+        $article = Article::withoutGlobalScopes()
+                          ->where('id', $article_id)
+                          ->where('deleted', 0)
+                          ->first();
+        if (empty($article)) {
+            return 'not_exists';
+        }
+
+        $mail_timing = ArticleMailTiming::where('article_id', $article_id)->first();
+        if (empty($mail_timing)) {
+            return 'not_exists';
+        }
+
+        $mail_timing_master = ArticleMailTimingMaster::where('article_mail_timing_id', $mail_timing['id'])->first();
+        if (empty($mail_timing_master)) {
+            return 'not_exists';
+        }
+
+        $mail_timing_select_master = ArticleMailTimingSelectMaster::where('article_mail_timing_id', $mail_timing['id'])->first();
+        if (empty($mail_timing_select_master)) {
+            return 'not_exists';
+        }
+        
+        return 'exists';
+
+    }
+
+    public static function judge_send_remind_mail ($article) {
+        // その記録のユーザーの存在確認
+        if (User::check_existense_of_user_info ($article->user_id) === 'not_exists') {
+            return 'not_send';
+        }
+
+        // その記録の存在確認
+        if (Article::check_existense_of_article_info($article->id) === 'not_exists') {
+            return 'not_send';
+        }
+            
+        // その記録のメールフラグが「0」かどうかの確認
+        if ($article->mail === 0) {
+            return 'not_send';
+        }
+            
+        // その記録の次回リマインド日が本日かどうかの確認
+        if ($article->article_mail_timing->next_send_date !== Carbon::today()->toDateString()) {
+            return 'not_send';
+        }
+
+        return 'send';       
+    }
+
+    public static function update_send_date ($article) {
+        // その記録の存在確認
+        if (Article::check_existense_of_article_info($article->id) === 'not_exists') {
+            return;
+        }
+
+        $mail_timing_select_master = ArticleMailTimingSelectMaster::where('article_mail_timing_id', $article->article_mail_timing->id)->first();
+        $mail_timing_master        = ArticleMailTimingMaster::where('article_mail_timing_id', $article->article_mail_timing->id)->first();
+        if ($mail_timing_select_master['by_day'] === 1) {
+            ArticleMailTiming::where('article_id', $article->id)
+                             ->update([
+                                'last_send_date' => Carbon::today()->toDateString(),
+                                'next_send_date' => Carbon::today()->addDays(intval($mail_timing_master['by_day']))->toDateString(),
+                             ]);
+        }
+        elseif ($mail_timing_select_master['by_week'] === 1) {
+            ArticleMailTiming::where('article_id', $article->id)
+                             ->update([
+                                'last_send_date' => Carbon::today()->toDateString(),
+                                'next_send_date' => Carbon::today()->addWeeks(intval($mail_timing_master['by_week']))->toDateString(),
+                             ]);
+        }
+        elseif ($mail_timing_select_master['by_month'] === 1) {
+            ArticleMailTiming::where('article_id', $article->id)
+                             ->update([
+                                'last_send_date' => Carbon::today()->toDateString(),
+                                'next_send_date' => Carbon::today()->addMonths(intval($mail_timing_master['by_month']))->toDateString(),
+                             ]);
+        }
+        else {
+            ArticleMailTiming::where('article_id', $article->id)
+                             ->update([
+                                'last_send_date' => Carbon::today()->toDateString(),
+                                'next_send_date' => Carbon::today()->addDays(intval($mail_timing_master['by_day']))->toDateString(),
+                             ]);
+        }
+
+        return;
+    }
 }

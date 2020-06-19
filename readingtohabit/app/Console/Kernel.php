@@ -13,7 +13,8 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        Commands\SendRemindMail::class,
+        Commands\DeleteTokens::class,
     ];
 
     /**
@@ -24,7 +25,13 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->command('send_remind_mail:cron')
+                 ->dailyAt('7:00')
+                 ->sendOutputTo(storage_path('logs/send_remind_mail.log'), true);
+        
+        $schedule->command('delete_tokens:cron')
+                 ->daily()
+                 ->sendOutputTo(storage_path('logs/delete_tokens.log'), true);
     }
 
     /**

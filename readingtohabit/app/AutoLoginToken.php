@@ -38,7 +38,7 @@ class AutoLoginToken extends Model
         }
 
         // 自動ログイン用トークンの有効期限を確認する
-        if ($current_token['expires'] <= Carbon::now()) {
+        if ($current_token['expires'] < Carbon::now()) {
             AutoLoginToken::soft_delete($current_token['id']);
             
             return false;
@@ -101,12 +101,24 @@ class AutoLoginToken extends Model
         }
 
         // 自動ログイン用トークンの有効期限を確認する
-        if ($current_token['expires'] <= Carbon::now()) {
+        if ($current_token['expires'] < Carbon::now()) {
             AutoLoginToken::soft_delete($current_token['id']);
             
             return [];
         }
 
         return $current_token;
+    }
+
+    public static function delete_expired_tokens () {
+        $tokens = AutoLoginToken::get();
+
+        foreach ($tokens as $token) {
+            if ($token->expires < Carbon::now()) {
+                AutoLoginToken::soft_delete($token->id);
+            }
+        }
+
+        return;
     }
 }
