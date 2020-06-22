@@ -4,6 +4,9 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 
+use App\AutoLoginToken;
+use App\ResetPasswordToken;
+
 class DeleteTokens extends Command
 {
     /**
