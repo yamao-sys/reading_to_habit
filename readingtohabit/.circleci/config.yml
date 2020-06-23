@@ -1,0 +1,26 @@
+version: 2
+jobs:
+    build:
+        docker:
+            - image: 173481649355.dkr.ecr.ap-northeast-1.amazonaws.com/web
+              aws_auth:
+                aws_access_key_id: $AWS_ACCESS_KEY_ID
+                aws_secret_access_key: $AWS_SECRET_ACCESS_KEY
+        working_directory: /usr/local/bin
+        environment:
+            COMPOSER_URL: https://getcomposer.org/installer
+            DOMPOSER_PATH: /usr/local/bin/composer
+            DOCUMET_ROOT: /var/www/html
+            PROJECT_PATH: /var/www/html/readingtohabit/readingtohabit
+            UNITTEST_PATH: vendor/bin/phpunit
+        
+        steps:
+            - run: curl -sS $COMPOSER_URL | php
+            - run: mv composer.phar $COMPOSER_PATH
+            - run: cd $DOCUMENT_ROOT
+            - checkout
+            - run: cd $PROJECT_PATH
+            - run: composer install
+            - run: php artisan config:cache
+            - run: $UNITTEST_PATH
+
