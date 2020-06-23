@@ -13,20 +13,17 @@ jobs:
       - run:
           name: Docker php extensions install
           command: sudo docker-php-ext-install pdo_mysql
-      #- restore_cache:
-       #   keys:
-        #    - v1-dependencies-{{ checksum "composer.json" }}
-         #   - v1-dependencies-
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
+            - v1-dependencies-
       - run:
-          name: install composer
-          #command: sudo curl -sS https://getcomposer.org/installer | php; mv composer.phar /usr/local/bin/composer
-          command: ls -la
-      #- run:
-       #   name: Install PHP libraries
-        #  command: composer install -n --prefer-dist
-      #- save_cache:
-       #   paths:
-        ## key: v1-dependencies-{{ checksum "composer.json" }}
-      #- run:
-       #   name: Run PHPUnit
-        #  command: vendor/bin/phpunit
+          name: Install PHP libraries
+          command: composer install -n --prefer-dist --working-dir=./readingtohabit
+      - save_cache:
+          paths:
+            - ./readingtohabit/vendor
+          key: v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
+      - run:
+          name: Run PHPUnit
+          command: ./readingtohabit/vendor/bin/phpunit
