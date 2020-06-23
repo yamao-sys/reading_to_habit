@@ -17,6 +17,7 @@ jobs:
       - checkout
 
       - run: sudo docker-php-ext-install pdo_mysql
+      - run: sudo timedatectl set-timezone Asia/Tokyo
 
       - restore_cache:
           keys:
