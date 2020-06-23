@@ -3,14 +3,17 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.3-apache-node-browsers
+        environment: 
+            TZ: "Asia/Tokyo"
       - image: circleci/mysql:5.7
+        environment: 
+            TZ: "Asia/Tokyo"
 
     environment:
       - APP_DEBUG: true
       - APP_ENV: testing
       - DB_CONNECTION: circle_test
       - MYSQL_ALLOW_EMPTY_PASSWORD: true
-      - TZ: "Asia/Tokyo"
 
     working_directory: ~/repo
 
