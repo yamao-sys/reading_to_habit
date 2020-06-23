@@ -26,6 +26,8 @@ jobs:
           key: v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
       - run:
           name: clear cache
+          paths:
+            - ./readingtohabit
           command: php artisan config:clear
       - run:
           name: Run PHPUnit
