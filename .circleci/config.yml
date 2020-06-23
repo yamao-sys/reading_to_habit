@@ -25,5 +25,8 @@ jobs:
             - ./readingtohabit/vendor
           key: v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
       - run:
+          name: clear cache
+          command: php artisan config:clear
+      - run:
           name: Run PHPUnit
           command: ./readingtohabit/vendor/bin/phpunit ./readingtohabit/tests/Feature/RegisterUserCheckTest.php
