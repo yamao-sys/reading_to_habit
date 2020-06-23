@@ -159,7 +159,7 @@ class AddArticleDoTest extends TestCase
     }
     
     public function dataproviderValid () {
-        $bookimg  = 'http://readingtohabit.develop.jp/img/好きなことが天職になる心理学.jpg';
+        $bookimg  = 'https://www.photolibrary.jp/mhd3/img675/450-20190305105900243712.jpg';
         $bookname = 'Readingtohabit開発';
         $author   = '山内敬太';
         $learning = '学んだこと';
