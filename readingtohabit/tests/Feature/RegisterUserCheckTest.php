@@ -52,6 +52,7 @@ class RegisterUserCheckTest extends TestCase
      * @param array フォーム項目名 => 値
      * @dataProvider dataproviderExample
      */
+    /*
     public function testRegisterUserView($data, $error_msg)
     {
         $response = $this->post('register_user_check', $data);
@@ -87,6 +88,7 @@ class RegisterUserCheckTest extends TestCase
                      ->assertViewHas('register_user_info', $register_user_info);
         }
     }
+    */
 
     /**
      * dataprovider
