@@ -19,6 +19,10 @@ jobs:
 
       - run: sudo docker-php-ext-install pdo_mysql
 
+      - run: |
+          # TimezoneをAsia/Tokyoへ変更する
+          sudo ln -fs /usr/share/zoneinfo/Asia/Tokyo /etc/localtime &&
+          sudo dpkg-reconfigure -f noninteractive tzdata
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
