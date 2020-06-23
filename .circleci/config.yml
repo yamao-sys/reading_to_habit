@@ -10,6 +10,7 @@ jobs:
       - APP_ENV: testing
       - DB_CONNECTION: circle_test
       - MYSQL_ALLOW_EMPTY_PASSWORD: true
+      - TZ: Asia/Tokyo
 
     working_directory: ~/repo
 
@@ -17,7 +18,6 @@ jobs:
       - checkout
 
       - run: sudo docker-php-ext-install pdo_mysql
-      - run: sudo timedatectl set-timezone Asia/Tokyo
 
       - restore_cache:
           keys:
