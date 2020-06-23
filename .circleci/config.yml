@@ -26,4 +26,4 @@ jobs:
           key: v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
       - run:
           name: Run PHPUnit
-          command: ./readingtohabit/vendor/bin/phpunit
+          command: ./readingtohabit/vendor/bin/phpunit .readingtohabit/tests/Feature/RegisterUserCheckTest.php
