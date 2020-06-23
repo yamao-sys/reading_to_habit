@@ -3,7 +3,17 @@ jobs:
   build:
     docker:
       - image: circleci/php:7.3-node-browsers
+        environment:
+          - APP_DEBUG: true
+          - APP_ENV: testing
+          - DB_CONNECTION: mysql
+          - DB_DATABASE: laravel
+          - DB_USERNAME: root
       - image: circleci/mysql:5.7
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD: true
+          - MYSQL_DATABASE: laravel
+          - MYSQL_ROOT_HOST: '%'
     working_directory: ~/ci-demo
     steps:
       - checkout
@@ -12,7 +22,7 @@ jobs:
           command: sudo apt-get update
       - run:
           name: Docker php extensions install
-          command: sudo docker-php-ext-install pdo_mysql
+          command: sudo docker-php-ext-install zip pdo_mysql
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
@@ -25,5 +35,8 @@ jobs:
             - ./readingtohabit/vendor
           key: v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
       - run:
+          name: generate app_key
+          command: cd ./readingtohabit; echo "APP_KEY=" > .env; php artisan key:generate
+      - run:
           name: Run PHPUnit
-          command: cd ./readingtohabit; php artisan config:clear; vendor/bin/phpunit tests/Feature/RegisterUserCheckTest.php
+          command: php artisan config:clear; php artisan migrate; vendor/bin/phpunit tests/Feature/RegisterUserCheckTest.php
