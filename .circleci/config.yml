@@ -2,29 +2,14 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/php:7.3-node-browsers
-        environment:
-          - APP_DEBUG: true
-          - APP_ENV: testing
-          - DB_CONNECTION: mysql
-          - DB_HOST: 127.0.0.1
-          - DB_DATABASE: readingtohabit_test
-          - DB_USERNAME: root
+      - image: 173481649355.dkr.ecr.ap-northeast-1.amazonaws.com/web:latest
+        aws_auth:
+            aws_access_key_id: AKIASQZCP4TFY6OXIRPX
+            aws_secret_access_key: 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
 
-      - image: circleci/mysql:5.7
-        environment:
-          - MYSQL_ALLOW_EMPTY_PASSWORD: true
-          - MYSQL_DATABASE: readingtohabit_test
-
-    working_directory: ~/ci-demo
+    working_directory: /var/www/html
     steps:
       - checkout
-      - run:
-          name: Update apt-get
-          command: sudo apt-get update
-      - run:
-          name: Docker php extensions install
-          command: sudo docker-php-ext-install zip pdo_mysql
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
