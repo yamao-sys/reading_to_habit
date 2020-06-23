@@ -2,28 +2,40 @@ version: 2
 jobs:
   build:
     docker:
-      - image: 173481649355.dkr.ecr.ap-northeast-1.amazonaws.com/web:latest
-        aws_auth:
-            aws_access_key_id: AKIASQZCP4TFY6OXIRPX
-            aws_secret_access_key: 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
+      - image: circleci/php:7.3-apache-node-browsers
+      - image: circleci/mysql:5.7
 
-    working_directory: /var/www/html
+    environment:
+      - APP_DEBUG: true
+      - APP_ENV: testing
+      - DB_CONNECTION: circle_test
+      - MYSQL_ALLOW_EMPTY_PASSWORD: true
+
+    working_directory: ~/repo
+
     steps:
       - checkout
+
+      - run: sudo docker-php-ext-install pdo_mysql
+
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
             - v1-dependencies-
+
       - run:
           name: Install PHP libraries
           command: composer install -n --prefer-dist --working-dir=./readingtohabit
+      
       - save_cache:
           paths:
             - ./readingtohabit/vendor
           key: v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
+      
       - run:
           name: generate app_key
           command: cd ./readingtohabit; echo "APP_KEY=" > .env.testing; php artisan key:generate
+      
       - run:
           name: Run PHPUnit
           command: cd ./readingtohabit; php artisan config:clear; vendor/bin/phpunit tests/Feature/RegisterUserCheckTest.php
