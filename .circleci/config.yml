@@ -7,11 +7,14 @@ jobs:
           - APP_DEBUG: true
           - APP_ENV: testing
           - DB_CONNECTION: mysql
-          - DB_HOST: sample-rds.cefqztidvoja.ap-northeast-1.rds.amazonaws.com
           - DB_DATABASE: readingtohabit_test
           - DB_USERNAME: root
-          - DB_PASSWORD: Fipbz8ys;
+
       - image: circleci/mysql:5.7
+        environment:
+          - MYSQL_ALLOW_EMPTY_PASSWORD: true
+          - MYSQL_DATABASE: readingtohabit_test
+
     working_directory: ~/ci-demo
     steps:
       - checkout
