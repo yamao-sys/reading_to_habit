@@ -18,6 +18,9 @@ jobs:
         #    - v1-dependencies-{{ checksum "composer.json" }}
          #   - v1-dependencies-
       - run:
+          command: sudo curl -sS https://getcomposer.org/installer | php
+          command: mv composer.phar /usr/local/bin/composer
+      - run:
           name: Install PHP libraries
           command: composer install -n --prefer-dist
       - save_cache:
