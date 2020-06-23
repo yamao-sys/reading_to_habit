@@ -18,6 +18,7 @@ jobs:
         #    - v1-dependencies-{{ checksum "composer.json" }}
          #   - v1-dependencies-
       - run:
+          name: install composer
           command: sudo curl -sS https://getcomposer.org/installer | php
           command: mv composer.phar /usr/local/bin/composer
       - run:
