@@ -36,7 +36,7 @@ jobs:
           key: v1-dependencies-{{ checksum "./readingtohabit/composer.json" }}
       - run:
           name: generate app_key
-          command: cd ./readingtohabit; echo "APP_KEY=" > .env; php artisan key:generate
+          command: cd ./readingtohabit; echo "APP_KEY=" > .env.testing; php artisan key:generate
       - run:
           name: Run PHPUnit
           command: cd ./readingtohabit; php artisan config:clear; vendor/bin/phpunit tests/Feature/RegisterUserCheckTest.php
