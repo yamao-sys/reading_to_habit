@@ -2,7 +2,7 @@ version: 2
 jobs:
     build:
         docker:
-            - image: 173481649355.dkr.ecr.ap-northeast-1.amazonaws.com/web
+            - image: 173481649355.dkr.ecr.ap-northeast-1.amazonaws.com/org/web:latest
               aws_auth:
                 aws_access_key_id: AKIASQZCP4TFY6OXIRPX
                 aws_secret_access_key: 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
