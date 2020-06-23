@@ -39,4 +39,4 @@ jobs:
           command: cd ./readingtohabit; echo "APP_KEY=" > .env; php artisan key:generate
       - run:
           name: Run PHPUnit
-          command: cd ./readingtohabit; php artisan config:clear; php artisan migrate; vendor/bin/phpunit tests/Feature/RegisterUserCheckTest.php
+          command: cd ./readingtohabit; php artisan config:clear; vendor/bin/phpunit tests/Feature/RegisterUserCheckTest.php
