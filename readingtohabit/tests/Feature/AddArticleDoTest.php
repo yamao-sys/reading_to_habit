@@ -172,9 +172,9 @@ class AddArticleDoTest extends TestCase
         $mail_timing_by_day   = '3';
         $mail_timing_by_week  = '1';
         $mail_timing_by_month = '1';
-        $next_send_date_by_day   = Carbon::now()->addDays(intval($mail_timing_by_day))->toDateString();
-        $next_send_date_by_week  = Carbon::now()->addWeeks(intval($mail_timing_by_week))->toDateString();
-        $next_send_date_by_month = Carbon::now()->addMonths(intval($mail_timing_by_month))->toDateString();
+        $next_send_date_by_day   = Carbon::today()->addDays(intval($mail_timing_by_day))->toDateString();
+        $next_send_date_by_week  = Carbon::today()->addWeeks(intval($mail_timing_by_week))->toDateString();
+        $next_send_date_by_month = Carbon::today()->addMonths(intval($mail_timing_by_month))->toDateString();
         
         $data['test1'] = [
                             'bookimg'   => $bookimg,
