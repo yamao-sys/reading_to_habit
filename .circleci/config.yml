@@ -10,7 +10,7 @@ jobs:
       - APP_ENV: testing
       - DB_CONNECTION: circle_test
       - MYSQL_ALLOW_EMPTY_PASSWORD: true
-      - TZ: Asia/Tokyo
+      - TZ: /usr/share/zoneinfo/Asia/Tokyo
 
     working_directory: ~/repo
 
