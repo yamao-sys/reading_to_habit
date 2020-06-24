@@ -2,7 +2,7 @@
     <div class="menu_head">
         <div class="menu_profile_img_area">
             <div class="menu_profile_img_content">
-                <img src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{session()->get('profile_img')}}?{{session()->get('current_date')}}" class="menu_profile_img object-fit-img" />
+                <img src="{{session()->get('profile_img')}}?{{session()->get('current_date')}}" class="menu_profile_img object-fit-img" />
             </div>
         </div>
         <div class="menu_add_article_area">

@@ -40,7 +40,7 @@
     <div class="content">
         <div class="show_article_bookimg_area">
             <div class="show_article_bookimg_content">
-                <img class="show_article_bookimg" src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$book_info['bookimg']}}">
+                <img class="show_article_bookimg" src="{{$book_info['bookimg']}}">
             </div>
         </div>
         <div class="show_article_book_detail">

@@ -11,6 +11,7 @@ use App\Http\Requests\ArticleRequest;
 use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
+use Storage;
 
 class Article extends Model
 {
@@ -108,6 +109,8 @@ class Article extends Model
             $article_mail_timing->article_mail_timing_master()->create($mail_timing_master);
 
             $article_mail_timing->article_mail_timing_select_master()->create($mail_timing_select_master);
+
+            Article::store_bookimg($request->bookimg, $created_article['id']);       
         }
         catch (Exception $e) {
             DB::rollback();
@@ -140,11 +143,12 @@ class Article extends Model
             }
         }
         else {
-            $img = file_get_contents($bookimg_url);
+            $img  = file_get_contents($bookimg_url);
             file_put_contents(\ImgPathConst::IMG_ABSOLUTE_PATH.$article_id.'.jpg', $img);
+            $path = Storage::disk('s3')->putFile('bookimg', \ImgPathConst::IMG_ABSOLUTE_PATH.$article_id.'.jpg', 'public');
 
             try {
-                Article::where('id', $article_id)->update(['bookimg' => \ImgPathConst::IMG_PATH.$article_id.'.jpg']);
+                Article::where('id', $article_id)->update(['bookimg' => Storage::disk('s3')->url($path)]);
             }
             catch (Exception $e) {
                 return false;

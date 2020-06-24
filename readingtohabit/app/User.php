@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 
 use Carbon\Carbon;
+use Storage;
 
 class User extends Authenticatable
 {
@@ -179,11 +180,7 @@ class User extends Authenticatable
     }
 
     public static function edit_profile_including_img (Request $request) {
-        $profile_img_name = 'profile_img_'.$request->session()->get('user_id').'.jpg';
-        
-        $request->profile_img->storeAs('img', $profile_img_name, 'public_uploads');
-        
-        $profile_img_path = \ImgPathConst::IMG_PATH.$profile_img_name;
+        $path = Storage::disk('s3')->putFile('profile_img', $request->file('profile_img'), 'public');
         
         DB::beginTransaction();
         try {
@@ -191,7 +188,7 @@ class User extends Authenticatable
                 ->update([
                           'name'  => $request->name,
                           'email' => $request->email,
-                          'profile_img' => $profile_img_path,
+                          'profile_img' => Storage::disk('s3')->url($path),
                           'updated_at'  => Carbon::now(),
                          ]);
         }

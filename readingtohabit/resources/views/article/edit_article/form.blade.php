@@ -8,7 +8,7 @@
         {{ csrf_field() }}
         <div class="edit_article_bookimg_area">
             <div class="edit_article_bookimg_content">
-                <img class="edit_article_bookimg" src="{{\DocumentRootConst::DOCUMENT_ROOT}}{{$article_info['bookimg']}}">
+                <img class="edit_article_bookimg" src="{{$article_info['bookimg']}}">
             </div>
         </div>
         <div class="edit_article_book_detail">

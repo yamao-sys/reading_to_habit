@@ -76,10 +76,6 @@ class ArticleController extends Controller
             return view('common.fail');
         }
 
-        if (Article::store_bookimg($request->bookimg, $created_article['id']) === false) {
-            return view('common.fail');
-        }
-
         return redirect()->secure('articles');
     }
 
