@@ -10,20 +10,16 @@
 読書記録のリマインドメールをお送りいたします。<br>
 読書で学んだことが自身の行動に活かされているかをチェックしましょう!
 </div>
-<br>
-<div>
-----------------------<br>
-◆書籍名<br>
-&emsp;{{ $bookname }}<br><br>
+<pre>----------------------
+◆書籍名
+{{ $bookname }}
 
-◆学んだこと<br>
-&emsp;{{ $learning }}<br><br>
+◆学んだこと
+{{ $learning }}
 
-◆どのように行動に活かすか<br>
-&emsp;{{ $action }}<br><br>
-----------------------
-</div>
-<br>
+◆どのように行動に活かすか
+{{ $action }}
+----------------------</pre>
 <div>
 ログインは下記のURLから<br>
 <a href="{{\DocumentRootConst::DOCUMENT_ROOT}}login">{{\DocumentRootConst::DOCUMENT_ROOT}}login</a>
