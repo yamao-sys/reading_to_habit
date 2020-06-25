@@ -92,7 +92,7 @@ class UserController extends Controller
     }
 
     public function delete_user_do (Request $request) {
-        if (User::soft_delete_user() && User::soft_delete_articles()) {
+        if (User::soft_delete_user()) {
             $request->session()->flush();
 
             return json_encode(['is_success' => true]);

@@ -105,7 +105,8 @@ class ResetPasswordMailDoTest extends TestCase
      */
     public function testResetPasswordMailDoAccess () {
         $response_get = $this->get('reset_password_mail_do');
-        $response_get->assertStatus(405);
+        $response_get->assertStatus(200)
+                     ->assertViewIs('common.invalid');
 
         $response_put = $this->put('reset_password_mail_do');
         $response_put->assertStatus(405);

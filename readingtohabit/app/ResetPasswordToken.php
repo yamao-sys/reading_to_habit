@@ -4,6 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+
+use Illuminate\Support\Facades\Mail;
+use App\Mail\ResetPassword;
+
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 class ResetPasswordToken extends Model
@@ -27,7 +32,25 @@ class ResetPasswordToken extends Model
                           ->update(['deleted' => 1, 'deleted_at' => date('Y-m-d H:i:s')]);
     }
 
-    public static function create_token ($user_id) {
+    public static function create_token ($user) {
+        DB::beginTransaction();
+        try {
+            do {
+                $token = ResetPasswordToken::try_to_create_token($user['id']);
+            } while ($token === 'duplicate_error');
+            
+            Mail::to($user['email'])->send(new ResetPassword($token));
+        }
+        catch (Exception $e) {
+            DB::rollback();
+            return [];
+        }
+        DB::commit();
+
+        return $token;
+    }
+
+    public static function try_to_create_token ($user_id) {
         $token = str_random(50);
 
         try {

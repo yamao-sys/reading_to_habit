@@ -14,7 +14,6 @@ use App\Http\Requests\ResendMailRequest;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Mail\SuccessRegisterUser;
 use App\Mail\ResendMail;
 
 class registerUserController extends Controller
@@ -88,8 +87,6 @@ class registerUserController extends Controller
             $request->session()->flush();
             return view('common.fail');
         }
-
-        Mail::to($email)->send(new SuccessRegisterUser($name,$email));
 
         $request->session()->flush();
         return view('register_user.finish');

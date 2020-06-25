@@ -33,14 +33,14 @@ class ResetPasswordDoTest extends TestCase
     {
         $token_before_expires_3h = str_random(50);
 
-        factory(User::class)->create(['id' => 1, 'deleted' => 1]);
+        factory(User::class)->create(['id' => 1]);
         factory(ResetPasswordToken::class)->create([
             'user_id' => 1,
             'token' => $token_before_expires_3h,
             'expires' => Carbon::now()->addHours(3),
         ]);
 
-        $response = $this->withoutExceptionHandling()->post('reset_password_do?key='.$token_before_expires_3h, $data);
+        $response = $this->post('reset_password_do?key='.$token_before_expires_3h, ['password' => $data['password'], 'password_to_check' => $data['password_to_check']]);
 
         if (empty($error_msg['password']) && empty($error_msg['password_to_check'])) {
             $response->assertRedirect('')
@@ -165,7 +165,8 @@ class ResetPasswordDoTest extends TestCase
         */
 
         $modified_password = User::where('id', 1)->first()['password'];
-        $this->assertSame(password_verify($data['password'], $modified_password), true);
+        // $this->assertSame(password_verify($data['password'], $modified_password), true);
+        $this->assertSame(Hash::check($data['password'], $modified_password), true);
 
         $this->assertDatabaseHas('reset_password_tokens', [
             'token' => $token_expires_now,
@@ -442,25 +443,25 @@ class ResetPasswordDoTest extends TestCase
                                 'password_to_check' => $error['password_to_check.same'],
                               ];
 
-        $data['test5'] = ['password' => $password_including_sign, 'pasword_to_check' => $password_including_sign,];
+        $data['test5'] = ['password' => $password_including_sign, 'password_to_check' => $password_including_sign,];
         $error_msg['test5'] = [
                                 'password' => $error['password.regex'],
                                 'password_to_check' => '',
                               ];
 
-        $data['test6'] = ['password' => $password_including_kana, 'pasword_to_check' => $password_including_kana,];
+        $data['test6'] = ['password' => $password_including_kana, 'password_to_check' => $password_including_kana,];
         $error_msg['test6'] = [
                                 'password' => $error['password.regex'],
                                 'password_to_check' => '',
                               ];
 
-        $data['test7'] = ['password' => $password_5_chars, 'pasword_to_check' => $password_5_chars,];
+        $data['test7'] = ['password' => $password_5_chars, 'password_to_check' => $password_5_chars,];
         $error_msg['test7'] = [
                                 'password' => $error['password.regex'],
                                 'password_to_check' => '',
                               ];
 
-        $data['test8'] = ['password' => $password_13_chars, 'pasword_to_check' => $password_13_chars,];
+        $data['test8'] = ['password' => $password_13_chars, 'password_to_check' => $password_13_chars,];
         $error_msg['test8'] = [
                                 'password' => $error['password.regex'],
                                 'password_to_check' => '',

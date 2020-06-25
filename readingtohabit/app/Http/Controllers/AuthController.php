@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\LoginRequest;
 use Illuminate\Http\Response;
 use Illuminate\Database\Eloquent\Model;
+
+use Illuminate\Support\Facades\Hash;
 use Carbon\Carbon;
 
 class AuthController extends Controller
@@ -43,7 +45,7 @@ class AuthController extends Controller
         // 入力値のメールアドレス・パスワードに相当するユーザーの存在確認をする
         $auth_user = User::where('email', $request->email)->first();
 
-        if (empty($auth_user) || password_verify($request->password, $auth_user['password']) === false) {
+        if (empty($auth_user) || Hash::check($request->password, $auth_user['password']) === false) {
             unset($request->_token);
 
             return back()->withErrors(['is_not_exist' => '存在しないユーザーです。'])

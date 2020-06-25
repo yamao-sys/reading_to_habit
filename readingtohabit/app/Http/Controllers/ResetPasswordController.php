@@ -10,11 +10,11 @@ use App\Http\Requests\ResetPasswordMailRequest;
 use App\Http\Requests\ResetPasswordRequest;
 
 use Illuminate\Support\Facades\Mail;
-use App\Mail\ResetPassword;
 use App\Mail\ResetPasswordFinish;
 
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 
 class ResetPasswordController extends Controller
 {
@@ -26,13 +26,7 @@ class ResetPasswordController extends Controller
             return view('reset_password_mail.finish');
         }
 
-        // パスワードリセット用トークンの生成
-        do {
-            $token = ResetPasswordToken::create_token($user['id']);
-        } while ($token === 'duplicate_error');
-
-        // パスワードリセット用メールの送信
-        Mail::to($user['email'])->send(new ResetPassword($token));
+        $token = ResetPasswordToken::create_token($user);
 
         return view('reset_password_mail.finish');
     }
@@ -63,12 +57,19 @@ class ResetPasswordController extends Controller
         $token = ResetPasswordToken::where('token', $request->input('key'))->first();
         $user  = User::where('id', $token['user_id'])->first();
 
-        User::where('id', $user['id'])->update(['password' => Hash::make($request->password)]);
+        DB::beginTransaction();
+        try {
+            User::where('id', $user['id'])->update(['password' => Hash::make($request->password)]);
 
-        ResetPasswordToken::soft_delete($token['id']);
+            ResetPasswordToken::soft_delete($token['id']);
 
-        Mail::to($user['email'])->send(new ResetPasswordFinish($user['name']));
-
+            Mail::to($user['email'])->send(new ResetPasswordFinish($user['name']));
+        }
+        catch (Exception $e) {
+            DB::rollback();
+        }
+        DB::commit();
+        
         return view('reset_password.finish');
     }
 }

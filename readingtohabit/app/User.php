@@ -14,6 +14,9 @@ use App\ArticleMailTimingSelectMaster;
 
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SuccessRegisterUser;
+
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -103,6 +106,7 @@ class User extends Authenticatable
             $default_mail_timing = $user->default_mail_timing()->create();
             $default_mail_timing->default_mail_timing_master()->create();
             $default_mail_timing->default_mail_timing_select_master()->create();
+            Mail::to($register_user_info['email'])->send(new SuccessRegisterUser($register_user_info['name'],$register_user_info['email']));
         }
         catch (Exception $e) {
             DB::rollback();
@@ -271,6 +275,17 @@ class User extends Authenticatable
         if (empty($default_mail_timing)) {
             return false;
         }
+        
+        $articles = Article::get();
+
+        foreach ($articles as $article) {
+            $article_id[] = $article['id'];
+        }
+
+        $article_mail_timings = ArticleMailTiming::whereIn('article_id', $article_id)->get();
+        foreach ($article_mail_timings as $article_mail_timing) {
+            $article_mail_timing_id[] = $article_mail_timing['id'];
+        }
 
         // 削除
         $delete_info = ['deleted' => 1, 'deleted_at' => Carbon::now()];
@@ -282,6 +297,10 @@ class User extends Authenticatable
             DefaultMailTiming::where('user_id', session()->get('user_id'))->update($delete_info);
             DefaultMailTimingMaster::where('default_mail_timing_id', $default_mail_timing['id'])->update($delete_info);
             DefaultMailTimingSelectMaster::where('default_mail_timing_id', $default_mail_timing['id'])->update($delete_info);
+            Article::where('user_id', session()->get('user_id'))->update($delete_info);
+            ArticleMailTiming::whereIn('article_id', $article_id)->update($delete_info);
+            ArticleMailTimingMaster::whereIn('article_mail_timing_id', $article_mail_timing_id)->update($delete_info);
+            ArticleMailTimingSelectMaster::whereIn('article_mail_timing_id', $article_mail_timing_id)->update($delete_info);
         }
         catch (Exception $e) {
             DB::rollback();
@@ -297,24 +316,10 @@ class User extends Authenticatable
             return true;
         }
         
-        $articles = Article::get();
-
-        foreach ($articles as $article) {
-            $article_id[] = $article['id'];
-        }
-
-        $article_mail_timings = ArticleMailTiming::whereIn('article_id', $article_id)->get();
-        foreach ($article_mail_timings as $article_mail_timing) {
-            $article_mail_timing_id[] = $article_mail_timing['id'];
-        }
         
         $delete_info = ['deleted' => 1, 'deleted_at' => Carbon::now()];
         DB::beginTransaction();
         try {
-            Article::where('user_id', session()->get('user_id'))->update($delete_info);
-            ArticleMailTiming::whereIn('article_id', $article_id)->update($delete_info);
-            ArticleMailTimingMaster::whereIn('article_mail_timing_id', $article_mail_timing_id)->update($delete_info);
-            ArticleMailTimingSelectMaster::whereIn('article_mail_timing_id', $article_mail_timing_id)->update($delete_info);
         }
         catch (Exception $e) {
             DB::rollback();
