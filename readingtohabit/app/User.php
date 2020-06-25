@@ -310,23 +310,4 @@ class User extends Authenticatable
 
         return true;
     }
-    
-    public static function soft_delete_articles () {
-        if (Article::count() === 0) {
-            return true;
-        }
-        
-        
-        $delete_info = ['deleted' => 1, 'deleted_at' => Carbon::now()];
-        DB::beginTransaction();
-        try {
-        }
-        catch (Exception $e) {
-            DB::rollback();
-            return false;
-        }
-        DB::commit();
-
-        return true;
-    }
 }
