@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\ResendMail;
+use App\Mail\SuccessRegisterUser;
 
 class registerUserController extends Controller
 {

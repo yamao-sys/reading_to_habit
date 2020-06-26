@@ -41,4 +41,4 @@ jobs:
       
       - run:
           name: Run PHPUnit
-          command: cd ./readingtohabit; php artisan config:clear; vendor/bin/phpunit tests/Feature/AddArticleDoTest.php
+          command: cd ./readingtohabit; php artisan config:clear; vendor/bin/phpunit

@@ -8,7 +8,12 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
+
 use App\User;
+use App\DefaultMailTiming;
+use App\DefaultMailTimingMaster;
+use App\DefaultMailTimingSelectMaster;
+
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\ResendMailRequest;
 use Illuminate\Http\Response;
@@ -30,9 +35,10 @@ class ResendMailDoTest extends TestCase
 
     public function testResendMailValidation($req, $error_msg)
     {
-        // assert数 4 * 1 = 4
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
+        User::first()->update(['email' => 'yamaopanku@gmail.com']);
 
-        factory(User::class)->create(['email' => 'AAA@BBB.CCC']);
         $request = new ResendMailRequest();
         $rules = $request->rules();
         $messages = $request->messages();
@@ -51,23 +57,26 @@ class ResendMailDoTest extends TestCase
      */
     public function testResendMailDo($req, $error_msg)
     {
-        // assert数 3 * 1 + 1 * 3= 6
         Mail::fake();
 
-        factory(User::class)->create(['email' => 'AAA@BBB.CCC']);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
+        User::first()->update(['email' => 'yamaopanku@gmail.com']);
+        
         $response = $this->post('resend_mail_do', $req);
 
-        $is_none_error = empty($error_msg) ? true : false;
-
-        if ($is_none_error == false) {
-            $response->assertRedirect('');
+        if ($req['email'] !== 'yamaopanku@gmail.com' && empty($req['email'])) {
+            $response->assertSessionHasErrors('email');
         }
-        else {
+        elseif ($req['email'] !== 'yamaopanku@gmail.com' && !empty($req['email'])) {
+            $response->assertViewIs('resend_mail.finish');
+        }
+        elseif ($req['email'] === 'yamaopanku@gmail.com') {
             $email = $req['email'];
             Mail::assertSent(
                     SuccessRegisterUser::class,
                     function ($mail) use ($email){
-                        return $mail->hasTo($email);
+                        return $mail->to[0]['address'] === $email;
                     });
             
             $response->assertStatus(200)
@@ -82,7 +91,8 @@ class ResendMailDoTest extends TestCase
      */
     public function testResendMailDoAccess () {
         $response_get = $this->get('resend_mail_do');
-        $response_get->assertStatus(405);
+        $response_get->assertStatus(200)
+                     ->assertViewIs('common.invalid');
 
         $response_put = $this->put('resend_mail_do');
         $response_put->assertStatus(405);
@@ -105,14 +115,14 @@ class ResendMailDoTest extends TestCase
                 ],
                 [
                     'req' => ['email' => 'xxx@yyy.zzz'],
-                    'error_msg' => 'Readingtohabitに登録されていないメールアドレスです。',
+                    'error_msg' => '',
                 ],
                 [
                     'req' => ['email' => 'aaa@bbb.ccc'],
-                    'error_msg' => 'Readingtohabitに登録されていないメールアドレスです。',
+                    'error_msg' => '',
                 ],
                 [
-                    'req' => ['email' => 'AAA@BBB.CCC'],
+                    'req' => ['email' => 'yamaopanku@gmail.com'],
                     'error_msg' => '',
                 ],
                ];
