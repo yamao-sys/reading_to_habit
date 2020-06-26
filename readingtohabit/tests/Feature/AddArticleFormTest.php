@@ -93,7 +93,7 @@ class AddArticleFormTest extends TestCase
                          ->get('add_article_form?bookimg=/img/noimage.png&bookname=Readingtohabit開発&author=山内敬太');
         
 
-        $response->assertRedirect('https://127.0.0.1/top');
+        $response->assertRedirect('https://localhost/top');
         // $response->assertStatus(200);
     }
     

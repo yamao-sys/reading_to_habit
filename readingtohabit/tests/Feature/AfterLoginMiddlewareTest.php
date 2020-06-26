@@ -33,7 +33,7 @@ class AfterLoginMiddlewareTest extends TestCase
     {
         $response = $this->get('articles');
 
-        $response->assertRedirect('https://127.0.0.1/login');
+        $response->assertRedirect('https://localhost/login');
     }
 
     /**
@@ -63,7 +63,7 @@ class AfterLoginMiddlewareTest extends TestCase
                          ->withCookie('auto_login', $invalid_token)
                          ->get('articles');
 
-        $response->assertRedirect('https://127.0.0.1/login');
+        $response->assertRedirect('https://localhost/login');
     }
     
     /**
@@ -92,7 +92,7 @@ class AfterLoginMiddlewareTest extends TestCase
                          ->withCookie('auto_login', $token['token'])
                          ->get('articles');
         
-        $response->assertRedirect('https://127.0.0.1/login');
+        $response->assertRedirect('https://localhost/login');
     }
     
     /**
@@ -120,7 +120,7 @@ class AfterLoginMiddlewareTest extends TestCase
                          ->withCookie('auto_login', AutoLoginToken::first()['token'])
                          ->get('articles');
         
-        $response->assertRedirect('https://127.0.0.1/login');
+        $response->assertRedirect('https://localhost/login');
     }
     
     /**
@@ -148,7 +148,7 @@ class AfterLoginMiddlewareTest extends TestCase
                          ->withCookie('auto_login', AutoLoginToken::first()['token'])
                          ->get('articles');
         
-        $response->assertRedirect('https://127.0.0.1/login');
+        $response->assertRedirect('https://localhost/login');
     }
     
     /**
@@ -178,7 +178,7 @@ class AfterLoginMiddlewareTest extends TestCase
                          ->withCookie('auto_login', AutoLoginToken::first()['token'])
                          ->get('articles');
         
-        $response->assertRedirect('https://127.0.0.1/login');
+        $response->assertRedirect('https://localhost/login');
     }
     
     /**
@@ -287,7 +287,7 @@ class AfterLoginMiddlewareTest extends TestCase
                          ->withSession(['user_id' => $user['id'], 'profile_img' => $user['profile_img']])
                          ->get('articles');
         
-        $response->assertRedirect('https://127.0.0.1/top')
+        $response->assertRedirect('https://localhost/top')
                  ->assertSessionMissing('user_id')
                  ->assertSessionMissing('profile_img');
     }

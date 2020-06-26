@@ -72,7 +72,7 @@ class LoginTest extends TestCase
         ]);
 
         // 新しいトークンのクッキー付きでarticlesへリダイレクトされている
-        $response->assertRedirect('https://127.0.0.1/articles')
+        $response->assertRedirect('https://localhost/articles')
                  ->assertCookie('auto_login', $new_token_record['token'])
                  ->assertCookieNotExpired('auto_login');
     }
@@ -118,7 +118,7 @@ class LoginTest extends TestCase
         ]);
 
         // 新しいトークンのクッキー付きでarticlesへリダイレクトされている
-        $response->assertRedirect('https://127.0.0.1/articles')
+        $response->assertRedirect('https://localhost/articles')
                  ->assertCookie('auto_login', $new_token_record['token'])
                  ->assertCookieNotExpired('auto_login');
     }
@@ -577,7 +577,7 @@ class LoginTest extends TestCase
         ]);
 
         // 新しいトークンのクッキー付きでarticlesへリダイレクトされている
-        $response4->assertRedirect('https://127.0.0.1/articles')
+        $response4->assertRedirect('https://localhost/articles')
                   ->assertCookie('auto_login', $new_token_record['token'])
                   ->assertCookieNotExpired('auto_login');
 
@@ -590,7 +590,7 @@ class LoginTest extends TestCase
         ]);
 
         // 新しいトークンのクッキーなしでarticlesへリダイレクトされている
-        $response5->assertRedirect('https://127.0.0.1/articles')
+        $response5->assertRedirect('https://localhost/articles')
                   ->assertCookieMissing('auto_login');   
     }
 }
