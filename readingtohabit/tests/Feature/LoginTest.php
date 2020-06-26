@@ -9,6 +9,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Tests\TestCase;
 
 use App\User;
+use App\DefaultMailTimingMaster;
+use App\DefaultMailTimingSelectMaster;
 use App\AutoLoginToken;
 
 use App\Http\Requests\LoginRequest;
@@ -31,71 +33,78 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod1()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
+        $user = User::first();
         factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
-            'token' => $token,
-            'expires' => Carbon::now()->addSeconds(1),
+            'user_id' => $user['id'],
+            'token'   => $token,
+            'expires' => Carbon::now('Asia/Tokyo')->addSeconds(1),
         ]);
 
-        $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
+        $response = $this->withCookie('auto_login', $token)->get('login');
 
         // 現在のトークンが論理削除されている
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $token,
             'deleted'    => 1,
         ]);
 
         // 新しいトークンがDBに作成されている
-        $new_expires_date = Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS);
+        $new_expires_date = Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS);
         $new_token_record = AutoLoginToken::where('expires', $new_expires_date)->first();
-
+        $new_token_record = AutoLoginToken::where('deleted', 0)->first();
+        
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'expires'    => $new_expires_date,
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
-
+        
         // レスポンスにセッション変数を含んでいる
         $response->assertSessionHasAll([
-            'user_id'    => $user_id,
-            'profile_img'  => User::where('id', $user_id)->first()['profile_img'],
+            'user_id'      => $user['id'],
+            'profile_img'  => $user['profile_img'],
         ]);
 
         // 新しいトークンのクッキー付きでarticlesへリダイレクトされている
-        $response->assertRedirect('articles')
+        $response->assertRedirect('https://127.0.0.1/articles')
                  ->assertCookie('auto_login', $new_token_record['token'])
                  ->assertCookieNotExpired('auto_login');
     }
 
     public function testLoginGetMethod2()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
-        factory(AutoLoginToken::class)->create(['user_id' => $user_id, 'token' => $token]);
+        $user = User::first();
+        factory(AutoLoginToken::class)->create([
+            'user_id' => $user['id'],
+            'token'   => $token,
+            'expires' => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+        ]);
 
         $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
 
         // 現在のトークンが論理削除されている
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $token,
             'deleted'    => 1,
         ]);
 
         // 新しいトークンがDBに作成されている
-        $new_expires_date = Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS);
+        $new_expires_date = Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS);
         $new_token_record = AutoLoginToken::where('expires', $new_expires_date)->first();
 
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $new_token_record['token'],
             'expires'    => $new_expires_date,
             'deleted'    => 0,
@@ -104,12 +113,12 @@ class LoginTest extends TestCase
 
         // レスポンスにセッション変数を含んでいる
         $response->assertSessionHasAll([
-            'user_id'    => $user_id,
-            'profile_img'  => User::where('id', $user_id)->first()['profile_img'],
+            'user_id'      => $user['id'],
+            'profile_img'  => $user['profile_img'],
         ]);
 
         // 新しいトークンのクッキー付きでarticlesへリダイレクトされている
-        $response->assertRedirect('articles')
+        $response->assertRedirect('https://127.0.0.1/articles')
                  ->assertCookie('auto_login', $new_token_record['token'])
                  ->assertCookieNotExpired('auto_login');
     }
@@ -122,28 +131,30 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod3()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create([
-            'id'         => $user_id,
-            'deleted'    => 1,
-        ]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
-        factory(AutoLoginToken::class)->create(['user_id' => $user_id, 'token' => $token]);
+        $user = User::first();
+        User::first()->update(['deleted' => 1]);
 
-        $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
+        $token = str_random(255);
+        factory(AutoLoginToken::class)->create(['user_id' => $user['id'], 'token' => $token]);
+
+        $response = $this->withCookie('auto_login', $token)->get('login');
 
         // 現在のトークンが論理削除されている
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $token,
             'deleted'    => 1,
         ]);
 
         // 新規トークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id' => $user_id,
-            'expires' => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS)
+            'user_id' => $user['id'],
+            'expires' => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'deleted' => 0,
         ]);
 
         // レスポンスにセッション変数を含んでいない
@@ -163,15 +174,16 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod4()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create([
-            'id'         => $user_id,
-            'deleted'    => 1,
-        ]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
+
+        $token = str_random(255);
+        $user = User::first();
+        User::first()->update(['deleted' => 1]);
 
         $token = str_random(255);
         factory(AutoLoginToken::class)->create([
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $token,
             'deleted'    => 1,
         ]);
@@ -180,10 +192,9 @@ class LoginTest extends TestCase
 
         // 新規トークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
-            'deleted_at' => null,
         ]);
 
         // レスポンスにセッション変数を含んでいない
@@ -203,67 +214,30 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod5()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
+        $user = User::first();
         factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
+            'user_id' => $user['id'],
             'token' => $token,
-            'expires' => Carbon::now(),
+            'expires' => Carbon::now('Asia/Tokyo')->subSeconds(1),
         ]);
 
         $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
         
         // 現在のトークンが論理削除されている
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $token,
             'deleted'    => 1,
         ]);
 
         // 新規のトークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
-            'deleted'    => 0,
-            'deleted_at' => null,
-        ]);
-
-        // レスポンスにセッション変数を含んでいない
-        $response->assertSessionMissing('user_id')
-                 ->assertSessionMissing('profile_img');
-
-        // クッキーなしでauth.loginが表示されている
-        $response->assertViewIs('auth.login')
-                 ->assertCookieMissing('auto_login');
-    }
-
-    public function testLoginGetMethod6()
-    {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
-
-        $token = str_random(255);
-        factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
-            'token'   => $token,
-            'expires' => Carbon::now()->subSeconds(1),
-        ]);
-
-        $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
-
-        // 現在のトークンが論理削除されている
-        $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'token'      => $token,
-            'deleted'    => 1,
-        ]);
-
-        // 新規のトークンが作成されていない
-        $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
@@ -277,31 +251,32 @@ class LoginTest extends TestCase
                  ->assertCookieMissing('auto_login');
     }
     
-    public function testLoginGetMethod7()
+    public function testLoginGetMethod6()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
+        $user = User::first();
         factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
-            'token'   => $token,
-            'expires' => Carbon::now()->subHours(3),
+            'user_id' => $user['id'],
+            'token' => $token,
+            'expires' => Carbon::now('Asia/Tokyo')->subHours(3),
         ]);
 
         $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
-
+        
         // 現在のトークンが論理削除されている
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $token,
             'deleted'    => 1,
         ]);
 
         // 新規のトークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
@@ -323,29 +298,32 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod8()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id, 'deleted' => 1]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
+        $user = User::first();
+        User::first()->update(['deleted' => 1]);
+
         factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
+            'user_id' => $user['id'],
             'token'   => $token,
-            'expires' => Carbon::now()->subHours(3),
+            'expires' => Carbon::now('Asia/Tokyo')->subHours(3),
         ]);
 
         $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
 
         // 現在のトークンが論理削除されている
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $token,
             'deleted'    => 1,
         ]);
 
         // 新規のトークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
@@ -367,22 +345,25 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod9()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
+        $user = User::first();
+
         factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
+            'user_id' => $user['id'],
             'token'   => $token,
-            'expires' => Carbon::now()->subHours(3),
+            'expires' => Carbon::now('Asia/Tokyo')->subHours(3),
+            'deleted' => 1,
         ]);
 
         $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
 
         // 新規のトークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
@@ -404,22 +385,26 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod10()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id, 'deleted' => 1]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
 
         $token = str_random(255);
+        $user = User::first();
+        User::first()->update(['deleted' => 1]);
+
         factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
+            'user_id' => $user['id'],
             'token'   => $token,
-            'expires' => Carbon::now()->subHours(3),
+            'expires' => Carbon::now('Asia/Tokyo')->subHours(3),
+            'deleted' => 1,
         ]);
 
         $response = $this->withoutExceptionHandling()->withCookie('auto_login', $token)->get('login');
 
         // 新規のトークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
@@ -441,14 +426,15 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod11()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
         
         $token = str_random(255);
+        $user = User::first();
         factory(AutoLoginToken::class)->create([
-            'user_id' => $user_id,
+            'user_id' => $user['id'],
             'token'   => $token,
-            'expires' => Carbon::now()->addHours(3),
+            'expires' => Carbon::now('Asia/Tokyo')->addHours(3),
         ]);
 
         do {
@@ -459,8 +445,8 @@ class LoginTest extends TestCase
 
         // 新規のトークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
@@ -482,15 +468,17 @@ class LoginTest extends TestCase
      */
     public function testLoginGetMethod12()
     {
-        $user_id = mt_rand(1, 20);
-        factory(User::class)->create(['id' => $user_id]);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
+        
+        $user = User::first();
         
         $response = $this->withoutExceptionHandling()->get('login');
 
         // 新規のトークンが作成されていない
         $this->assertDatabaseMissing('auto_login_tokens', [
-            'user_id'    => $user_id,
-            'expires'    => Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
+            'user_id'    => $user['id'],
+            'expires'    => Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS),
             'deleted'    => 0,
             'deleted_at' => null,
         ]);
@@ -508,7 +496,7 @@ class LoginTest extends TestCase
      * postメソッドによるloginへのアクセステスト
      * エラーチェック
      * └　未入力：data1～data3
-     * └　入力値に相当するユーザーがいない：data6～data8
+     * └入力値に相当するユーザーが存在しない:data6～8
      *
      * エラーなし、かつ「自動ログインを許可する」のチェックあり：data4
      *
@@ -517,14 +505,13 @@ class LoginTest extends TestCase
      */
     public function testLoginPostMethod1()
     {
-        $user_id  = mt_rand(1, 20);
+        factory(DefaultMailTimingMaster::class)->create();
+        factory(DefaultMailTimingSelectMaster::class)->create();
+        
         $email    = 'AAA@BBB.CCC';
         $password = str_random(rand(6, 12));
-        factory(User::class)->create([
-            'id'       => $user_id,
-            'email'    => $email,
-            'password' => Hash::make($password),
-        ]);
+        User::first()->update(['email' => $email, 'password' => Hash::make($password)]);
+        $user = User::first();
 
         $data1 = ['email' => '', 'password' => ''];
         $error_msg1 = ['email' => 'メールアドレスは必須項目です。', 'password' => 'パスワードは必須項目です。'];
@@ -561,14 +548,22 @@ class LoginTest extends TestCase
         $data6 = ['email' => $email, 'password' => $different_password];
         $data7 = ['email' => 'aaa@bbb.ccc', 'password' => $password];
         $data8 = ['email' => 'xxx@yyy.zzz', 'password' => $password];
+        $response6 = $this->post('login', $data6);
+        $response6->assertSessionHasErrors('is_not_exist');
+        
+        $response7 = $this->post('login', $data7);
+        $response7->assertSessionHasErrors('is_not_exist');
+        
+        $response8 = $this->post('login', $data8);
+        $response8->assertSessionHasErrors('is_not_exist');
 
         $response4 = $this->withoutExceptionHandling()->post('login', $data4);
         // 新しいトークンがDBに作成されている
-        $new_expires_date = Carbon::now()->addDays(\AutoLoginTokenConst::EXPIRES_DAYS);
+        $new_expires_date = Carbon::now('Asia/Tokyo')->addDays(\AutoLoginTokenConst::EXPIRES_DAYS);
         $new_token_record = AutoLoginToken::where('expires', $new_expires_date)->first();
 
         $this->assertDatabaseHas('auto_login_tokens', [
-            'user_id'    => $user_id,
+            'user_id'    => $user['id'],
             'token'      => $new_token_record['token'],
             'expires'    => $new_expires_date,
             'deleted'    => 0,
@@ -577,12 +572,12 @@ class LoginTest extends TestCase
 
         // レスポンスにセッション変数を含んでいる
         $response4->assertSessionHasAll([
-            'user_id'      => $user_id,
-            'profile_img'  => User::where('id', $user_id)->first()['profile_img'],
+            'user_id'      => $user['id'],
+            'profile_img'  => $user['profile_img'],
         ]);
 
         // 新しいトークンのクッキー付きでarticlesへリダイレクトされている
-        $response4->assertRedirect('articles')
+        $response4->assertRedirect('https://127.0.0.1/articles')
                   ->assertCookie('auto_login', $new_token_record['token'])
                   ->assertCookieNotExpired('auto_login');
 
@@ -595,27 +590,7 @@ class LoginTest extends TestCase
         ]);
 
         // 新しいトークンのクッキーなしでarticlesへリダイレクトされている
-        $response5->assertRedirect('articles')
-                  ->assertCookieMissing('auto_login');
-        
-        /*
-        // エラーあり、元ページへリダイレクトされている
-        $response6 = $this->post('login', $data6);
-
-        $response6->assertSessionHasErrors(['is_not_exist' => '存在しないユーザーです。'])
-                  ->assertCookieMissing('auto_login');
-
-        // エラーあり、元ページへリダイレクトされている
-        $response7 = $this->post('login', $data7);
-        
-        $response7->assertSessionHasErrors(['is_not_exist' => '存在しないユーザーです。'])
-                  ->assertCookieMissing('auto_login');
-
-        // エラーあり、元ページへリダイレクトされている
-        $response8 = $this->post('login', $data8);
-
-        $response8->assertSessionHasErrors(['is_not_exist' => '存在しないユーザーです。'])
-                  ->assertCookieMissing('auto_login');
-        */
+        $response5->assertRedirect('https://127.0.0.1/articles')
+                  ->assertCookieMissing('auto_login');   
     }
 }

@@ -88,12 +88,13 @@ class AddArticleFormTest extends TestCase
         factory(DefaultMailTimingMaster::class)->create();
         factory(DefaultMailTimingSelectMaster::class)->create();
         DefaultMailTiming::where('user_id', User::first()['id'])->update(['deleted' => 1]);
+        
+        $response = $this->withSession(['user_id' => User::first()['id']])
+                         ->get('add_article_form?bookimg=/img/noimage.png&bookname=Readingtohabit開発&author=山内敬太');
+        
 
-        $response = $this->withoutExceptionHandling()
-                         ->withSession(['user_id' => User::first()['id']])
-                         ->get('add_article_form?bookimg='.\ImgPathConst::NOIMG_PATH.'&bookname=Readingtohabit開発&author=山内敬太');
-
-        $response->assertViewIs('common.invalid');
+        $response->assertRedirect('https://127.0.0.1/top');
+        // $response->assertStatus(200);
     }
     
     /**
@@ -108,8 +109,7 @@ class AddArticleFormTest extends TestCase
         factory(DefaultMailTimingMaster::class)->create();
         factory(DefaultMailTimingSelectMaster::class)->create();
         
-        $response = $this->withoutExceptionHandling()
-                         ->withSession(['user_id' => User::first()['id']])
+        $response = $this->withSession(['user_id' => User::first()['id']])
                          ->get('add_article_form?bookimg='.\ImgPathConst::NOIMG_PATH.'&bookname=Readingtohabit開発&author=山内敬太');
 
         $book_info    = [
@@ -119,7 +119,7 @@ class AddArticleFormTest extends TestCase
                         ];
 
         $response->assertViewIs('article.add_article.form')
-                 ->assertViewHasAll(['book_info' => $book_info, 'default_data' => $this->make_default_data(),]);
+                 ->assertViewHasAll(['book_info' => $book_info, 'default_mail_timing_info' => $this->make_default_data(),]);
     }
 
     public function make_default_data() {

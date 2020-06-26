@@ -145,21 +145,17 @@ class AddArticleDoTest extends TestCase
         factory(DefaultMailTimingMaster::class)->create();
         factory(DefaultMailTimingSelectMaster::class)->create();
         
-        $response = $this->withoutExceptionHandling()
-                         ->withSession(['user_id' => User::first()['id']])
+        $response = $this->withSession(['user_id' => User::first()['id']])
                          ->post('add_article_do', $data);
 
         $this->assertDatabaseHas('articles', $inserted['articles']);
         $this->assertDatabaseHas('article_mail_timings', $inserted['article_mail_timings']);
         $this->assertDatabaseHas('article_mail_timing_masters', $inserted['article_mail_timing_masters']);
         $this->assertDatabaseHas('article_mail_timing_select_masters', $inserted['article_mail_timing_select_masters']);
-
-        $this->assertDatabaseHas('articles', ['bookimg' => 'img/'.Article::first()['id'].'.jpg']);
-        // $response->assertRedirect('articles');
     }
     
     public function dataproviderValid () {
-        $bookimg  = 'https://www.photolibrary.jp/mhd3/img675/450-20190305105900243712.jpg';
+        $bookimg  = 'https://readingtohabit-staging-backet.s3-ap-northeast-1.amazonaws.com/book-stack-3964568_640.jpg';
         $bookname = 'Readingtohabit開発';
         $author   = '山内敬太';
         $learning = '学んだこと';
