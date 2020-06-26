@@ -22,19 +22,17 @@ class RegisterUserFormTest extends TestCase
     {
         $response_get_not_has_session = $this->get('register_user_form');
         $response_get_not_has_session->assertStatus(200)
-                                     ->assertViewIs('register_user.form')
-                                     ->assertViewHas('register_user_info', []);
+                                     ->assertViewIs('register_user.form');
 
         $response_get_has_session = $this->withSession($session_register_user_info)
                                          ->get('register_user_form');
         $response_get_has_session->assertStatus(200)
                                  ->assertViewIs('register_user.form')
-                                 ->assertViewHas('register_user_info', $register_user_info);
+                                 ->assertSessionHas($session_register_user_info);
 
 
         $response_post = $this->post('register_user_form');
         $response_post->assertStatus(405);
-        // $this->expectException(MethodNotAllowedHttpException::class);
 
         $response_put = $this->put('register_user_form');
         $response_put->assertStatus(405);

@@ -73,7 +73,8 @@ class RegisterUserDoTest extends TestCase
      */
     public function testRegisterUserDoAccess () {
         $response_get = $this->get('register_user_do');
-        $response_get->assertStatus(405);
+        $response_get->assertStatus(200)
+                     ->assertViewIs('common.invalid');
 
         $response_put = $this->put('register_user_do');
         $response_put->assertStatus(405);

@@ -28,7 +28,7 @@ class RegisterUserFormTest extends TestCase
                                          ->get('register_user_check');
         $response_get_has_session->assertStatus(200)
                                  ->assertViewIs('register_user.check')
-                                 ->assertViewHas('register_user_info', $register_user_info);
+                                 ->assertViewHas('user_info', $register_user_info);
 
         $response_put = $this->put('register_user_check');
         $response_put->assertStatus(405);

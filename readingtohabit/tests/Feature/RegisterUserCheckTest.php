@@ -84,7 +84,7 @@ class RegisterUserCheckTest extends TestCase
             );
             $response->assertStatus(200)
                      ->assertViewIs('register_user.check')
-                     ->assertViewHas('register_user_info', $register_user_info);
+                     ->assertViewHas('user_info', $register_user_info);
         }
     }
 
