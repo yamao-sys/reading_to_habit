@@ -9,7 +9,7 @@ use Tests\TestCase;
 use Illuminate\Http\Response;
 // use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
-class RegisterUserFormTest extends TestCase
+class RegisterUserFmTest extends TestCase
 {
     /**
      * RegisterUserFormテスト
