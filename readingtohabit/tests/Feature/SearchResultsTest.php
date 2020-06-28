@@ -1171,7 +1171,7 @@ class SearchResultsTest extends TestCase
         Article::withoutGlobalScopes()->where('id', 3)->first()->update(['bookname' => 'book3', 'author' => 'book3', 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(45)]);
         Article::withoutGlobalScopes()->where('id', 4)->first()->update(['bookname' => 'book4', 'author' => 'book4', 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(75)]);
         Article::withoutGlobalScopes()->where('id', 5)->first()->update(['bookname' => 'book5', 'author' => 'book5', 'mail' => 0, 'updated_at' => Carbon::now('Asia/Tokyo')->subMinutes(10)]);
-        Article::withoutGlobalScopes()->where('id', 6)->first()->update(['bookname' => 'book6', 'author' => 'book6', 'mail' => 1, 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(75)]);
+        Article::withoutGlobalScopes()->where('id', 6)->first()->update(['bookname' => 'book6', 'author' => 'book6', 'mail' => 1, 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(80)]);
         
         $response = $this->withSession([
                         'user_id' => 1,
@@ -1220,7 +1220,7 @@ class SearchResultsTest extends TestCase
         Article::withoutGlobalScopes()->where('id', 3)->first()->update(['bookname' => 'book3', 'author' => 'book3', 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(45)]);
         Article::withoutGlobalScopes()->where('id', 4)->first()->update(['bookname' => 'book4', 'author' => 'book4', 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(75)]);
         Article::withoutGlobalScopes()->where('id', 5)->first()->update(['bookname' => 'book5', 'author' => 'book5', 'mail' => 0, 'updated_at' => Carbon::now('Asia/Tokyo')->subMinutes(10)]);
-        Article::withoutGlobalScopes()->where('id', 6)->first()->update(['bookname' => 'book6', 'author' => 'book6', 'mail' => 1, 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(75)]);
+        Article::withoutGlobalScopes()->where('id', 6)->first()->update(['bookname' => 'book6', 'author' => 'book6', 'mail' => 1, 'updated_at' => Carbon::now('Asia/Tokyo')->subDays(80)]);
         
         $response = $this->withSession([
                         'user_id' => 1,
