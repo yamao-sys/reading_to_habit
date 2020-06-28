@@ -20,8 +20,6 @@ use App\ArticleMailTiming;
 
 $factory->define(ArticleMailTimingSelectMaster::class, function (Faker $faker) {
     return [
-        'article_mail_timing_id' => function() {
-            return factory(ArticleMailTiming::class)->create()->id;
-        },
+        'article_mail_timing_id' => 1,
     ];
 });

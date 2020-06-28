@@ -364,7 +364,12 @@ class Article extends Model
         $request->session()->put('bookinfo', $request->bookinfo);
 
         $request->session()->put('is_search_for_last_update', intval($request->last_update) !== 0);
-        $request->session()->put('last_update', $request->last_update);
+        if (intval($request->last_update) !== 0) {
+            $request->session()->put('last_update', $request->last_update);
+        }
+        else {
+            $request->session()->put('last_update', 'not_selected');
+        }
         
         // mailはチェックボックス(未選択可)のため、isset($request->mail)のみではNG
         if (isset($request->mail)) {
@@ -383,7 +388,15 @@ class Article extends Model
         $is_search_for_mail        = $request->session()->get('is_search_for_mail');
         $bookinfo    = $request->session()->get('bookinfo');
         $last_update = $request->session()->get('last_update');
-        $mail        = $request->session()->get('mail');
+        if ($last_update === 'not_selected' && $is_search_for_last_update === true) {
+            $is_search_for_last_update = false;
+            $request->session()->put('is_search_for_last_update', false);
+        }
+        $mail = $request->session()->get('mail');
+        if ($mail === '' && $is_search_for_mail === true) {
+            $is_search_for_mail = false;
+            $request->session()->put('is_search_for_mail', false);
+        }
 
         // 拡張性に課題あり！：検索条件が1つ増えると、if文の数が2のべき乗だけ増加してしまう
         if ($is_search_for_bookinfo && $is_search_for_last_update && $is_search_for_mail) {
