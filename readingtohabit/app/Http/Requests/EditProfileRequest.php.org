@@ -31,7 +31,7 @@ class EditProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'profile_img' => 'image|max:2048',
+            'profile_img' => 'file|image|mimes:jpeg,png,jpg,gif|max:2048',
             'name'  => 'required|regex:/\A[0-9a-zA-Z]{1,20}\z/',
             'email' => [
                         'required',
@@ -51,7 +51,9 @@ class EditProfileRequest extends FormRequest
     public function messages()
     {
         return [
+            'profile_img.file' => 'ファイルをご選択ください。',
             'profile_img.image' => '画像ファイルをご選択ください。',
+            'profile_img.mimes' => 'JPEG,PNG,JPG,GIFの画像をご選択ください。',
             'profile_img.max' => '2MB以内のサイズの画像をご選択ください。',
             'name.required' => 'ユーザー名は必須項目です。',
             'name.regex' => 'ユーザー名は半角英数字20文字以内でご登録ください。',
