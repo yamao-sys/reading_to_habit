@@ -20,7 +20,7 @@ jobs:
       - run: sudo docker-php-ext-install pdo_mysql
       - run: sudo apt-get update
       - run: sudo apt-get install -y wget git unzip wget libjpeg-dev libfreetype6-dev libmagick++-dev libmagickwand-dev libpq-dev libfreetype6-dev libjpeg62-turbo-dev libpng-dev libwebp-dev libxpm-dev
-      - run: docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
+      - run: sudo docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/
       - run: sudo docker-php-ext-install -j$(nproc) gd
       - run: echo -e "[Date]\ndate.timezone = Asia/Tokyo" | sudo tee /usr/local/etc/php/php.ini > /dev/null
 
