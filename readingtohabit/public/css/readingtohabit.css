@@ -8,6 +8,10 @@ body,#wrapper {
     color: #495057;
 }
 
+pre {
+    margin: 0;
+}
+
 #larger_wrapper {
     display: -ms-flexbox;
     display: flex;
@@ -2595,7 +2599,7 @@ li {
         margin-top: 2rem;
         margin-bottom: 2rem;
     }
-    .edit_user_form_area {
+    .edit_user_form_area,.contact_form_area {
         width: 500px;
         margin-top: 2rem;
         margin-bottom: 2rem;
@@ -2911,7 +2915,7 @@ li {
         margin-top: 2rem;
         margin-bottom: 2rem;
     }
-    .edit_user_form_area {
+    .edit_user_form_area,.contact_form_area {
         width: 500px;
         margin-top: 2rem;
         margin-bottom: 2rem;
@@ -3312,7 +3316,7 @@ input[type="checkbox"] {
     color: #495057;
     background-color: #fff;
     background-clip: padding-box;
-    border: 0.5px solid #495057;
+    border: 1px solid #495057;
     border-radius: 5px;
 }
 

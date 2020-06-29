@@ -15,6 +15,9 @@
                 <a class="menu_list" href="edit_default_mail_timing">メールタイミング編集</a>
             </div>
             <div class="mb_2rem">
+                <a class="menu_list" href="contact_form">お問い合わせ</a>
+            </div>
+            <div class="mb_2rem">
                 <a class="menu_list" href="rules">利用規約</a>
             </div>
             <div class="mb_2rem">
