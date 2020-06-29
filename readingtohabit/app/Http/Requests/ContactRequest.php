@@ -13,7 +13,7 @@ class ContactRequest extends FormRequest
      */
     public function authorize()
     {
-        if ($this->path() == 'contact_check') {
+        if ($this->is('contact_check')) {
             return true;
         }
         else {
@@ -30,16 +30,21 @@ class ContactRequest extends FormRequest
     {
         return [
             'email'     => 'required',
-            'contact'   => 'required|max:21845',
+            'contact' => [
+                        'required',
+                        function ($attribute, $value, $fail) {
+                            if (mb_strlen($value) > 3000) {
+                                return $fail('お問い合わせ内容は3000文字以内でご入力ください。');
+                            }
+                        },
+                       ],
         ];
     }
 
-    public function messages()
-    {
+    public function messages() {
         return [
-            'email.required'     => '$B%a!<%k%"%I%l%9$OI,?\9`L\$G$9!#(B',
-            'contact.required'   => '$B$*Ld$$9g$o$;FbMF$OI,?\9`L\$G$9!#(B',
-            'contact.max'        => '$B$*Ld$$9g$o$;FbMF$O(B21845$BJ8;z0JFb$G$4F~NO$/$@$5$$!#(B',
+            'email.required'     => 'メールアドレスは必須項目です。',
+            'contact.required'   => 'お問い合わせ内容は必須項目です。',
         ];
     }
 }

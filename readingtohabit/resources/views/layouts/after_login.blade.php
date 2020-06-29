@@ -16,6 +16,6 @@
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/vue@2.6.11/dist/vue.js" defer></script>
         <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js" defer></script>
         <script type="text/javascript" src="{{\DocumentRootConst::DOCUMENT_ROOT}}js/ofi.min.js" defer></script>
-        <script type="text/javascript" src="{{\DocumentRootConst::DOCUMENT_ROOT}}/js/readingtohabit.js" defer></script>
+        <script type="text/javascript" src="{{\DocumentRootConst::DOCUMENT_ROOT}}js/readingtohabit.js" defer></script>
     </body>
 </html>
