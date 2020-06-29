@@ -234,7 +234,7 @@ return [
         'DocumentRootConst' => App\Consts\DocumentRootConst::class,
         'ErrorCodeConst' => App\Consts\ErrorCodeConst::class,
         'PaginationConst' => App\Consts\PaginationConst::class,
-
+        'ContactMailConst' => App\Consts\ContactMailConst::class,
     ],
 
 ];

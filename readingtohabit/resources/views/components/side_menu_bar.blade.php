@@ -79,6 +79,16 @@
         </a>
         @endif
             
+        @if ($current_page === 'contact')
+        <a class="menu selected" href="contact_form">
+            <div class="color_primary">お問い合わせ</div>
+        </a>
+        @else
+        <a class="menu not_selected" href="contact_form">
+            <div class="color_default">お問い合わせ</div>
+        </a>
+        @endif
+
         @if ($current_page === 'rules')
         <a class="menu selected" href="rules">
             <div class="color_primary">利用規約</div>

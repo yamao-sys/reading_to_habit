@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('top', function () {return view('top');});
+Route::get('contact_form', 'ContactController@contact_form');
+Route::post('contact_check', 'ContactController@contact_check');
+Route::get('contact_check', 'ContactController@contact_check_get');
+Route::post('contact_do', 'ContactController@contact_do');
+Route::get('contact_do', 'ContactController@contact_form');
 
 Route::group(['middleware' => ['before_login']], function () {
     Route::get('/', 'AuthController@check_auto_login');

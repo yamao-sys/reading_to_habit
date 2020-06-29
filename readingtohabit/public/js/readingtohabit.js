@@ -342,6 +342,31 @@ if (document.getElementById('search_articles') !== null) {
     });
 }
 
+if (document.getElementById('contact') !== null) {
+    var contact = new Vue({
+        delimiters: ['(%', '%)'],
+        el: '#contact',
+        data: function () {
+            var smaller;
+            var larger;
+
+            if (window.innerWidth > 992) {
+                smaller = false;
+                larger  = true;
+            }
+            else {
+                smaller = true;
+                larger  = false;
+            }
+            
+            return {
+                smaller: smaller,
+                larger: larger,
+            };
+        },
+    });
+}
+
 if (document.getElementById('favorites') !== null) {
     var show_article = new Vue({
         delimiters: ['(%', '%)'],

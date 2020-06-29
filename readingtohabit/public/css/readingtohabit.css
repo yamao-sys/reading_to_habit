@@ -2595,7 +2595,7 @@ li {
         margin-top: 2rem;
         margin-bottom: 2rem;
     }
-    .edit_user_form_area {
+    .edit_user_form_area,.contact_form_area {
         width: 500px;
         margin-top: 2rem;
         margin-bottom: 2rem;
@@ -2911,7 +2911,7 @@ li {
         margin-top: 2rem;
         margin-bottom: 2rem;
     }
-    .edit_user_form_area {
+    .edit_user_form_area,.contact_form_area {
         width: 500px;
         margin-top: 2rem;
         margin-bottom: 2rem;

@@ -30,6 +30,9 @@
                             <div class="mt_2rem mb_2rem">
                                 <a href="login" class="menu_list">ログイン</a>
                             </div>
+                            <div class="mt_2rem mb_2rem">
+                                <a href="contact_form" class="menu_list">お問い合わせ</a>
+                            </div>
                         </div>
                     </div>
                 </div>
