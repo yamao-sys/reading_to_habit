@@ -60,7 +60,6 @@ class ContactController extends Controller
         }
         
         DB::beginTransaction();
-
         try {
             $contact = Contact::create([
                         'email'   => $request->session()->get('contact_info_email'),
@@ -73,7 +72,6 @@ class ContactController extends Controller
             DB::rollback();
             return view('common.invalid');
         }
-
         DB::commit();
 
         $request->session()->forget('contact_info_email');

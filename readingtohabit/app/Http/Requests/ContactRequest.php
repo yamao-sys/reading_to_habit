@@ -30,7 +30,14 @@ class ContactRequest extends FormRequest
     {
         return [
             'email'     => 'required',
-            'contact'   => 'required|max:21845',
+            'contact' => [
+                        'required',
+                        function ($attribute, $value, $fail) {
+                            if (mb_strlen($value) > 3000) {
+                                return $fail('お問い合わせ内容は3000文字以内でご入力ください。');
+                            }
+                        },
+                       ],
         ];
     }
 
@@ -38,7 +45,6 @@ class ContactRequest extends FormRequest
         return [
             'email.required'     => 'メールアドレスは必須項目です。',
             'contact.required'   => 'お問い合わせ内容は必須項目です。',
-            'contact.max'        => 'お問い合わせ内容は21845文字以内でご入力ください。',
         ];
     }
 }
