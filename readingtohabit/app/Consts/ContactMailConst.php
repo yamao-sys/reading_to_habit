@@ -2,7 +2,7 @@
 
 namespace App\Consts;
 
-class ConstMailConst
+class ContactMailConst
 {
     const MAIL_ADD = 'yamaopanku@gmail.com';
 }
