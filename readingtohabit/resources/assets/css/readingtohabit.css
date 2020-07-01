@@ -723,6 +723,18 @@ li {
     }
 }
 
+.header_menu_large_area {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.header_menu_large {
+    display: -ms-flexbox;
+    display: flex;
+}
+
 .menu_list {
     padding: 0 1rem;
     color: #495057;
