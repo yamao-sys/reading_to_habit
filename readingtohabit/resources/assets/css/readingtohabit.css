@@ -139,6 +139,11 @@ pre {
     margin: 2rem 0;
 }
 
+.num_of_articles_large, .num_of_favorites_large {
+    width: 100%;
+    margin: 0 0 2rem 0;
+}
+
 .object-fit-img {
     object-fit: cover;
     font-family: 'object-fit: contain';
@@ -624,11 +629,27 @@ pre {
     padding: 2rem;
 }
 
+.py_2rem {
+    padding: 2rem 0;
+}
+
+.p_after_login_large {
+    padding: 2rem 4rem;
+}
+
 li {
     font-weight: 700;
 }
 
+.li_normal {
+    font-weight: 400;
+}
+
 .inline_font_bold {
+    font-weight: 700;
+}
+
+.font_bold {
     font-weight: 700;
 }
 
@@ -3258,6 +3279,16 @@ input#auto_login[type="checkbox"]:checked+label::after {
     display: flex;
     height: 30px;
     margin-top: 2rem;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.message_about_favorite_large {
+    display: -ms-flexbox;
+    display: flex;
+    height: 30px;
     -ms-flex-pack: center;
     justify-content: center;
     -ms-flex-align: center;

@@ -559,3 +559,53 @@ if (document.getElementById('edit_default_mail_timing') !== null) {
         },
     });
 }
+
+if (document.getElementById('rules') !== null) {
+    var rules = new Vue({
+        delimiters: ['(%', '%)'],
+        el: '#rules',
+        data: function () {
+            var smaller;
+            var larger;
+
+            if (window.innerWidth > 992) {
+                smaller = false;
+                larger  = true;
+            }
+            else {
+                smaller = true;
+                larger  = false;
+            }
+
+            return {
+                smaller: smaller,
+                larger: larger,
+            };
+        },
+    });
+}
+
+if (document.getElementById('privacy_policy') !== null) {
+    var privacy_policy = new Vue({
+        delimiters: ['(%', '%)'],
+        el: '#privacy_policy',
+        data: function () {
+            var smaller;
+            var larger;
+
+            if (window.innerWidth > 992) {
+                smaller = false;
+                larger  = true;
+            }
+            else {
+                smaller = true;
+                larger  = false;
+            }
+            
+            return {
+                smaller: smaller,
+                larger: larger,
+            };
+        },
+    });
+}

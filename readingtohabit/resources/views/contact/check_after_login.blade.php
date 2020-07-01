@@ -33,7 +33,7 @@
 
             <div class="main_content_area">
                 <div class="main_content">
-                    <div class="contact_form_area">
+                    <div class="p_after_login_large">
                         <div class="content_title">お問い合わせ内容の情報確認</div>
                             <div class="mb_2rem">
                             お問い合わせ内容の情報確認画面です。<br>

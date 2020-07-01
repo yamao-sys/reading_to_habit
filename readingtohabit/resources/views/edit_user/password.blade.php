@@ -36,7 +36,8 @@
 
             <div class="main_content_area">
                 <div class="main_content">
-                    <div class="edit_user_form_area">
+                    <div class="p_after_login_large">
+                        <div class="content_title">パスワード編集</div>
                         <form action="edit_password" method="post">
                             {{ csrf_field() }}
                             @include('components.edit_password_input', ['input' => 'current_password', 'errors' => $errors])

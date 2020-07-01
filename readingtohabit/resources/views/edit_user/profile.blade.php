@@ -59,7 +59,8 @@
 
             <div class="main_content_area">
                 <div class="main_content">
-                    <div class="edit_user_form_area">
+                    <div class="p_after_login_large">
+                        <div class="content_title">プロフィール編集</div>
                         <form action="edit_profile" method="post" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             @include('components.edit_profile_input', ['input' => 'profile_img', 'profile' => $profile, 'errors' => $errors])

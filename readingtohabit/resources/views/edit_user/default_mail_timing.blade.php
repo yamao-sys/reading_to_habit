@@ -39,7 +39,8 @@
 
             <div class="main_content_area">
                 <div class="main_content">
-                    <div class="edit_user_form_area">
+                    <div class="p_after_login_large">
+                        <div class="content_title">デフォルト配信タイミング編集</div>
                         <form action="edit_default_mail_timing" method="post">
                             {{ csrf_field() }}
                             <div class="mb_2rem">

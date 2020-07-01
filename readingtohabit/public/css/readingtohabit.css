@@ -628,7 +628,15 @@ li {
     font-weight: 700;
 }
 
+.li_normal {
+    font-weight: 400;
+}
+
 .inline_font_bold {
+    font-weight: 700;
+}
+
+.font_bold {
     font-weight: 700;
 }
 

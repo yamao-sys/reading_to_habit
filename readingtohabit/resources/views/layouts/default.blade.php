@@ -62,7 +62,6 @@
                 <div class="footer_area">
                     <a href="rules" class="footer_content">利用規約</a>
                     <a href="privacy_policy" class="footer_content">プライバシーポリシー</a>
-                    <a href="specfied_commercial_transaction_law" class="footer_content">特定商取引法表記</a>
                 </div>
                 <div class="footer_copyright">
                     copyrights c 2020 KEITA YAMAUCHI ALL RIGHTS RESERVED.
