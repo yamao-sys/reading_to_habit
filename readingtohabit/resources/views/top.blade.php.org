@@ -6,11 +6,11 @@
 <div class="main_visual_area">
     <div class="main_visual">
         <div class="main_visual_content_1">
-            <span class="color_danger">読書で学んだこと</span>を行動に活かそう
+            <span class="color_danger">$BFI=q$G3X$s$@$3$H(B</span>$B$r9TF0$K3h$+$=$&(B
         </div>
         <div class="main_visual_content_2">
-            <span class="color_danger">リマインドメール</span>で学びを行動に活かせているか<br>
-            <span class="color_danger">定期的に</span>振り返ろう
+            <span class="color_danger">$B%j%^%$%s%I%a!<%k(B</span>$B$G3X$S$r9TF0$K3h$+$;$F$$$k$+(B<br>
+            <span class="color_danger">$BDj4|E*$K(B</span>$B?6$jJV$m$&(B
         </div>
     </div>
 </div>

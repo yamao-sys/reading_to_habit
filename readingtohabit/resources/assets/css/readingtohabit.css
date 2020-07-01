@@ -173,6 +173,266 @@ pre {
     border-radius: 0.25rem;
 }
 
+.main_visual_area {
+    width: 100%;
+    height: calc(100vw * 662 / 992);
+    background: url('https://readingtohabit-staging-backet.s3-ap-northeast-1.amazonaws.com/main_visual.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+}
+
+@media screen and (max-width: 320px) {
+    .main_visual {
+        width: 90%;
+        padding-top: 2rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 1rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 0.7rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width: 321px) and (max-width: 375px){
+    .main_visual {
+        width: 90%;
+        padding-top: 2rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 1.15rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width: 376px) and (max-width: 420px){
+    .main_visual {
+        width: 90%;
+        padding-top: 2rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 1.3rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 0.75rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+
+@media screen and (min-width: 421px) and (max-width: 550px){
+    .main_visual {
+        width: 90%;
+        padding-top: 2rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width: 551px) and (max-width: 667px){
+    .main_visual {
+        width: 90%;
+        padding-top: 2rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 1.85rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 1.25rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+
+@media screen and (min-width: 668px) and (max-width: 768px){
+    .main_visual {
+        width: 90%;
+        padding-top: 2rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 2.25rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 823px){
+    .main_visual {
+        width: 90%;
+        padding-top: 2rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 1.75rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width: 824px) and (max-width: 1024px){
+    .main_visual {
+        width: 90%;
+        padding-top: 6rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 3rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 2rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+@media screen and (min-width: 1025px){
+    .main_visual {
+        width: 90%;
+        padding-top: 10rem;
+        margin: 0 auto;
+    }
+    .main_visual_content_1 {
+        font-size: 4.5rem;
+        font-weight: 700;
+        float: left;
+        padding: 5px;
+        margin-right: auto;
+        margin-left: auto;
+        margin-bottom: 1rem;
+        background-color: #fff;
+    }
+    .main_visual_content_2 {
+        font-size: 2.5rem;
+        font-weight: 700;
+        float: left;
+        clear: left;
+        padding: 5px;
+        margin: auto;
+        background-color: #fff;
+    }
+}
+
+
+
+.color_danger {
+    color: #e04f51;
+}
+
 .menu_profile_img_content {
     display: -ms-flexbox;
     display: flex;
