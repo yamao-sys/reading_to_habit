@@ -1,3 +1,22 @@
+input[type="submit"],
+input[type="button"] {
+    border-radius: 0.5rem;
+    -webkit-box-sizing: content-box;
+    -webkit-appearance: button;
+    appearance: button;
+    border: none;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+input[type="submit"]::-webkit-search-decoration,
+input[type="button"]::-webkit-search-decoration {
+    display: none;
+}
+input[type="submit"]::focus,
+input[type="button"]::focus {
+    outline-offset: -2px;
+}
+
 body,#wrapper {
     display: -ms-flexbox;
     display: flex;
@@ -31,7 +50,7 @@ pre {
     color: #fff;
     background-color: #00a0e9;
     padding: 1rem;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     z-index: 1000;
 }
 
@@ -170,7 +189,7 @@ pre {
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
 }
 
 .main_visual_area {
@@ -644,7 +663,7 @@ pre {
     clear: both;
     background-color: #e04f51;
     border: 1px solid #e04f51;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     -ms-flex-pack: center;
     justify-content: center;
     -ms-flex-align: center;
@@ -778,7 +797,7 @@ pre {
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
     text-decoration: none;
 }
 
@@ -1425,7 +1444,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_primary_less_than_4_chars {
         display: inline-block;
@@ -1445,7 +1464,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_more_than_4_chars {
         display: inline-block;
@@ -1465,7 +1484,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_less_than_4_chars {
         display: inline-block;
@@ -1485,7 +1504,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_more_than_4_chars {
         display: inline-block;
@@ -1505,7 +1524,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_less_than_4_chars {
         display: inline-block;
@@ -1525,7 +1544,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .delete_modal {
         width: calc(100% - 2px);
@@ -1581,7 +1600,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .active {
         display: -ms-flexbox;
@@ -1596,7 +1615,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .page-link {
         color: #00a0e9;
@@ -1724,7 +1743,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_primary_less_than_4_chars {
         display: inline-block;
@@ -1744,7 +1763,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_more_than_4_chars {
         display: inline-block;
@@ -1764,7 +1783,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_less_than_4_chars {
         display: inline-block;
@@ -1784,7 +1803,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_more_than_4_chars {
         display: inline-block;
@@ -1804,7 +1823,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_less_than_4_chars {
         display: inline-block;
@@ -1824,7 +1843,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .delete_modal {
         width: calc(100% - 2px);
@@ -1888,7 +1907,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .active {
         display: -ms-flexbox;
@@ -1903,7 +1922,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .page-link {
         color: #00a0e9;
@@ -2029,7 +2048,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_primary_less_than_4_chars {
         display: inline-block;
@@ -2049,7 +2068,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_more_than_4_chars {
         display: inline-block;
@@ -2069,7 +2088,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_less_than_4_chars {
         display: inline-block;
@@ -2089,7 +2108,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_more_than_4_chars {
         display: inline-block;
@@ -2109,7 +2128,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_less_than_4_chars {
         display: inline-block;
@@ -2129,7 +2148,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .delete_modal {
         width: calc(100% - 2px);
@@ -2193,7 +2212,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .active {
         display: -ms-flexbox;
@@ -2208,7 +2227,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .page-link {
         color: #00a0e9;
@@ -2338,7 +2357,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_primary_less_than_4_chars {
         display: inline-block;
@@ -2358,7 +2377,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_more_than_4_chars {
         display: inline-block;
@@ -2378,7 +2397,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_less_than_4_chars {
         display: inline-block;
@@ -2398,7 +2417,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_more_than_4_chars {
         display: inline-block;
@@ -2418,7 +2437,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_less_than_4_chars {
         display: inline-block;
@@ -2438,7 +2457,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .delete_modal {
         width: 540px;
@@ -2502,7 +2521,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .active {
         display: -ms-flexbox;
@@ -2517,7 +2536,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .page-link {
         color: #00a0e9;
@@ -2647,7 +2666,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_primary_less_than_4_chars {
         display: inline-block;
@@ -2667,7 +2686,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_more_than_4_chars {
         display: inline-block;
@@ -2687,7 +2706,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_less_than_4_chars {
         display: inline-block;
@@ -2707,7 +2726,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_more_than_4_chars {
         display: inline-block;
@@ -2727,7 +2746,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_less_than_4_chars {
         display: inline-block;
@@ -2747,7 +2766,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .delete_modal {
         width: 540px;
@@ -2811,7 +2830,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .active {
         display: -ms-flexbox;
@@ -2826,7 +2845,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .page-link {
         color: #00a0e9;
@@ -2957,7 +2976,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_primary_less_than_4_chars {
         display: inline-block;
@@ -2977,7 +2996,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_more_than_4_chars {
         display: inline-block;
@@ -2997,7 +3016,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_less_than_4_chars {
         display: inline-block;
@@ -3017,7 +3036,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_more_than_4_chars {
         display: inline-block;
@@ -3037,7 +3056,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_less_than_4_chars {
         display: inline-block;
@@ -3057,7 +3076,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .delete_modal {
         width: 540px;
@@ -3121,7 +3140,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .active {
         display: -ms-flexbox;
@@ -3136,7 +3155,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .page-link {
         color: #00a0e9;
@@ -3277,7 +3296,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_primary_less_than_4_chars {
         display: inline-block;
@@ -3297,7 +3316,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_more_than_4_chars {
         display: inline-block;
@@ -3317,7 +3336,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_default_less_than_4_chars {
         display: inline-block;
@@ -3337,7 +3356,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_more_than_4_chars {
         display: inline-block;
@@ -3357,7 +3376,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .btn_danger_less_than_4_chars {
         display: inline-block;
@@ -3377,7 +3396,7 @@ li {
         padding: 0.375rem 0.75rem;
         font-size: 1rem;
         line-height: 1.5;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .delete_modal {
         width: 540px;
@@ -3441,7 +3460,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .active {
         display: -ms-flexbox;
@@ -3456,7 +3475,7 @@ li {
         -ms-flex-align: center;
         align-items: center;
         border: 1px solid #00a0e9;
-        border-radius: 0.25rem;
+        border-radius: 0.5rem;
     }
     .page-link {
         color: #00a0e9;
@@ -4242,7 +4261,7 @@ input[type="checkbox"] {
     padding: 0.375rem 0.75rem;
     font-size: 1rem;
     line-height: 1.5;
-    border-radius: 0.25rem;
+    border-radius: 0.5rem;
 }
 
 
