@@ -22,7 +22,6 @@ class ContactController extends Controller
         else {
             return view('contact.form_after_login');
         }
-
     }
 
     public function contact_check (ContactRequest $request) {
@@ -81,6 +80,26 @@ class ContactController extends Controller
         }
         else {
             return view('contact.finish_after_login');
+        }
+    }
+    
+    public function rules (Request $request) {
+        if (empty($request->session()->get('user_id'))) {
+            return view('contact.rules');
+        }
+        else {
+            $request->session()->regenerate();
+            return view('contact.rules_after_login');
+        }
+    }
+    
+    public function privacy_policy (Request $request) {
+        if (empty($request->session()->get('user_id'))) {
+            return view('contact.privacy_policy');
+        }
+        else {
+            $request->session()->regenerate();
+            return view('contact.privacy_policy_after_login');
         }
     }
 }

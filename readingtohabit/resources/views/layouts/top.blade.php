@@ -51,7 +51,7 @@
             </div>
         </header>
 
-        <div class="content_area">
+        <div>
         @yield('content')
         </div>
 
@@ -62,7 +62,7 @@
                     <a href="privacy_policy" class="footer_content">プライバシーポリシー</a>
                 </div>
                 <div class="footer_copyright">
-                     (C) 2020 KEITA YAMAUCHI
+                    (C) 2020 KEITA YAMAUCHI ALL RIGHTS RESERVED.
                 </div>
             </div>
         </footer>

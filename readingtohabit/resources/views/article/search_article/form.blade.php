@@ -8,6 +8,7 @@
     <div v-if="smaller">
         <div class="content">
             <form action="search_results" method="post">
+                <div class="content_title">記録検索フォーム</div>
                 {{ csrf_field() }}
                 <div class="form_element">
                     <label>著書名または著者名</label>
@@ -49,7 +50,8 @@
 
             <div class="main_content_area">
                 <div class="main_content">
-                    <div class="search_form_area">
+                    <div class="p_after_login_large">
+                        <div class="content_title">記録検索フォーム</div>
                         <form action="search_results" method="post">
                             {{ csrf_field() }}
                             <div class="form_element">

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SuccessRegisterUser;
+use App\Mail\ResetPasswordFinish;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -225,6 +226,8 @@ class User extends Authenticatable
     }
 
     public static function edit_password (Request $request) {
+        $user = User::where('id', $request->session()->get('user_id'))->first();
+
         DB::beginTransaction();
         try {
             User::where('id', $request->session()->get('user_id'))
@@ -232,6 +235,8 @@ class User extends Authenticatable
                           'password'   => Hash::make($request->new_password),
                           'updated_at' => Carbon::now(),
                          ]);
+            
+            Mail::to($user['email'])->send(new ResetPasswordFinish($user['name']));
         }
         catch (Exception $e) {
             DB::rollback();

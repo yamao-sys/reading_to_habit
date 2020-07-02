@@ -11,5 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/sass/app.scss', 'public/css');
+/*mix.js('resources/js/app.js', 'public/js')
+    .sass('resources/sass/app.scss', 'public/css');*/
+
+mix.js('resources/assets/js/vue.js', 'public/js/202006302.js');
+mix.styles('resources/assets/css/readingtohabit.css', 'public/css/202006301.css');

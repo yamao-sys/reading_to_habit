@@ -156,7 +156,7 @@ if (document.getElementById('show_article') !== null) {
                         this.delete_modal_finish = true;
                     }
                     else {
-                        alert('削除に失敗しました。恐れ入りますが、一定時間を置いて再度お試しくださいませ。');
+                        alert('$B:o=|$K<:GT$7$^$7$?!#62$lF~$j$^$9$,!"0lDj;~4V$rCV$$$F:FEY$*;n$7$/$@$5$$$^$;!#(B');
                         this.delete_modal = false;
                         this.delete_modal_form = false;
                     }
@@ -227,7 +227,7 @@ if (document.getElementById('articles') !== null) {
         delimiters: ['(%', '%)'],
         el: '#articles',
         data: function () {
-            // 表示対象DOMの設定
+            // $BI=<(BP>](BDOM$B$N@_Dj(B
             var smaller;
             var larger;
 
@@ -240,7 +240,7 @@ if (document.getElementById('articles') !== null) {
                 larger  = false;
             }
 
-            // お気に入りフラグの初期値設定
+            // $B$*5$$KF~$j%U%i%0$N=i4|CM@_Dj(B
             var list_article_id = document.getElementsByClassName('list_article_id');
             var list_article_favorite_flag = document.getElementsByClassName('list_article_favorite_flag');
 
@@ -467,7 +467,7 @@ if (document.getElementById('edit_profile') !== null) {
                         location.href = app_url + 'delete_user_finish';
                     }
                     else {
-                        alert('削除に失敗しました。恐れ入りますが、一定時間を置いて再度お試しくださいませ。');
+                        alert('$B:o=|$K<:GT$7$^$7$?!#62$lF~$j$^$9$,!"0lDj;~4V$rCV$$$F:FEY$*;n$7$/$@$5$$$^$;!#(B');
                         this.delete_modal = false;
                         this.delete_modal_form = false;
                     }
