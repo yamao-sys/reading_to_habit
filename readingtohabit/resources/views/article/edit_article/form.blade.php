@@ -46,13 +46,21 @@
         @elseif (old('mail_flag') === '0')
         <div id="edit_article_mail_flag">0</div>
         @else
-        <div id="edit_article_mail_flag">1</div>
+        <div id="edit_article_mail_flag">{{$article_info['mail']}}</div>
         @endif
         <div class="edit_article_mail_flag">
             <label>リマインドメールの配信</label>
             <div class="radiobtn_align">
-                <input v-model="mail_flag" type="radio" name="mail_flag" value="1" >配信する
+                @if ($article_info['mail'] === 1)
+                <input v-model="mail_flag" type="radio" name="mail_flag" value="1" checked>配信する
                 <input v-model="mail_flag" type="radio" name="mail_flag" value="0">配信しない
+                @elseif ($article_info['mail'] === 0)
+                <input v-model="mail_flag" type="radio" name="mail_flag" value="1">配信する
+                <input v-model="mail_flag" type="radio" name="mail_flag" value="0" checked>配信しない
+                @else
+                <input v-model="mail_flag" type="radio" name="mail_flag" value="1" checked>配信する
+                <input v-model="mail_flag" type="radio" name="mail_flag" value="0">配信しない
+                @endif
             </div>
         </div>
         @empty (old('mail_timing_select'))
@@ -179,7 +187,7 @@
         </div>
         <div class="btn_vertical_align">
             <input type="submit" class="btn_primary_more_than_4_chars mr_5" value="更新する">
-            <button class="btn_default_more_than_4_chars" onclick="javascript:location.href='https://test.readingtohabit-staging.net/articles';return false;">キャンセルする</button>
+            <button class="btn_default_more_than_4_chars" onclick="javascript:location.href='https://readingtohabit.com/articles';return false;">キャンセルする</button>
         </div>
     </form>
 </div>

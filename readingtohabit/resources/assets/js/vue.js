@@ -1,7 +1,7 @@
 window.Vue = require('vue');
 const axios = require('axios');
 
-const app_url = 'https://test.readingtohabit-staging.net/';
+const app_url = 'https://readingtohabit.com/';
 objectFitImages();
 
 if (document.getElementById('content') !== null) {
@@ -17,10 +17,10 @@ if (document.getElementById('content') !== null) {
         methods: {
             search_books: function (word) {
                 if (word.length > 2) {
-                    axios.get("https://www.googleapis.com/books/v1/volumes?q=" + word + "&maxResults=10&orderBy=relevance")
+                    axios.get(app_url + 'add_article_fetch_search_results?bookname=' + word)
                          .then(response => {
-                            if ('items' in response.data) {
-                                this.search_results = response.data.items;
+                            if ('Items' in response.data) {
+                                this.search_results = response.data.Items;
                             }
                             else {
                                 this.search_results = [];

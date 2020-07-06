@@ -56,7 +56,7 @@ class ArticleController extends Controller
     }
 
     public function add_article_form (Request $request) {
-        if (empty($request->input('bookimg')) || empty($request->input('bookname')) || empty($request->input('author'))) {
+        if (empty($request->input('title'))) {
             return view('common.invalid');
         }
 
@@ -68,6 +68,19 @@ class ArticleController extends Controller
         }
         
         return view('article.add_article.form', ['book_info' => $book_info, 'default_mail_timing_info' => $default_mail_timing_info]);
+    }
+
+    public function fetch_search_results (Request $request) {
+        if (empty($request->input('bookname'))) {
+            return json_encode(['is_success' => false]);
+        }
+
+        $request_url = \SearchBookAPIConst::API_URL.
+                        '&format='.\SearchBookAPIConst::FORMAT.
+                        '&applicationId='.\SearchBookAPIConst::APPLICATION_ID.
+                        '&keyword='.urlencode($request->input('bookname'));
+
+        return file_get_contents($request_url);
     }
 
     public function add_article_do (ArticleRequest $request) {

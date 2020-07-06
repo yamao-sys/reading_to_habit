@@ -38,53 +38,24 @@ class Article extends Model
     }
 
     public static function make_book_info (Request $request) {
-
-        $request_url = \SearchBookAPIConst::API_URL.
-                        '&format='.\SearchBookAPIConst::FORMAT.
-                        '&applicationId='.\SearchBookAPIConst::APPLICATION_ID.
-                        '&keyword='.urlencode($request->input('title'));
-        
-        $response = file_get_contents($request_url);
-        $search_results = json_decode($response, true);
-
-        foreach($search_results['Items'] as $result) {
-            if ($result['Item']['title'] === $request->input('title')) {
-                $book_info = $result['Item'];
-                break;
-            }
+        if ($request->input('bookimg') === \ImgPathConst::NOIMG_PATH) {
+            return  [
+                     'bookimg'   => \ImgPathConst::NOIMG_PATH,
+                     'bookname'  => $request->input('bookname'),
+                     'author'    => $request->input('author'),
+                    ];
         }
 
-        if (!empty($book_info['largeImageUrl'])) {
-            $bookimg = $book_info['largeImageUrl'];
-        }
-        elseif (!empty($book_info['mediumImageUrl'])) {
-            $bookimg = $book_info['mediumImageUrl'];
-        }
-        elseif (!empty($book_info['mediumImageUrl'])) {
-            $bookimg = $book_info['mediumImageUrl'];
-        }
-        else {
-            $bookimg = \ImgPathConst::NOIMG_PATH;
-        }
-
-        if (!empty($book_info['title'])) {
-            $bookname = $book_info['title'];
-        }
-        else {
-            $bookname = '';
-        }
-        
-        if (!empty($book_info['author'])) {
-            $author = $book_info['author'];
-        }
-        else {
-            $author = '';
+        $bookimg_key = ['printsec', 'img', 'zoom', 'edge', 'source'];
+        $bookimg = $request->input('bookimg');
+        foreach ($bookimg_key as $key) {
+            $bookimg = str_replace('-'.$key, '&'.$key, $bookimg);
         }
 
         return  [
                  'bookimg'   => $bookimg,
-                 'bookname'  => $bookname,
-                 'author'    => $author,
+                 'bookname'  => $request->input('bookname'),
+                 'author'    => $request->input('author'),
                 ];
         
     }

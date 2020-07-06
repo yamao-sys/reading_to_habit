@@ -61,6 +61,7 @@ Route::group(['middleware' => ['before_login']], function () {
 Route::group(['middleware' => ['after_login']], function () {
     // 読書記録の投稿関連
     Route::get('add_article_search_book', function () {return view('article.add_article.search_book');});
+    Route::get('add_article_fetch_search_results', 'ArticleController@fetch_search_results');
     Route::get('add_article_form', 'ArticleController@add_article_form');
     Route::post('add_article_do', 'ArticleController@add_article_do');
 

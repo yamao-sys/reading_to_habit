@@ -107,6 +107,8 @@ pre {
     justify-content: center;
     -ms-flex-align: center;
     align-items: center;
+    border: 0.5px solid #495057;
+    border-radius: 5px;
 }
 
 #top_bar {
@@ -777,6 +779,8 @@ pre {
     display: flex;
     width: 75px;
     height: 75px;
+    border: 0.5px solid #495057;
+    border-radius: 5px;
 }
 
 .to_add_article {
@@ -813,8 +817,9 @@ pre {
 .list_article_thumbnail {
     display: -ms-flexbox;
     display: flex;
-    width: 100px;
+    width: 84px;
     height: auto;
+    border: 0.5px solid #495057;
 }
 
 .list_article_id,.index_article_favorite_flag {
@@ -899,7 +904,7 @@ pre {
     display: -ms-flexbox;
     display: flex;
     width: calc(100% - 1rem);
-    height: 60px;
+    height: 55px;
     padding-left: 1rem;
     -ms-flex-align: center;
     align-items: center;
@@ -911,7 +916,7 @@ pre {
     display: -ms-flexbox;
     display: flex;
     width: calc(100% - 1rem);
-    height: 60px;
+    height: 55px;
     padding-left: 1rem;
     -ms-flex-align: center;
     align-items: center;
@@ -4049,16 +4054,12 @@ input[type="checkbox"] {
 
 @media screen and (max-width:576px) {
     .search_area {
-        // display: -ms-flexbox;
-        // display: flex;
         width: 100%;
         padding-right: 15px;
         padding-left: 15px;
         margin-right: auto;
         margin-left: auto;
         margin-bottom: 1rem;
-        // -ms-flex-pack: center;
-        // justify-content: center;
     }
     .search_book {
         display: block;
@@ -4076,9 +4077,7 @@ input[type="checkbox"] {
         border-radius: 5px;
     }
     .search_results {
-        width: 100%;
-        // padding-right: 15px;
-        // padding-left: 15px;
+        width: calc(100% - 2rem);
         margin-right: auto;
         margin-left: auto;
     }
@@ -4299,10 +4298,11 @@ input[type="checkbox"] {
     justify-content: center;
     -ms-flex-align: center;
     align-items: center;
+    border: 0.5px solid #495057;
 }
 
 .thumbnail_size {
-    width: 100px;
+    width: 84px;
     height: auto;
 }
 
@@ -4331,10 +4331,11 @@ input[type="checkbox"] {
     justify-content: center;
     -ms-flex-align: center;
     align-items: center;
+    border: 0.5px solid #495057;
 }
 
 .add_article_bookimg,.show_article_bookimg,.edit_article_bookimg {
-    width: 200px;
+    width: 140px;
     height: auto;
 }
 
