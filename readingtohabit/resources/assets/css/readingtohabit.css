@@ -107,8 +107,6 @@ pre {
     justify-content: center;
     -ms-flex-align: center;
     align-items: center;
-    border: 0.5px solid #495057;
-    border-radius: 5px;
 }
 
 #top_bar {
